@@ -1,0 +1,13 @@
+.build/
+.swiftpm/
+DerivedData/
+Packages/
+xcuserdata/
+*.xcodeproj/
+*.xcworkspace/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xcuserstate
+.DS_Store
