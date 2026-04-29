@@ -25,9 +25,12 @@ import AsposeBarcodeCloud
 The first generated API surface includes `GenerateAPI`, `RecognizeAPI`, `ScanAPI`, and the corresponding models.
 
 ```swift
-AsposeBarcodeCloudAPI.customHeaders["Authorization"] = "Bearer <access-token>"
-AsposeBarcodeCloudAPI.customHeaders["x-aspose-client"] = "swift sdk"
-AsposeBarcodeCloudAPI.customHeaders["x-aspose-client-version"] = "26.4.0"
+let client = AsposeBarcodeCloudClient(
+    clientId: "your-client-id",
+    clientSecret: "your-client-secret"
+)
+
+try client.authorize()
 
 GenerateAPI.generate(barcodeType: .qr, data: "Aspose.BarCode Cloud") { data, error in
     if let error = error {
@@ -40,7 +43,14 @@ GenerateAPI.generate(barcodeType: .qr, data: "Aspose.BarCode Cloud") { data, err
 }
 ```
 
-Automatic OAuth token retrieval is the next runtime layer to add on top of this generated surface.
+If you already have an access token, configure the SDK directly:
+
+```swift
+let client = AsposeBarcodeCloudClient(accessToken: "your-access-token")
+client.apply()
+```
+
+`AsposeBarcodeCloudClient` sets `Authorization`, `x-aspose-client`, and `x-aspose-client-version` headers for generated requests.
 
 ## Development
 
@@ -49,4 +59,10 @@ The generated source is maintained from the `aspose-barcode-cloud-codegen` repos
 ```bash
 cd ../aspose-barcode-cloud-codegen
 make swift
+```
+
+Run tests from this package directory:
+
+```bash
+swift test
 ```
