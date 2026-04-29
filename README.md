@@ -22,7 +22,25 @@ Then import the module:
 import AsposeBarcodeCloud
 ```
 
-The generated API surface and examples will be added as the Swift generator integration matures.
+The first generated API surface includes `GenerateAPI`, `RecognizeAPI`, `ScanAPI`, and the corresponding models.
+
+```swift
+AsposeBarcodeCloudAPI.customHeaders["Authorization"] = "Bearer <access-token>"
+AsposeBarcodeCloudAPI.customHeaders["x-aspose-client"] = "swift sdk"
+AsposeBarcodeCloudAPI.customHeaders["x-aspose-client-version"] = "26.4.0"
+
+GenerateAPI.generate(barcodeType: .qr, data: "Aspose.BarCode Cloud") { data, error in
+    if let error = error {
+        print(error)
+        return
+    }
+
+    // Generated barcode bytes are available in data.
+    print(data?.count ?? 0)
+}
+```
+
+Automatic OAuth token retrieval is the next runtime layer to add on top of this generated surface.
 
 ## Development
 

@@ -2,8 +2,7 @@ import XCTest
 @testable import AsposeBarcodeCloud
 
 final class AsposeBarcodeCloudTests: XCTestCase {
-    func testSdkMetadata() {
-        XCTAssertEqual(AsposeBarcodeCloud.sdkName, "swift sdk")
-        XCTAssertFalse(AsposeBarcodeCloud.sdkVersion.isEmpty)
+    func testDefaultBasePath() {
+        XCTAssertEqual(AsposeBarcodeCloudAPI.basePath, "https://api.aspose.cloud/v4.0")
     }
 }
