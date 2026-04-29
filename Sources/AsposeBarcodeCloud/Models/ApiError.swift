@@ -11,7 +11,7 @@ import AnyCodable
 #endif
 
 /** Api Error. */
-public struct ApiError: Codable, JSONEncodable, Hashable {
+public final class ApiError: Codable, JSONEncodable, Hashable {
 
     /** Gets or sets api error code. */
     public var code: String?
@@ -48,6 +48,24 @@ public struct ApiError: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(description, forKey: .description)
         try container.encodeIfPresent(dateTime, forKey: .dateTime)
         try container.encodeIfPresent(innerError, forKey: .innerError)
+    }
+
+    public static func == (lhs: ApiError, rhs: ApiError) -> Bool {
+        lhs.code == rhs.code &&
+        lhs.message == rhs.message &&
+        lhs.description == rhs.description &&
+        lhs.dateTime == rhs.dateTime &&
+        lhs.innerError == rhs.innerError
+        
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(code.hashValue)
+        hasher.combine(message.hashValue)
+        hasher.combine(description?.hashValue)
+        hasher.combine(dateTime?.hashValue)
+        hasher.combine(innerError?.hashValue)
+        
     }
 }
 

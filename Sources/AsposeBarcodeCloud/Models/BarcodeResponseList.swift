@@ -11,7 +11,7 @@ import AnyCodable
 #endif
 
 /** Represents information about barcode list. */
-public struct BarcodeResponseList: Codable, JSONEncodable, Hashable {
+public final class BarcodeResponseList: Codable, JSONEncodable, Hashable {
 
     /** List of barcodes which are present in image. */
     public var barcodes: [BarcodeResponse]?
@@ -29,6 +29,16 @@ public struct BarcodeResponseList: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(barcodes, forKey: .barcodes)
+    }
+
+    public static func == (lhs: BarcodeResponseList, rhs: BarcodeResponseList) -> Bool {
+        lhs.barcodes == rhs.barcodes
+        
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(barcodes.hashValue)
+        
     }
 }
 

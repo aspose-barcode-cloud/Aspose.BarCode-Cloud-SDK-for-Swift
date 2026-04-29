@@ -11,7 +11,7 @@ import AnyCodable
 #endif
 
 /** Barcode image optional parameters */
-public struct BarcodeImageParams: Codable, JSONEncodable, Hashable {
+public final class BarcodeImageParams: Codable, JSONEncodable, Hashable {
 
     static let resolutionRule = NumericRule<Float>(minimum: 1, exclusiveMinimum: false, maximum: 100000, exclusiveMaximum: false, multipleOf: nil)
     public var imageFormat: BarcodeImageFormat?
@@ -67,6 +67,32 @@ public struct BarcodeImageParams: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(imageHeight, forKey: .imageHeight)
         try container.encodeIfPresent(imageWidth, forKey: .imageWidth)
         try container.encodeIfPresent(rotationAngle, forKey: .rotationAngle)
+    }
+
+    public static func == (lhs: BarcodeImageParams, rhs: BarcodeImageParams) -> Bool {
+        lhs.imageFormat == rhs.imageFormat &&
+        lhs.textLocation == rhs.textLocation &&
+        lhs.foregroundColor == rhs.foregroundColor &&
+        lhs.backgroundColor == rhs.backgroundColor &&
+        lhs.units == rhs.units &&
+        lhs.resolution == rhs.resolution &&
+        lhs.imageHeight == rhs.imageHeight &&
+        lhs.imageWidth == rhs.imageWidth &&
+        lhs.rotationAngle == rhs.rotationAngle
+        
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(imageFormat?.hashValue)
+        hasher.combine(textLocation?.hashValue)
+        hasher.combine(foregroundColor?.hashValue)
+        hasher.combine(backgroundColor?.hashValue)
+        hasher.combine(units?.hashValue)
+        hasher.combine(resolution?.hashValue)
+        hasher.combine(imageHeight?.hashValue)
+        hasher.combine(imageWidth?.hashValue)
+        hasher.combine(rotationAngle?.hashValue)
+        
     }
 }
 

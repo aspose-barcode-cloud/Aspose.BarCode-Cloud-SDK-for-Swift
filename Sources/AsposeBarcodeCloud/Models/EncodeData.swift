@@ -11,7 +11,7 @@ import AnyCodable
 #endif
 
 /** Data to encode in barcode */
-public struct EncodeData: Codable, JSONEncodable, Hashable {
+public final class EncodeData: Codable, JSONEncodable, Hashable {
 
     static let dataRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var dataType: EncodeDataType?
@@ -34,6 +34,18 @@ public struct EncodeData: Codable, JSONEncodable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(dataType, forKey: .dataType)
         try container.encode(data, forKey: .data)
+    }
+
+    public static func == (lhs: EncodeData, rhs: EncodeData) -> Bool {
+        lhs.dataType == rhs.dataType &&
+        lhs.data == rhs.data
+        
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(dataType?.hashValue)
+        hasher.combine(data.hashValue)
+        
     }
 }
 

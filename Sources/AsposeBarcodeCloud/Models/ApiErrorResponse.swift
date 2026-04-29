@@ -11,7 +11,7 @@ import AnyCodable
 #endif
 
 /** ApiError Response */
-public struct ApiErrorResponse: Codable, JSONEncodable, Hashable {
+public final class ApiErrorResponse: Codable, JSONEncodable, Hashable {
 
     /** Gets or sets request Id. */
     public var requestId: String?
@@ -33,6 +33,18 @@ public struct ApiErrorResponse: Codable, JSONEncodable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(requestId, forKey: .requestId)
         try container.encode(error, forKey: .error)
+    }
+
+    public static func == (lhs: ApiErrorResponse, rhs: ApiErrorResponse) -> Bool {
+        lhs.requestId == rhs.requestId &&
+        lhs.error == rhs.error
+        
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(requestId.hashValue)
+        hasher.combine(error.hashValue)
+        
     }
 }
 

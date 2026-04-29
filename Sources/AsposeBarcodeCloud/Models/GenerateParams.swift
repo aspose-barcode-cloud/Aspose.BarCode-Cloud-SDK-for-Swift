@@ -11,7 +11,7 @@ import AnyCodable
 #endif
 
 /** Barcode generation parameters */
-public struct GenerateParams: Codable, JSONEncodable, Hashable {
+public final class GenerateParams: Codable, JSONEncodable, Hashable {
 
     public var barcodeType: EncodeBarcodeType
     public var encodeData: EncodeData
@@ -36,6 +36,20 @@ public struct GenerateParams: Codable, JSONEncodable, Hashable {
         try container.encode(barcodeType, forKey: .barcodeType)
         try container.encode(encodeData, forKey: .encodeData)
         try container.encodeIfPresent(barcodeImageParams, forKey: .barcodeImageParams)
+    }
+
+    public static func == (lhs: GenerateParams, rhs: GenerateParams) -> Bool {
+        lhs.barcodeType == rhs.barcodeType &&
+        lhs.encodeData == rhs.encodeData &&
+        lhs.barcodeImageParams == rhs.barcodeImageParams
+        
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(barcodeType.hashValue)
+        hasher.combine(encodeData.hashValue)
+        hasher.combine(barcodeImageParams?.hashValue)
+        
     }
 }
 

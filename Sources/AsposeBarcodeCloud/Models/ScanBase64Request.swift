@@ -11,7 +11,7 @@ import AnyCodable
 #endif
 
 /** Scan barcode request. */
-public struct ScanBase64Request: Codable, JSONEncodable, Hashable {
+public final class ScanBase64Request: Codable, JSONEncodable, Hashable {
 
     static let fileBase64Rule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Barcode image bytes encoded as base-64. */
@@ -30,6 +30,16 @@ public struct ScanBase64Request: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(fileBase64, forKey: .fileBase64)
+    }
+
+    public static func == (lhs: ScanBase64Request, rhs: ScanBase64Request) -> Bool {
+        lhs.fileBase64 == rhs.fileBase64
+        
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(fileBase64.hashValue)
+        
     }
 }
 

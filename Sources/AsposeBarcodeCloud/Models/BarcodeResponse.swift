@@ -11,7 +11,7 @@ import AnyCodable
 #endif
 
 /** Represents information about barcode. */
-public struct BarcodeResponse: Codable, JSONEncodable, Hashable {
+public final class BarcodeResponse: Codable, JSONEncodable, Hashable {
 
     /** Barcode data. */
     public var barcodeValue: String?
@@ -44,6 +44,22 @@ public struct BarcodeResponse: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(type, forKey: .type)
         try container.encodeIfPresent(region, forKey: .region)
         try container.encodeIfPresent(checksum, forKey: .checksum)
+    }
+
+    public static func == (lhs: BarcodeResponse, rhs: BarcodeResponse) -> Bool {
+        lhs.barcodeValue == rhs.barcodeValue &&
+        lhs.type == rhs.type &&
+        lhs.region == rhs.region &&
+        lhs.checksum == rhs.checksum
+        
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(barcodeValue?.hashValue)
+        hasher.combine(type?.hashValue)
+        hasher.combine(region?.hashValue)
+        hasher.combine(checksum?.hashValue)
+        
     }
 }
 

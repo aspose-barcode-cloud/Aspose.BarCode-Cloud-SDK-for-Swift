@@ -11,7 +11,7 @@ import AnyCodable
 #endif
 
 /** Barcode recognize request */
-public struct RecognizeBase64Request: Codable, JSONEncodable, Hashable {
+public final class RecognizeBase64Request: Codable, JSONEncodable, Hashable {
 
     static let fileBase64Rule = StringRule(minLength: 1, maxLength: 28730982, pattern: nil)
     /** Array of decode types to find on barcode */
@@ -43,6 +43,22 @@ public struct RecognizeBase64Request: Codable, JSONEncodable, Hashable {
         try container.encode(fileBase64, forKey: .fileBase64)
         try container.encodeIfPresent(recognitionMode, forKey: .recognitionMode)
         try container.encodeIfPresent(recognitionImageKind, forKey: .recognitionImageKind)
+    }
+
+    public static func == (lhs: RecognizeBase64Request, rhs: RecognizeBase64Request) -> Bool {
+        lhs.barcodeTypes == rhs.barcodeTypes &&
+        lhs.fileBase64 == rhs.fileBase64 &&
+        lhs.recognitionMode == rhs.recognitionMode &&
+        lhs.recognitionImageKind == rhs.recognitionImageKind
+        
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(barcodeTypes.hashValue)
+        hasher.combine(fileBase64.hashValue)
+        hasher.combine(recognitionMode?.hashValue)
+        hasher.combine(recognitionImageKind?.hashValue)
+        
     }
 }
 

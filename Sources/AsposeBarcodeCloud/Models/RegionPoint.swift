@@ -11,7 +11,7 @@ import AnyCodable
 #endif
 
 /** Wrapper around Drawing.Point for proper specification. */
-public struct RegionPoint: Codable, JSONEncodable, Hashable {
+public final class RegionPoint: Codable, JSONEncodable, Hashable {
 
     /** X-coordinate */
     public var x: Int?
@@ -34,6 +34,18 @@ public struct RegionPoint: Codable, JSONEncodable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(x, forKey: .x)
         try container.encodeIfPresent(y, forKey: .y)
+    }
+
+    public static func == (lhs: RegionPoint, rhs: RegionPoint) -> Bool {
+        lhs.x == rhs.x &&
+        lhs.y == rhs.y
+        
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(x?.hashValue)
+        hasher.combine(y?.hashValue)
+        
     }
 }
 
