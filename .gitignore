@@ -1,6 +1,7 @@
 .build/
 .swiftpm/
 Package.resolved
+.env.integration
 DerivedData/
 Packages/
 xcuserdata/
