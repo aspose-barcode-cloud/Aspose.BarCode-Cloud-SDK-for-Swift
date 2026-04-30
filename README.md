@@ -117,12 +117,10 @@ cp .env.integration.example .env.integration
 make integration-test
 ```
 
-These tests call live Aspose Cloud endpoints and consume real API quota.
-
 Run the sample program:
 
 ```bash
 make example
 ```
 
-The sample also calls live Aspose Cloud endpoints and writes `QR.png` locally.
+The sample writes `QR.png` locally.

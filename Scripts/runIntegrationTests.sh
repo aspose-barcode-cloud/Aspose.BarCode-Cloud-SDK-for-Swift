@@ -30,6 +30,6 @@ if [ "$has_access_token" != true ] && [ "$has_client_credentials" != true ]; the
     exit 1
 fi
 
-echo "Running live Aspose Cloud integration tests. This consumes real API calls."
+echo "Running live Aspose Cloud integration tests."
 swift test --filter AsposeBarcodeCloudTests/testGenerateSmokeWhenIntegrationEnvironmentIsEnabled
 swift test --filter AsposeBarcodeCloudTests/testGenerateScanAndRecognizeBase64SmokeWhenIntegrationEnvironmentIsEnabled

@@ -28,5 +28,5 @@ if [ "$has_access_token" != true ] && [ "$has_client_credentials" != true ]; the
     exit 1
 fi
 
-echo "Running a live Aspose Cloud example. This consumes real API calls."
+echo "Running Aspose Cloud example."
 swift run GenerateAndScanExample "${1:-Aspose.BarCode Cloud Swift example}"
