@@ -11,8 +11,6 @@ if [ -f .env.integration ]; then
     set +a
 fi
 
-export ASPOSE_RUN_INTEGRATION_TESTS="${ASPOSE_RUN_INTEGRATION_TESTS:-true}"
-
 has_access_token=false
 has_client_credentials=false
 
@@ -25,11 +23,10 @@ if [ -n "${ASPOSE_CLIENT_ID:-}" ] && [ -n "${ASPOSE_CLIENT_SECRET:-}" ]; then
 fi
 
 if [ "$has_access_token" != true ] && [ "$has_client_credentials" != true ]; then
-    echo "Missing integration credentials."
+    echo "Missing example credentials."
     echo "Create .env.integration from .env.integration.example and set either TEST_CONFIGURATION_ACCESS_TOKEN or ASPOSE_CLIENT_ID/ASPOSE_CLIENT_SECRET."
     exit 1
 fi
 
-echo "Running live Aspose Cloud integration tests. This consumes real API calls."
-swift test --filter AsposeBarcodeCloudTests/testGenerateSmokeWhenIntegrationEnvironmentIsEnabled
-swift test --filter AsposeBarcodeCloudTests/testGenerateScanAndRecognizeBase64SmokeWhenIntegrationEnvironmentIsEnabled
+echo "Running a live Aspose Cloud example. This consumes real API calls."
+swift run GenerateAndScanExample "${1:-Aspose.BarCode Cloud Swift example}"

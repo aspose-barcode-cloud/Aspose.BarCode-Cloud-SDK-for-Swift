@@ -2,6 +2,7 @@
 .swiftpm/
 Package.resolved
 .env.integration
+QR.png
 DerivedData/
 Packages/
 xcuserdata/

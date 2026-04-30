@@ -103,10 +103,10 @@ cd ../aspose-barcode-cloud-codegen
 make swift
 ```
 
-Run tests from this package directory:
+Run the default local checks from this package directory:
 
 ```bash
-swift test
+make test
 ```
 
 Run live integration smoke tests with Aspose Cloud credentials:
@@ -114,5 +114,15 @@ Run live integration smoke tests with Aspose Cloud credentials:
 ```bash
 cp .env.integration.example .env.integration
 # Fill ASPOSE_CLIENT_ID and ASPOSE_CLIENT_SECRET, or TEST_CONFIGURATION_ACCESS_TOKEN.
-Scripts/runIntegrationTests.sh
+make integration-test
 ```
+
+These tests call live Aspose Cloud endpoints and consume real API quota.
+
+Run the sample program:
+
+```bash
+make example
+```
+
+The sample also calls live Aspose Cloud endpoints and writes `QR.png` locally.

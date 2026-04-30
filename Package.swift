@@ -15,6 +15,10 @@ let package = Package(
             name: "AsposeBarcodeCloud",
             targets: ["AsposeBarcodeCloud"]
         ),
+        .executable(
+            name: "GenerateAndScanExample",
+            targets: ["GenerateAndScanExample"]
+        ),
     ],
     dependencies: [
         .package(url: "https://github.com/Flight-School/AnyCodable", .upToNextMajor(from: "0.6.1")),
@@ -24,6 +28,11 @@ let package = Package(
             name: "AsposeBarcodeCloud",
             dependencies: ["AnyCodable"],
             path: "Sources/AsposeBarcodeCloud"
+        ),
+        .target(
+            name: "GenerateAndScanExample",
+            dependencies: ["AsposeBarcodeCloud"],
+            path: "Examples/GenerateAndScan"
         ),
         .testTarget(
             name: "AsposeBarcodeCloudTests",
