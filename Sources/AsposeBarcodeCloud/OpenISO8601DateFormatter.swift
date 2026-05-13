@@ -54,3 +54,7 @@ public class OpenISO8601DateFormatter: DateFormatter {
         return OpenISO8601DateFormatter.withoutTime.date(from: string)
     }
 }
+
+#if compiler(>=5.5)
+extension OpenISO8601DateFormatter: @unchecked Sendable {}
+#endif

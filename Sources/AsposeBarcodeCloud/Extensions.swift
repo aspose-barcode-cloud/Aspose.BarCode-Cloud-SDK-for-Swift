@@ -107,7 +107,7 @@ extension JSONEncodable where Self: Encodable {
     }
 }
 
-extension String: CodingKey {
+extension Swift.String: Swift.CodingKey {
 
     public var stringValue: String {
         return self

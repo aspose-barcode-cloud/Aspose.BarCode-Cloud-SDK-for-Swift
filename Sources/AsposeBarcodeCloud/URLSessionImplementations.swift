@@ -278,6 +278,10 @@ open class URLSessionRequestBuilder<T>: RequestBuilder<T> {
 
 }
 
+#if compiler(>=5.5)
+extension URLSessionRequestBuilder: @unchecked Sendable {}
+#endif
+
 open class URLSessionDecodableRequestBuilder<T: Decodable>: URLSessionRequestBuilder<T> {
     override fileprivate func processRequestResponse(urlRequest: URLRequest, data: Data?, response: URLResponse?, error: Error?, completion: @escaping (_ result: Swift.Result<Response<T>, ErrorResponse>) -> Void) {
 
@@ -370,6 +374,10 @@ open class URLSessionDecodableRequestBuilder<T: Decodable>: URLSessionRequestBui
         }
     }
 }
+
+#if compiler(>=5.5)
+extension URLSessionDecodableRequestBuilder: @unchecked Sendable {}
+#endif
 
 private class SessionDelegate: NSObject, URLSessionTaskDelegate {
     func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
