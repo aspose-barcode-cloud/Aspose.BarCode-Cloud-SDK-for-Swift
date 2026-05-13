@@ -1,0 +1,41 @@
+name: Swift CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-test:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Show Swift version
+        run: swift --version
+
+      - name: Build
+        run: make build
+
+      - name: Test
+        run: make test
+
+      - name: Build example
+        run: swift build --product GenerateAndScanExample
+
+  integration-test:
+    runs-on: macos-latest
+    needs: build-test
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Show Swift version
+        run: swift --version
+
+      - name: Live integration test
+        run: make integration-test
+        env:
+          TEST_CONFIGURATION_ACCESS_TOKEN: ${{ secrets.TEST_CONFIGURATION_ACCESS_TOKEN }}
