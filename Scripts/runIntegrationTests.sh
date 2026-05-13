@@ -20,13 +20,23 @@ if [ -n "${TEST_CONFIGURATION_ACCESS_TOKEN:-}" ]; then
     has_access_token=true
 fi
 
+if [ -n "${TEST_CONFIGURATION_CLIENT_ID:-}" ] && [ -n "${TEST_CONFIGURATION_CLIENT_SECRET:-}" ]; then
+    has_client_credentials=true
+fi
+
 if [ -n "${ASPOSE_CLIENT_ID:-}" ] && [ -n "${ASPOSE_CLIENT_SECRET:-}" ]; then
+    has_client_credentials=true
+fi
+
+if [ -f Tests/configuration.json ]; then
     has_client_credentials=true
 fi
 
 if [ "$has_access_token" != true ] && [ "$has_client_credentials" != true ]; then
     echo "Missing integration credentials."
-    echo "Create .env.integration from .env.integration.example and set either TEST_CONFIGURATION_ACCESS_TOKEN or ASPOSE_CLIENT_ID/ASPOSE_CLIENT_SECRET."
+    echo "Create Tests/configuration.json from Tests/configuration.example.json,"
+    echo "or create .env.integration from .env.integration.example and set TEST_CONFIGURATION_ACCESS_TOKEN"
+    echo "or TEST_CONFIGURATION_CLIENT_ID/TEST_CONFIGURATION_CLIENT_SECRET."
     exit 1
 fi
 

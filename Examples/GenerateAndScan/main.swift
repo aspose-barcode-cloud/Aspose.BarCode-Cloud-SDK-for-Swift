@@ -9,7 +9,7 @@ enum ExampleError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .missingCredentials:
-            return "Set TEST_CONFIGURATION_ACCESS_TOKEN or ASPOSE_CLIENT_ID/ASPOSE_CLIENT_SECRET."
+            return "Set Tests/configuration.json, TEST_CONFIGURATION_ACCESS_TOKEN, or TEST_CONFIGURATION_CLIENT_ID/TEST_CONFIGURATION_CLIENT_SECRET."
         case .emptyGenerateResponse:
             return "Generate API returned no image bytes."
         case .emptyScanResponse:
@@ -43,21 +43,122 @@ do {
 }
 
 func configureClient() throws {
-    let environment = ProcessInfo.processInfo.environment
-
-    if let token = environment["TEST_CONFIGURATION_ACCESS_TOKEN"], !token.isEmpty {
-        AsposeBarcodeCloudClient(accessToken: token).apply()
-        return
-    }
-
-    if let clientId = environment["ASPOSE_CLIENT_ID"], !clientId.isEmpty,
-       let clientSecret = environment["ASPOSE_CLIENT_SECRET"], !clientSecret.isEmpty {
-        let client = AsposeBarcodeCloudClient(clientId: clientId, clientSecret: clientSecret)
+    if let configuration = ExampleConfiguration.load() {
+        let client = AsposeBarcodeCloudClient(configuration: configuration)
         try client.authorize()
         return
     }
 
     throw ExampleError.missingCredentials
+}
+
+enum ExampleConfiguration {
+    private static let defaultConfigPath = "Tests/configuration.json"
+
+    static func load() -> AsposeBarcodeCloudConfiguration? {
+        if let configuration = loadFromFile(defaultConfigPath) {
+            return configuration
+        }
+
+        return loadFromEnvironment(ProcessInfo.processInfo.environment)
+    }
+
+    private static func loadFromFile(_ path: String) -> AsposeBarcodeCloudConfiguration? {
+        guard FileManager.default.fileExists(atPath: path),
+              let data = FileManager.default.contents(atPath: path),
+              let payload = try? JSONDecoder().decode(Payload.self, from: data) else {
+            return nil
+        }
+
+        return payload.makeConfiguration()
+    }
+
+    private static func loadFromEnvironment(_ environment: [String: String]) -> AsposeBarcodeCloudConfiguration? {
+        let payload = Payload(
+            accessToken: firstValue(in: environment, names: ["TEST_CONFIGURATION_ACCESS_TOKEN"]),
+            clientId: firstValue(in: environment, names: ["TEST_CONFIGURATION_CLIENT_ID", "ASPOSE_CLIENT_ID"]),
+            clientSecret: firstValue(in: environment, names: ["TEST_CONFIGURATION_CLIENT_SECRET", "ASPOSE_CLIENT_SECRET"]),
+            host: firstValue(in: environment, names: ["TEST_CONFIGURATION_HOST", "TEST_CONFIGURATION_BASE_URL"]),
+            tokenURL: firstValue(in: environment, names: ["TEST_CONFIGURATION_TOKEN_URL"])
+        )
+
+        return payload.makeConfiguration()
+    }
+
+    private static func firstValue(in environment: [String: String], names: [String]) -> String? {
+        for name in names {
+            if let value = environment[name], !value.isEmpty {
+                return value
+            }
+        }
+
+        return nil
+    }
+
+    private struct Payload: Decodable {
+        let accessToken: String?
+        let clientId: String?
+        let clientSecret: String?
+        let host: String?
+        let tokenURL: String?
+
+        init(
+            accessToken: String? = nil,
+            clientId: String? = nil,
+            clientSecret: String? = nil,
+            host: String? = nil,
+            tokenURL: String? = nil
+        ) {
+            self.accessToken = accessToken
+            self.clientId = clientId
+            self.clientSecret = clientSecret
+            self.host = host
+            self.tokenURL = tokenURL
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case accessToken
+            case clientId
+            case clientSecret
+            case host
+            case baseUrl
+            case tokenURL
+            case tokenUrl
+        }
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            accessToken = try container.decodeIfPresent(String.self, forKey: .accessToken)
+            clientId = try container.decodeIfPresent(String.self, forKey: .clientId)
+            clientSecret = try container.decodeIfPresent(String.self, forKey: .clientSecret)
+            host = try container.decodeIfPresent(String.self, forKey: .host)
+                ?? container.decodeIfPresent(String.self, forKey: .baseUrl)
+            tokenURL = try container.decodeIfPresent(String.self, forKey: .tokenURL)
+                ?? container.decodeIfPresent(String.self, forKey: .tokenUrl)
+        }
+
+        func makeConfiguration() -> AsposeBarcodeCloudConfiguration? {
+            if let accessToken = accessToken, !accessToken.isEmpty {
+                return AsposeBarcodeCloudConfiguration(
+                    accessToken: accessToken,
+                    host: host ?? AsposeBarcodeCloudConfiguration.defaultHost,
+                    tokenURL: tokenURL ?? AsposeBarcodeCloudConfiguration.defaultTokenURL
+                )
+            }
+
+            guard let clientId = clientId, !clientId.isEmpty,
+                  let clientSecret = clientSecret, !clientSecret.isEmpty else {
+                return nil
+            }
+
+            return AsposeBarcodeCloudConfiguration(
+                clientId: clientId,
+                clientSecret: clientSecret,
+                host: host ?? AsposeBarcodeCloudConfiguration.defaultHost,
+                tokenURL: tokenURL ?? AsposeBarcodeCloudConfiguration.defaultTokenURL
+            )
+        }
+    }
 }
 
 func generateBarcodeData(_ value: String) throws -> Data {

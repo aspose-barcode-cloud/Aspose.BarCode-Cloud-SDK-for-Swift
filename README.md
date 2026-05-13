@@ -112,8 +112,16 @@ make test
 Run live integration smoke tests with Aspose Cloud credentials:
 
 ```bash
+cp Tests/configuration.example.json Tests/configuration.json
+# Fill clientId and clientSecret.
+make integration-test
+```
+
+Alternatively, keep credentials in local environment variables:
+
+```bash
 cp .env.integration.example .env.integration
-# Fill ASPOSE_CLIENT_ID and ASPOSE_CLIENT_SECRET, or TEST_CONFIGURATION_ACCESS_TOKEN.
+# Fill TEST_CONFIGURATION_CLIENT_ID and TEST_CONFIGURATION_CLIENT_SECRET, or TEST_CONFIGURATION_ACCESS_TOKEN.
 make integration-test
 ```
 
