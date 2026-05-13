@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 26.4.0
+## v26.4.0
 
 * Initial Swift SDK bootstrap for Aspose.BarCode Cloud API v4.0.
 * Added generated Generate, Recognize, and Scan API surfaces with models and documentation.
