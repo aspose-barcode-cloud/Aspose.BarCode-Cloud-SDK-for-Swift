@@ -80,7 +80,7 @@ final class RequestBuilderTests: XCTestCase {
     func testRecognizeGetRequestShape() {
         let builder = RecognizeAPI.recognizeWithRequestBuilder(
             barcodeType: .qr,
-            fileUrl: "https://example.test/code.png",
+            fileUrl: "https://example.com/code.png",
             recognitionMode: .fast,
             recognitionImageKind: .photo
         )
@@ -92,7 +92,7 @@ final class RequestBuilderTests: XCTestCase {
 
         let queryItems = queryItems(from: builder.URLString)
         XCTAssertEqual(queryItems["barcodeType"], "QR")
-        XCTAssertEqual(queryItems["fileUrl"], "https://example.test/code.png")
+        XCTAssertEqual(queryItems["fileUrl"], "https://example.com/code.png")
         XCTAssertEqual(queryItems["recognitionMode"], "Fast")
         XCTAssertEqual(queryItems["recognitionImageKind"], "Photo")
     }
@@ -140,13 +140,13 @@ final class RequestBuilderTests: XCTestCase {
     }
 
     func testScanGetRequestShape() {
-        let builder = ScanAPI.scanWithRequestBuilder(fileUrl: "https://example.test/code.png")
+        let builder = ScanAPI.scanWithRequestBuilder(fileUrl: "https://example.com/code.png")
 
         XCTAssertEqual(builder.method, "GET")
         XCTAssertTrue(builder.requiresAuthentication)
         XCTAssertNil(builder.parameters)
         XCTAssertEqual(URLComponents(string: builder.URLString)?.path, "/v4.0/barcode/scan")
-        XCTAssertEqual(queryItems(from: builder.URLString)["fileUrl"], "https://example.test/code.png")
+        XCTAssertEqual(queryItems(from: builder.URLString)["fileUrl"], "https://example.com/code.png")
     }
 
     func testScanBase64RequestShape() throws {
@@ -179,7 +179,7 @@ final class RequestBuilderTests: XCTestCase {
         let client = AsposeBarcodeCloudClient(
             configuration: AsposeBarcodeCloudConfiguration(
                 accessToken: "test-token",
-                host: "https://api.example.test/v4.0",
+                host: "https://example.com/v4.0",
                 sdkName: "swift sdk test",
                 sdkVersion: "0.0-test"
             )

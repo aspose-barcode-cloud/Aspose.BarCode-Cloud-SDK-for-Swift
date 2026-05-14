@@ -16,7 +16,7 @@ final class AsposeBarcodeCloudTests: XCTestCase {
         let configuration = AsposeBarcodeCloudConfiguration(
             clientId: "client id",
             clientSecret: "secret/value",
-            tokenURL: "https://id.example.test/connect/token",
+            tokenURL: "https://example.com/connect/token",
             timeoutInterval: 42
         )
 
@@ -30,7 +30,7 @@ final class AsposeBarcodeCloudTests: XCTestCase {
             )
         })
 
-        XCTAssertEqual(request.url?.absoluteString, "https://id.example.test/connect/token")
+        XCTAssertEqual(request.url?.absoluteString, "https://example.com/connect/token")
         XCTAssertEqual(request.httpMethod, "POST")
         XCTAssertEqual(request.timeoutInterval, 42)
         XCTAssertEqual(request.value(forHTTPHeaderField: "Content-Type"), "application/x-www-form-urlencoded")
@@ -43,7 +43,7 @@ final class AsposeBarcodeCloudTests: XCTestCase {
         let client = AsposeBarcodeCloudClient(
             configuration: AsposeBarcodeCloudConfiguration(
                 accessToken: "test-token",
-                host: "https://api.example.test/v4.0",
+                host: "https://example.com/v4.0",
                 sdkName: "custom swift sdk",
                 sdkVersion: "1.2.3"
             )
@@ -54,7 +54,7 @@ final class AsposeBarcodeCloudTests: XCTestCase {
         let requestBuilder = GenerateAPI.generateWithRequestBuilder(barcodeType: .qr, data: "hello")
         let headers = (requestBuilder as! URLSessionRequestBuilder<Data>).buildHeaders()
 
-        XCTAssertEqual(AsposeBarcodeCloudAPI.basePath, "https://api.example.test/v4.0")
+        XCTAssertEqual(AsposeBarcodeCloudAPI.basePath, "https://example.com/v4.0")
         XCTAssertEqual(headers["Authorization"], "Bearer test-token")
         XCTAssertEqual(headers["x-aspose-client"], "custom swift sdk")
         XCTAssertEqual(headers["x-aspose-client-version"], "1.2.3")
