@@ -10,6 +10,7 @@ Sources/AsposeBarcodeCloud/APIs.swift
 Sources/AsposeBarcodeCloud/APIs/GenerateAPI.swift
 Sources/AsposeBarcodeCloud/APIs/RecognizeAPI.swift
 Sources/AsposeBarcodeCloud/APIs/ScanAPI.swift
+Sources/AsposeBarcodeCloud/AsposeBarcodeCloudClient.swift
 Sources/AsposeBarcodeCloud/CodableHelper.swift
 Sources/AsposeBarcodeCloud/Configuration.swift
 Sources/AsposeBarcodeCloud/Extensions.swift
