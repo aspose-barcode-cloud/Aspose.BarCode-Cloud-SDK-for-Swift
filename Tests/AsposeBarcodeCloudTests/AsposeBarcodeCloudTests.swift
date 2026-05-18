@@ -78,7 +78,10 @@ final class AsposeBarcodeCloudTests: XCTestCase {
         XCTAssertEqual(configuration.accessToken, "fetched-token")
         XCTAssertEqual(AsposeBarcodeCloudAPI.customHeaders["Authorization"], "Bearer fetched-token")
         XCTAssertEqual(AsposeBarcodeCloudAPI.customHeaders["x-aspose-client"], "swift sdk")
-        XCTAssertEqual(AsposeBarcodeCloudAPI.customHeaders["x-aspose-client-version"], "26.4.0")
+        XCTAssertEqual(
+            AsposeBarcodeCloudAPI.customHeaders["x-aspose-client-version"],
+            AsposeBarcodeCloudConfiguration.defaultSdkVersion
+        )
     }
 
     func testAuthorizeFailsWithoutTokenOrCredentials() {
