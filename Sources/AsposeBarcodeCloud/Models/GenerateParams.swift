@@ -6,12 +6,9 @@
 //
 
 import Foundation
-#if canImport(AnyCodable)
-import AnyCodable
-#endif
 
 /** Barcode generation parameters */
-public final class GenerateParams: Codable, JSONEncodable, Hashable {
+public final class GenerateParams: @unchecked Sendable, Codable, Hashable {
 
     public var barcodeType: EncodeBarcodeType
     public var encodeData: EncodeData

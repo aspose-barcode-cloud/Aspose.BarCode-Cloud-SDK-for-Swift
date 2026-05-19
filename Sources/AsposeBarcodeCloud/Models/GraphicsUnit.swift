@@ -6,12 +6,9 @@
 //
 
 import Foundation
-#if canImport(AnyCodable)
-import AnyCodable
-#endif
 
 /** Subset of Aspose.Drawing.GraphicsUnit. */
-public enum GraphicsUnit: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+public enum GraphicsUnit: String, Sendable, Codable, CaseIterable, CaseIterableDefaultsLast {
     case pixel = "Pixel"
     case point = "Point"
     case inch = "Inch"

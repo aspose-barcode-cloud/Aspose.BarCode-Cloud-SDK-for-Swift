@@ -6,12 +6,9 @@
 //
 
 import Foundation
-#if canImport(AnyCodable)
-import AnyCodable
-#endif
 
 /** ApiError Response */
-public final class ApiErrorResponse: Codable, JSONEncodable, Hashable {
+public final class ApiErrorResponse: @unchecked Sendable, Codable, Hashable {
 
     /** Gets or sets request Id. */
     public var requestId: String?

@@ -6,12 +6,9 @@
 //
 
 import Foundation
-#if canImport(AnyCodable)
-import AnyCodable
-#endif
 
 /** Api Error. */
-public final class ApiError: Codable, JSONEncodable, Hashable {
+public final class ApiError: @unchecked Sendable, Codable, Hashable {
 
     /** Gets or sets api error code. */
     public var code: String?

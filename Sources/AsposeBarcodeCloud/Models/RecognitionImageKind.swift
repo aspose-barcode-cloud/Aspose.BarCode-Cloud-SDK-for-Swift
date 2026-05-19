@@ -6,12 +6,9 @@
 //
 
 import Foundation
-#if canImport(AnyCodable)
-import AnyCodable
-#endif
 
 /** Kind of image to recognize */
-public enum RecognitionImageKind: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+public enum RecognitionImageKind: String, Sendable, Codable, CaseIterable, CaseIterableDefaultsLast {
     case photo = "Photo"
     case scannedDocument = "ScannedDocument"
     case clearImage = "ClearImage"

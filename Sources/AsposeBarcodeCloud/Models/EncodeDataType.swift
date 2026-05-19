@@ -6,12 +6,9 @@
 //
 
 import Foundation
-#if canImport(AnyCodable)
-import AnyCodable
-#endif
 
 /** Types of data can be encoded to barcode */
-public enum EncodeDataType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+public enum EncodeDataType: String, Sendable, Codable, CaseIterable, CaseIterableDefaultsLast {
     case stringData = "StringData"
     case base64Bytes = "Base64Bytes"
     case hexBytes = "HexBytes"

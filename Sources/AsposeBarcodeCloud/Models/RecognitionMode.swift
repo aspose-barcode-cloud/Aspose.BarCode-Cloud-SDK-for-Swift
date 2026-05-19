@@ -6,12 +6,9 @@
 //
 
 import Foundation
-#if canImport(AnyCodable)
-import AnyCodable
-#endif
 
 /** Recognition mode. */
-public enum RecognitionMode: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+public enum RecognitionMode: String, Sendable, Codable, CaseIterable, CaseIterableDefaultsLast {
     case fast = "Fast"
     case normal = "Normal"
     case excellent = "Excellent"

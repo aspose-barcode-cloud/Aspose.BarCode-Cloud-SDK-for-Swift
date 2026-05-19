@@ -6,14 +6,11 @@
 //
 
 import Foundation
-#if canImport(AnyCodable)
-import AnyCodable
-#endif
 
 /** Data to encode in barcode */
-public final class EncodeData: Codable, JSONEncodable, Hashable {
+public final class EncodeData: @unchecked Sendable, Codable, Hashable {
 
-    static let dataRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public static let dataRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var dataType: EncodeDataType?
     /** String represents data to encode */
     public var data: String

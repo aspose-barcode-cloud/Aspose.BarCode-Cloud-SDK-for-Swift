@@ -6,11 +6,8 @@
 //
 
 import Foundation
-#if canImport(AnyCodable)
-import AnyCodable
-#endif
 
-public enum CodeLocation: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+public enum CodeLocation: String, Sendable, Codable, CaseIterable, CaseIterableDefaultsLast {
     case below = "Below"
     case above = "Above"
     case _none = "None"

@@ -6,25 +6,22 @@
 //
 
 import Foundation
-#if canImport(AnyCodable)
-import AnyCodable
-#endif
 
 open class RecognizeAPI {
 
     /**
      Recognize barcode from file on server in the Internet using GET requests with parameter in query string. For recognizing files from your hard drive use `recognize-body` or `recognize-multipart` endpoints instead.
-     
-     - parameter barcodeType: (query) Type of barcode to recognize 
-     - parameter fileUrl: (query) Url to barcode image 
+
+     - parameter barcodeType: (query) Type of barcode to recognize
+     - parameter fileUrl: (query) Url to barcode image
      - parameter recognitionMode: (query) Recognition mode (optional)
      - parameter recognitionImageKind: (query) Image kind for recognition (optional)
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter apiConfiguration: The configuration for the http request.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func recognize(barcodeType: DecodeBarcodeType, fileUrl: String, recognitionMode: RecognitionMode? = nil, recognitionImageKind: RecognitionImageKind? = nil, apiResponseQueue: DispatchQueue = AsposeBarcodeCloudAPI.apiResponseQueue, completion: @escaping ((_ data: BarcodeResponseList?, _ error: Error?) -> Void)) -> RequestTask {
-        return recognizeWithRequestBuilder(barcodeType: barcodeType, fileUrl: fileUrl, recognitionMode: recognitionMode, recognitionImageKind: recognitionImageKind).execute(apiResponseQueue) { result in
+    open class func recognize(barcodeType: DecodeBarcodeType, fileUrl: String, recognitionMode: RecognitionMode? = nil, recognitionImageKind: RecognitionImageKind? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: BarcodeResponseList?, _ error: Error?) -> Void) -> RequestTask {
+        return recognizeWithRequestBuilder(barcodeType: barcodeType, fileUrl: fileUrl, recognitionMode: recognitionMode, recognitionImageKind: recognitionImageKind, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -32,6 +29,20 @@ open class RecognizeAPI {
                 completion(nil, error)
             }
         }
+    }
+
+    /**
+     Recognize barcode from file on server in the Internet using GET requests with parameter in query string. For recognizing files from your hard drive use `recognize-body` or `recognize-multipart` endpoints instead.
+
+     - parameter barcodeType: (query) Type of barcode to recognize
+     - parameter fileUrl: (query) Url to barcode image
+     - parameter recognitionMode: (query) Recognition mode (optional)
+     - parameter recognitionImageKind: (query) Image kind for recognition (optional)
+     - parameter apiConfiguration: The configuration for the http request.
+     - returns: BarcodeResponseList
+     */
+    open class func recognize(barcodeType: DecodeBarcodeType, fileUrl: String, recognitionMode: RecognitionMode? = nil, recognitionImageKind: RecognitionImageKind? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> BarcodeResponseList {
+        return try await recognizeWithRequestBuilder(barcodeType: barcodeType, fileUrl: fileUrl, recognitionMode: recognitionMode, recognitionImageKind: recognitionImageKind, apiConfiguration: apiConfiguration).execute().body
     }
 
     /**
@@ -40,46 +51,47 @@ open class RecognizeAPI {
      - OAuth:
        - type: oauth2
        - name: JWT
-     - parameter barcodeType: (query) Type of barcode to recognize 
-     - parameter fileUrl: (query) Url to barcode image 
+     - parameter barcodeType: (query) Type of barcode to recognize
+     - parameter fileUrl: (query) Url to barcode image
      - parameter recognitionMode: (query) Recognition mode (optional)
      - parameter recognitionImageKind: (query) Image kind for recognition (optional)
-     - returns: RequestBuilder<BarcodeResponseList> 
+     - parameter apiConfiguration: The configuration for the http request.
+     - returns: RequestBuilder<BarcodeResponseList>
      */
-    open class func recognizeWithRequestBuilder(barcodeType: DecodeBarcodeType, fileUrl: String, recognitionMode: RecognitionMode? = nil, recognitionImageKind: RecognitionImageKind? = nil) -> RequestBuilder<BarcodeResponseList> {
+    open class func recognizeWithRequestBuilder(barcodeType: DecodeBarcodeType, fileUrl: String, recognitionMode: RecognitionMode? = nil, recognitionImageKind: RecognitionImageKind? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) -> RequestBuilder<BarcodeResponseList> {
         let localVariablePath = "/barcode/recognize"
-        let localVariableURLString = AsposeBarcodeCloudAPI.basePath + localVariablePath
-        let localVariableParameters: [String: Any]? = nil
+        let localVariableURLString = apiConfiguration.basePath + localVariablePath
+        let localVariableParameters: [String: any Sendable]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "barcodeType": (wrappedValue: barcodeType.encodeToJSON(), isExplode: true),
-            "fileUrl": (wrappedValue: fileUrl.encodeToJSON(), isExplode: true),
-            "recognitionMode": (wrappedValue: recognitionMode?.encodeToJSON(), isExplode: true),
-            "recognitionImageKind": (wrappedValue: recognitionImageKind?.encodeToJSON(), isExplode: true),
+            "barcodeType": (wrappedValue: barcodeType.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "fileUrl": (wrappedValue: fileUrl.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "recognitionMode": (wrappedValue: recognitionMode?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "recognitionImageKind": (wrappedValue: recognitionImageKind?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
         ])
 
-        let localVariableNillableHeaders: [String: Any?] = [
+        let localVariableNillableHeaders: [String: (any Sendable)?] = [
             :
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<BarcodeResponseList>.Type = AsposeBarcodeCloudAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<BarcodeResponseList>.Type = apiConfiguration.requestBuilderFactory.getBuilder()
 
-        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true, apiConfiguration: apiConfiguration)
     }
 
     /**
      Recognize barcode from file in request body using POST requests with parameters in body in json or xml format.
-     
-     - parameter recognizeBase64Request: (body) Barcode recognition request 
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
+
+     - parameter recognizeBase64Request: (body) Barcode recognition request
+     - parameter apiConfiguration: The configuration for the http request.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func recognizeBase64(recognizeBase64Request: RecognizeBase64Request, apiResponseQueue: DispatchQueue = AsposeBarcodeCloudAPI.apiResponseQueue, completion: @escaping ((_ data: BarcodeResponseList?, _ error: Error?) -> Void)) -> RequestTask {
-        return recognizeBase64WithRequestBuilder(recognizeBase64Request: recognizeBase64Request).execute(apiResponseQueue) { result in
+    open class func recognizeBase64(recognizeBase64Request: RecognizeBase64Request, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: BarcodeResponseList?, _ error: Error?) -> Void) -> RequestTask {
+        return recognizeBase64WithRequestBuilder(recognizeBase64Request: recognizeBase64Request, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -87,6 +99,17 @@ open class RecognizeAPI {
                 completion(nil, error)
             }
         }
+    }
+
+    /**
+     Recognize barcode from file in request body using POST requests with parameters in body in json or xml format.
+
+     - parameter recognizeBase64Request: (body) Barcode recognition request
+     - parameter apiConfiguration: The configuration for the http request.
+     - returns: BarcodeResponseList
+     */
+    open class func recognizeBase64(recognizeBase64Request: RecognizeBase64Request, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> BarcodeResponseList {
+        return try await recognizeBase64WithRequestBuilder(recognizeBase64Request: recognizeBase64Request, apiConfiguration: apiConfiguration).execute().body
     }
 
     /**
@@ -95,40 +118,41 @@ open class RecognizeAPI {
      - OAuth:
        - type: oauth2
        - name: JWT
-     - parameter recognizeBase64Request: (body) Barcode recognition request 
-     - returns: RequestBuilder<BarcodeResponseList> 
+     - parameter recognizeBase64Request: (body) Barcode recognition request
+     - parameter apiConfiguration: The configuration for the http request.
+     - returns: RequestBuilder<BarcodeResponseList>
      */
-    open class func recognizeBase64WithRequestBuilder(recognizeBase64Request: RecognizeBase64Request) -> RequestBuilder<BarcodeResponseList> {
+    open class func recognizeBase64WithRequestBuilder(recognizeBase64Request: RecognizeBase64Request, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) -> RequestBuilder<BarcodeResponseList> {
         let localVariablePath = "/barcode/recognize-body"
-        let localVariableURLString = AsposeBarcodeCloudAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: recognizeBase64Request)
+        let localVariableURLString = apiConfiguration.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: recognizeBase64Request, codableHelper: apiConfiguration.codableHelper)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
-        let localVariableNillableHeaders: [String: Any?] = [
+        let localVariableNillableHeaders: [String: (any Sendable)?] = [
             "Content-Type": "application/json",
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<BarcodeResponseList>.Type = AsposeBarcodeCloudAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<BarcodeResponseList>.Type = apiConfiguration.requestBuilderFactory.getBuilder()
 
-        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true, apiConfiguration: apiConfiguration)
     }
 
     /**
      Recognize barcode from file in request body using POST requests with parameters in multipart form.
-     
-     - parameter barcodeType: (form)  
-     - parameter file: (form) Barcode image file 
-     - parameter recognitionMode: (form)  (optional)
-     - parameter recognitionImageKind: (form)  (optional)
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
+
+     - parameter barcodeType: (form)
+     - parameter file: (form) Barcode image file
+     - parameter recognitionMode: (form) (optional)
+     - parameter recognitionImageKind: (form) (optional)
+     - parameter apiConfiguration: The configuration for the http request.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func recognizeMultipart(barcodeType: DecodeBarcodeType, file: Data, recognitionMode: RecognitionMode? = nil, recognitionImageKind: RecognitionImageKind? = nil, apiResponseQueue: DispatchQueue = AsposeBarcodeCloudAPI.apiResponseQueue, completion: @escaping ((_ data: BarcodeResponseList?, _ error: Error?) -> Void)) -> RequestTask {
-        return recognizeMultipartWithRequestBuilder(barcodeType: barcodeType, file: file, recognitionMode: recognitionMode, recognitionImageKind: recognitionImageKind).execute(apiResponseQueue) { result in
+    open class func recognizeMultipart(barcodeType: DecodeBarcodeType, file: Data, recognitionMode: RecognitionMode? = nil, recognitionImageKind: RecognitionImageKind? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: BarcodeResponseList?, _ error: Error?) -> Void) -> RequestTask {
+        return recognizeMultipartWithRequestBuilder(barcodeType: barcodeType, file: file, recognitionMode: recognitionMode, recognitionImageKind: recognitionImageKind, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -140,24 +164,39 @@ open class RecognizeAPI {
 
     /**
      Recognize barcode from file in request body using POST requests with parameters in multipart form.
+
+     - parameter barcodeType: (form)
+     - parameter file: (form) Barcode image file
+     - parameter recognitionMode: (form) (optional)
+     - parameter recognitionImageKind: (form) (optional)
+     - parameter apiConfiguration: The configuration for the http request.
+     - returns: BarcodeResponseList
+     */
+    open class func recognizeMultipart(barcodeType: DecodeBarcodeType, file: Data, recognitionMode: RecognitionMode? = nil, recognitionImageKind: RecognitionImageKind? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> BarcodeResponseList {
+        return try await recognizeMultipartWithRequestBuilder(barcodeType: barcodeType, file: file, recognitionMode: recognitionMode, recognitionImageKind: recognitionImageKind, apiConfiguration: apiConfiguration).execute().body
+    }
+
+    /**
+     Recognize barcode from file in request body using POST requests with parameters in multipart form.
      - POST /barcode/recognize-multipart
      - OAuth:
        - type: oauth2
        - name: JWT
-     - parameter barcodeType: (form)  
-     - parameter file: (form) Barcode image file 
-     - parameter recognitionMode: (form)  (optional)
-     - parameter recognitionImageKind: (form)  (optional)
-     - returns: RequestBuilder<BarcodeResponseList> 
+     - parameter barcodeType: (form)
+     - parameter file: (form) Barcode image file
+     - parameter recognitionMode: (form) (optional)
+     - parameter recognitionImageKind: (form) (optional)
+     - parameter apiConfiguration: The configuration for the http request.
+     - returns: RequestBuilder<BarcodeResponseList>
      */
-    open class func recognizeMultipartWithRequestBuilder(barcodeType: DecodeBarcodeType, file: Data, recognitionMode: RecognitionMode? = nil, recognitionImageKind: RecognitionImageKind? = nil) -> RequestBuilder<BarcodeResponseList> {
+    open class func recognizeMultipartWithRequestBuilder(barcodeType: DecodeBarcodeType, file: Data, recognitionMode: RecognitionMode? = nil, recognitionImageKind: RecognitionImageKind? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) -> RequestBuilder<BarcodeResponseList> {
         let localVariablePath = "/barcode/recognize-multipart"
-        let localVariableURLString = AsposeBarcodeCloudAPI.basePath + localVariablePath
-        let localVariableFormParams: [String: Any?] = [
-            "barcodeType": barcodeType.encodeToJSON(),
-            "file": file.encodeToJSON(),
-            "recognitionMode": recognitionMode?.encodeToJSON(),
-            "recognitionImageKind": recognitionImageKind?.encodeToJSON(),
+        let localVariableURLString = apiConfiguration.basePath + localVariablePath
+        let localVariableFormParams: [String: (any Sendable)?] = [
+            "barcodeType": barcodeType.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "file": file.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "recognitionMode": recognitionMode?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "recognitionImageKind": recognitionImageKind?.asParameter(codableHelper: apiConfiguration.codableHelper),
         ]
 
         let localVariableNonNullParameters = APIHelper.rejectNil(localVariableFormParams)
@@ -165,14 +204,14 @@ open class RecognizeAPI {
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
-        let localVariableNillableHeaders: [String: Any?] = [
+        let localVariableNillableHeaders: [String: (any Sendable)?] = [
             "Content-Type": "multipart/form-data",
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<BarcodeResponseList>.Type = AsposeBarcodeCloudAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<BarcodeResponseList>.Type = apiConfiguration.requestBuilderFactory.getBuilder()
 
-        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true, apiConfiguration: apiConfiguration)
     }
 }

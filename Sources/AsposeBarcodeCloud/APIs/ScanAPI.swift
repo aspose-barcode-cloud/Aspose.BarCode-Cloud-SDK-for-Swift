@@ -6,22 +6,19 @@
 //
 
 import Foundation
-#if canImport(AnyCodable)
-import AnyCodable
-#endif
 
 open class ScanAPI {
 
     /**
      Scan barcode from file on server in the Internet using GET requests with parameter in query string. For scaning files from your hard drive use `scan-body` or `scan-multipart` endpoints instead.
-     
-     - parameter fileUrl: (query) Url to barcode image 
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
+
+     - parameter fileUrl: (query) Url to barcode image
+     - parameter apiConfiguration: The configuration for the http request.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func scan(fileUrl: String, apiResponseQueue: DispatchQueue = AsposeBarcodeCloudAPI.apiResponseQueue, completion: @escaping ((_ data: BarcodeResponseList?, _ error: Error?) -> Void)) -> RequestTask {
-        return scanWithRequestBuilder(fileUrl: fileUrl).execute(apiResponseQueue) { result in
+    open class func scan(fileUrl: String, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: BarcodeResponseList?, _ error: Error?) -> Void) -> RequestTask {
+        return scanWithRequestBuilder(fileUrl: fileUrl, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -29,6 +26,17 @@ open class ScanAPI {
                 completion(nil, error)
             }
         }
+    }
+
+    /**
+     Scan barcode from file on server in the Internet using GET requests with parameter in query string. For scaning files from your hard drive use `scan-body` or `scan-multipart` endpoints instead.
+
+     - parameter fileUrl: (query) Url to barcode image
+     - parameter apiConfiguration: The configuration for the http request.
+     - returns: BarcodeResponseList
+     */
+    open class func scan(fileUrl: String, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> BarcodeResponseList {
+        return try await scanWithRequestBuilder(fileUrl: fileUrl, apiConfiguration: apiConfiguration).execute().body
     }
 
     /**
@@ -37,40 +45,41 @@ open class ScanAPI {
      - OAuth:
        - type: oauth2
        - name: JWT
-     - parameter fileUrl: (query) Url to barcode image 
-     - returns: RequestBuilder<BarcodeResponseList> 
+     - parameter fileUrl: (query) Url to barcode image
+     - parameter apiConfiguration: The configuration for the http request.
+     - returns: RequestBuilder<BarcodeResponseList>
      */
-    open class func scanWithRequestBuilder(fileUrl: String) -> RequestBuilder<BarcodeResponseList> {
+    open class func scanWithRequestBuilder(fileUrl: String, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) -> RequestBuilder<BarcodeResponseList> {
         let localVariablePath = "/barcode/scan"
-        let localVariableURLString = AsposeBarcodeCloudAPI.basePath + localVariablePath
-        let localVariableParameters: [String: Any]? = nil
+        let localVariableURLString = apiConfiguration.basePath + localVariablePath
+        let localVariableParameters: [String: any Sendable]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "fileUrl": (wrappedValue: fileUrl.encodeToJSON(), isExplode: true),
+            "fileUrl": (wrappedValue: fileUrl.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
         ])
 
-        let localVariableNillableHeaders: [String: Any?] = [
+        let localVariableNillableHeaders: [String: (any Sendable)?] = [
             :
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<BarcodeResponseList>.Type = AsposeBarcodeCloudAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<BarcodeResponseList>.Type = apiConfiguration.requestBuilderFactory.getBuilder()
 
-        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true, apiConfiguration: apiConfiguration)
     }
 
     /**
      Scan barcode from file in request body using POST requests with parameter in body in json or xml format.
-     
-     - parameter scanBase64Request: (body) Barcode scan request 
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
+
+     - parameter scanBase64Request: (body) Barcode scan request
+     - parameter apiConfiguration: The configuration for the http request.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func scanBase64(scanBase64Request: ScanBase64Request, apiResponseQueue: DispatchQueue = AsposeBarcodeCloudAPI.apiResponseQueue, completion: @escaping ((_ data: BarcodeResponseList?, _ error: Error?) -> Void)) -> RequestTask {
-        return scanBase64WithRequestBuilder(scanBase64Request: scanBase64Request).execute(apiResponseQueue) { result in
+    open class func scanBase64(scanBase64Request: ScanBase64Request, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: BarcodeResponseList?, _ error: Error?) -> Void) -> RequestTask {
+        return scanBase64WithRequestBuilder(scanBase64Request: scanBase64Request, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -78,6 +87,17 @@ open class ScanAPI {
                 completion(nil, error)
             }
         }
+    }
+
+    /**
+     Scan barcode from file in request body using POST requests with parameter in body in json or xml format.
+
+     - parameter scanBase64Request: (body) Barcode scan request
+     - parameter apiConfiguration: The configuration for the http request.
+     - returns: BarcodeResponseList
+     */
+    open class func scanBase64(scanBase64Request: ScanBase64Request, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> BarcodeResponseList {
+        return try await scanBase64WithRequestBuilder(scanBase64Request: scanBase64Request, apiConfiguration: apiConfiguration).execute().body
     }
 
     /**
@@ -86,37 +106,38 @@ open class ScanAPI {
      - OAuth:
        - type: oauth2
        - name: JWT
-     - parameter scanBase64Request: (body) Barcode scan request 
-     - returns: RequestBuilder<BarcodeResponseList> 
+     - parameter scanBase64Request: (body) Barcode scan request
+     - parameter apiConfiguration: The configuration for the http request.
+     - returns: RequestBuilder<BarcodeResponseList>
      */
-    open class func scanBase64WithRequestBuilder(scanBase64Request: ScanBase64Request) -> RequestBuilder<BarcodeResponseList> {
+    open class func scanBase64WithRequestBuilder(scanBase64Request: ScanBase64Request, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) -> RequestBuilder<BarcodeResponseList> {
         let localVariablePath = "/barcode/scan-body"
-        let localVariableURLString = AsposeBarcodeCloudAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: scanBase64Request)
+        let localVariableURLString = apiConfiguration.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: scanBase64Request, codableHelper: apiConfiguration.codableHelper)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
-        let localVariableNillableHeaders: [String: Any?] = [
+        let localVariableNillableHeaders: [String: (any Sendable)?] = [
             "Content-Type": "application/json",
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<BarcodeResponseList>.Type = AsposeBarcodeCloudAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<BarcodeResponseList>.Type = apiConfiguration.requestBuilderFactory.getBuilder()
 
-        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true, apiConfiguration: apiConfiguration)
     }
 
     /**
      Scan barcode from file in request body using POST requests with parameter in multipart form.
-     
-     - parameter file: (form) Barcode image file 
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
+
+     - parameter file: (form) Barcode image file
+     - parameter apiConfiguration: The configuration for the http request.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func scanMultipart(file: Data, apiResponseQueue: DispatchQueue = AsposeBarcodeCloudAPI.apiResponseQueue, completion: @escaping ((_ data: BarcodeResponseList?, _ error: Error?) -> Void)) -> RequestTask {
-        return scanMultipartWithRequestBuilder(file: file).execute(apiResponseQueue) { result in
+    open class func scanMultipart(file: Data, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: BarcodeResponseList?, _ error: Error?) -> Void) -> RequestTask {
+        return scanMultipartWithRequestBuilder(file: file, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -128,18 +149,30 @@ open class ScanAPI {
 
     /**
      Scan barcode from file in request body using POST requests with parameter in multipart form.
+
+     - parameter file: (form) Barcode image file
+     - parameter apiConfiguration: The configuration for the http request.
+     - returns: BarcodeResponseList
+     */
+    open class func scanMultipart(file: Data, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> BarcodeResponseList {
+        return try await scanMultipartWithRequestBuilder(file: file, apiConfiguration: apiConfiguration).execute().body
+    }
+
+    /**
+     Scan barcode from file in request body using POST requests with parameter in multipart form.
      - POST /barcode/scan-multipart
      - OAuth:
        - type: oauth2
        - name: JWT
-     - parameter file: (form) Barcode image file 
-     - returns: RequestBuilder<BarcodeResponseList> 
+     - parameter file: (form) Barcode image file
+     - parameter apiConfiguration: The configuration for the http request.
+     - returns: RequestBuilder<BarcodeResponseList>
      */
-    open class func scanMultipartWithRequestBuilder(file: Data) -> RequestBuilder<BarcodeResponseList> {
+    open class func scanMultipartWithRequestBuilder(file: Data, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) -> RequestBuilder<BarcodeResponseList> {
         let localVariablePath = "/barcode/scan-multipart"
-        let localVariableURLString = AsposeBarcodeCloudAPI.basePath + localVariablePath
-        let localVariableFormParams: [String: Any?] = [
-            "file": file.encodeToJSON(),
+        let localVariableURLString = apiConfiguration.basePath + localVariablePath
+        let localVariableFormParams: [String: (any Sendable)?] = [
+            "file": file.asParameter(codableHelper: apiConfiguration.codableHelper),
         ]
 
         let localVariableNonNullParameters = APIHelper.rejectNil(localVariableFormParams)
@@ -147,14 +180,14 @@ open class ScanAPI {
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
-        let localVariableNillableHeaders: [String: Any?] = [
+        let localVariableNillableHeaders: [String: (any Sendable)?] = [
             "Content-Type": "multipart/form-data",
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<BarcodeResponseList>.Type = AsposeBarcodeCloudAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<BarcodeResponseList>.Type = apiConfiguration.requestBuilderFactory.getBuilder()
 
-        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true, apiConfiguration: apiConfiguration)
     }
 }

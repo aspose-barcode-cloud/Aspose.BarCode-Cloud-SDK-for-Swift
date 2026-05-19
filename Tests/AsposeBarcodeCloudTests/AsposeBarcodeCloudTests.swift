@@ -145,40 +145,40 @@ final class AsposeBarcodeCloudTests: XCTestCase {
 
     private func generateBarcodeData(_ value: String) -> (Data?, Error?) {
         let expectation = self.expectation(description: "generate barcode")
-        var responseData: Data?
-        var responseError: Error?
+        let responseData = ThreadSafeBox<Data>()
+        let responseError = ThreadSafeBox<Error>()
 
         GenerateAPI.generate(barcodeType: .qr, data: value, imageFormat: .png) { data, error in
-            responseData = data
-            responseError = error
+            responseData.set(data)
+            responseError.set(error)
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 60)
+        _ = XCTWaiter.wait(for: [expectation], timeout: 60)
 
-        return (responseData, responseError)
+        return (responseData.value, responseError.value)
     }
 
     private func scanBase64(_ fileBase64: String) -> (BarcodeResponseList?, Error?) {
         let expectation = self.expectation(description: "scan barcode")
-        var response: BarcodeResponseList?
-        var responseError: Error?
+        let response = ThreadSafeBox<BarcodeResponseList>()
+        let responseError = ThreadSafeBox<Error>()
 
         ScanAPI.scanBase64(scanBase64Request: ScanBase64Request(fileBase64: fileBase64)) { data, error in
-            response = data
-            responseError = error
+            response.set(data)
+            responseError.set(error)
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 60)
+        _ = XCTWaiter.wait(for: [expectation], timeout: 60)
 
-        return (response, responseError)
+        return (response.value, responseError.value)
     }
 
     private func recognizeBase64(_ fileBase64: String, barcodeType: DecodeBarcodeType) -> (BarcodeResponseList?, Error?) {
         let expectation = self.expectation(description: "recognize barcode")
-        var response: BarcodeResponseList?
-        var responseError: Error?
+        let response = ThreadSafeBox<BarcodeResponseList>()
+        let responseError = ThreadSafeBox<Error>()
 
         let request = RecognizeBase64Request(
             barcodeTypes: [barcodeType],
@@ -186,14 +186,27 @@ final class AsposeBarcodeCloudTests: XCTestCase {
         )
 
         RecognizeAPI.recognizeBase64(recognizeBase64Request: request) { data, error in
-            response = data
-            responseError = error
+            response.set(data)
+            responseError.set(error)
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 60)
+        _ = XCTWaiter.wait(for: [expectation], timeout: 60)
 
-        return (response, responseError)
+        return (response.value, responseError.value)
+    }
+}
+
+private final class ThreadSafeBox<Value>: @unchecked Sendable {
+    private let lock = NSLock()
+    private var storedValue: Value?
+
+    var value: Value? {
+        lock.withLock { storedValue }
+    }
+
+    func set(_ value: Value?) {
+        lock.withLock { storedValue = value }
     }
 }
 

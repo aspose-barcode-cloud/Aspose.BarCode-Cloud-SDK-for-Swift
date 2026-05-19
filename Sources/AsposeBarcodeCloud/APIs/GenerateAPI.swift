@@ -6,17 +6,14 @@
 //
 
 import Foundation
-#if canImport(AnyCodable)
-import AnyCodable
-#endif
 
 open class GenerateAPI {
 
     /**
      Generate barcode using GET request with parameters in route and query string.
-     
-     - parameter barcodeType: (path) Type of barcode to generate. 
-     - parameter data: (query) String represents data to encode 
+
+     - parameter barcodeType: (path) Type of barcode to generate.
+     - parameter data: (query) String represents data to encode
      - parameter dataType: (query) Type of data to encode. Default value: StringData. (optional)
      - parameter imageFormat: (query) Barcode output image format. Default value: png (optional)
      - parameter textLocation: (query) Specify the displaying Text Location, set to CodeLocation.None to hide CodeText. Default value: Depends on BarcodeType. CodeLocation.Below for 1D Barcodes. CodeLocation.None for 2D Barcodes. (optional)
@@ -27,12 +24,12 @@ open class GenerateAPI {
      - parameter imageHeight: (query) Height of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
      - parameter imageWidth: (query) Width of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
      - parameter rotationAngle: (query) BarCode image rotation angle, measured in degree, e.g. RotationAngle &#x3D; 0 or RotationAngle &#x3D; 360 means no rotation. If RotationAngle NOT equal to 90, 180, 270 or 0, it may increase the difficulty for the scanner to read the image. Default value: 0. (optional)
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter apiConfiguration: The configuration for the http request.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func generate(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, apiResponseQueue: DispatchQueue = AsposeBarcodeCloudAPI.apiResponseQueue, completion: @escaping ((_ data: Data?, _ error: Error?) -> Void)) -> RequestTask {
-        return generateWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, imageFormat: imageFormat, textLocation: textLocation, foregroundColor: foregroundColor, backgroundColor: backgroundColor, units: units, resolution: resolution, imageHeight: imageHeight, imageWidth: imageWidth, rotationAngle: rotationAngle).execute(apiResponseQueue) { result in
+    open class func generate(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: Data?, _ error: Error?) -> Void) -> RequestTask {
+        return generateWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, imageFormat: imageFormat, textLocation: textLocation, foregroundColor: foregroundColor, backgroundColor: backgroundColor, units: units, resolution: resolution, imageHeight: imageHeight, imageWidth: imageWidth, rotationAngle: rotationAngle, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -40,6 +37,28 @@ open class GenerateAPI {
                 completion(nil, error)
             }
         }
+    }
+
+    /**
+     Generate barcode using GET request with parameters in route and query string.
+
+     - parameter barcodeType: (path) Type of barcode to generate.
+     - parameter data: (query) String represents data to encode
+     - parameter dataType: (query) Type of data to encode. Default value: StringData. (optional)
+     - parameter imageFormat: (query) Barcode output image format. Default value: png (optional)
+     - parameter textLocation: (query) Specify the displaying Text Location, set to CodeLocation.None to hide CodeText. Default value: Depends on BarcodeType. CodeLocation.Below for 1D Barcodes. CodeLocation.None for 2D Barcodes. (optional)
+     - parameter foregroundColor: (query) Specify the displaying bars and content Color. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value started with #. For example: AliceBlue or #FF000000 Default value: Black. (optional, default to "Black")
+     - parameter backgroundColor: (query) Background color of the barcode image. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value started with #. For example: AliceBlue or #FF000000 Default value: White. (optional, default to "White")
+     - parameter units: (query) Common Units for all measuring in query. Default units: pixel. (optional)
+     - parameter resolution: (query) Resolution of the BarCode image. One value for both dimensions. Default value: 96 dpi. Decimal separator is dot. (optional)
+     - parameter imageHeight: (query) Height of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
+     - parameter imageWidth: (query) Width of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
+     - parameter rotationAngle: (query) BarCode image rotation angle, measured in degree, e.g. RotationAngle &#x3D; 0 or RotationAngle &#x3D; 360 means no rotation. If RotationAngle NOT equal to 90, 180, 270 or 0, it may increase the difficulty for the scanner to read the image. Default value: 0. (optional)
+     - parameter apiConfiguration: The configuration for the http request.
+     - returns: Data
+     */
+    open class func generate(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> Data {
+        return try await generateWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, imageFormat: imageFormat, textLocation: textLocation, foregroundColor: foregroundColor, backgroundColor: backgroundColor, units: units, resolution: resolution, imageHeight: imageHeight, imageWidth: imageWidth, rotationAngle: rotationAngle, apiConfiguration: apiConfiguration).execute().body
     }
 
     /**
@@ -48,8 +67,8 @@ open class GenerateAPI {
      - OAuth:
        - type: oauth2
        - name: JWT
-     - parameter barcodeType: (path) Type of barcode to generate. 
-     - parameter data: (query) String represents data to encode 
+     - parameter barcodeType: (path) Type of barcode to generate.
+     - parameter data: (query) String represents data to encode
      - parameter dataType: (query) Type of data to encode. Default value: StringData. (optional)
      - parameter imageFormat: (query) Barcode output image format. Default value: png (optional)
      - parameter textLocation: (query) Specify the displaying Text Location, set to CodeLocation.None to hide CodeText. Default value: Depends on BarcodeType. CodeLocation.Below for 1D Barcodes. CodeLocation.None for 2D Barcodes. (optional)
@@ -60,52 +79,53 @@ open class GenerateAPI {
      - parameter imageHeight: (query) Height of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
      - parameter imageWidth: (query) Width of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
      - parameter rotationAngle: (query) BarCode image rotation angle, measured in degree, e.g. RotationAngle &#x3D; 0 or RotationAngle &#x3D; 360 means no rotation. If RotationAngle NOT equal to 90, 180, 270 or 0, it may increase the difficulty for the scanner to read the image. Default value: 0. (optional)
-     - returns: RequestBuilder<Data> 
+     - parameter apiConfiguration: The configuration for the http request.
+     - returns: RequestBuilder<Data>
      */
-    open class func generateWithRequestBuilder(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil) -> RequestBuilder<Data> {
+    open class func generateWithRequestBuilder(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) -> RequestBuilder<Data> {
         var localVariablePath = "/barcode/generate/{barcodeType}"
         let barcodeTypePreEscape = "\(APIHelper.mapValueToPathItem(barcodeType))"
         let barcodeTypePostEscape = barcodeTypePreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{barcodeType}", with: barcodeTypePostEscape, options: .literal, range: nil)
-        let localVariableURLString = AsposeBarcodeCloudAPI.basePath + localVariablePath
-        let localVariableParameters: [String: Any]? = nil
+        let localVariableURLString = apiConfiguration.basePath + localVariablePath
+        let localVariableParameters: [String: any Sendable]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "dataType": (wrappedValue: dataType?.encodeToJSON(), isExplode: true),
-            "data": (wrappedValue: data.encodeToJSON(), isExplode: true),
-            "imageFormat": (wrappedValue: imageFormat?.encodeToJSON(), isExplode: true),
-            "textLocation": (wrappedValue: textLocation?.encodeToJSON(), isExplode: true),
-            "foregroundColor": (wrappedValue: foregroundColor?.encodeToJSON(), isExplode: true),
-            "backgroundColor": (wrappedValue: backgroundColor?.encodeToJSON(), isExplode: true),
-            "units": (wrappedValue: units?.encodeToJSON(), isExplode: true),
-            "resolution": (wrappedValue: resolution?.encodeToJSON(), isExplode: true),
-            "imageHeight": (wrappedValue: imageHeight?.encodeToJSON(), isExplode: true),
-            "imageWidth": (wrappedValue: imageWidth?.encodeToJSON(), isExplode: true),
-            "rotationAngle": (wrappedValue: rotationAngle?.encodeToJSON(), isExplode: true),
+            "dataType": (wrappedValue: dataType?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "data": (wrappedValue: data.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "imageFormat": (wrappedValue: imageFormat?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "textLocation": (wrappedValue: textLocation?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "foregroundColor": (wrappedValue: foregroundColor?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "backgroundColor": (wrappedValue: backgroundColor?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "units": (wrappedValue: units?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "resolution": (wrappedValue: resolution?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "imageHeight": (wrappedValue: imageHeight?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "imageWidth": (wrappedValue: imageWidth?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "rotationAngle": (wrappedValue: rotationAngle?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
         ])
 
-        let localVariableNillableHeaders: [String: Any?] = [
+        let localVariableNillableHeaders: [String: (any Sendable)?] = [
             :
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Data>.Type = AsposeBarcodeCloudAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<Data>.Type = apiConfiguration.requestBuilderFactory.getBuilder()
 
-        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true, apiConfiguration: apiConfiguration)
     }
 
     /**
      Generate barcode using POST request with parameters in body in json or xml format.
-     
-     - parameter generateParams: (body) Parameters of generation 
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
+
+     - parameter generateParams: (body) Parameters of generation
+     - parameter apiConfiguration: The configuration for the http request.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func generateBody(generateParams: GenerateParams, apiResponseQueue: DispatchQueue = AsposeBarcodeCloudAPI.apiResponseQueue, completion: @escaping ((_ data: Data?, _ error: Error?) -> Void)) -> RequestTask {
-        return generateBodyWithRequestBuilder(generateParams: generateParams).execute(apiResponseQueue) { result in
+    open class func generateBody(generateParams: GenerateParams, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: Data?, _ error: Error?) -> Void) -> RequestTask {
+        return generateBodyWithRequestBuilder(generateParams: generateParams, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -113,6 +133,17 @@ open class GenerateAPI {
                 completion(nil, error)
             }
         }
+    }
+
+    /**
+     Generate barcode using POST request with parameters in body in json or xml format.
+
+     - parameter generateParams: (body) Parameters of generation
+     - parameter apiConfiguration: The configuration for the http request.
+     - returns: Data
+     */
+    open class func generateBody(generateParams: GenerateParams, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> Data {
+        return try await generateBodyWithRequestBuilder(generateParams: generateParams, apiConfiguration: apiConfiguration).execute().body
     }
 
     /**
@@ -121,48 +152,49 @@ open class GenerateAPI {
      - OAuth:
        - type: oauth2
        - name: JWT
-     - parameter generateParams: (body) Parameters of generation 
-     - returns: RequestBuilder<Data> 
+     - parameter generateParams: (body) Parameters of generation
+     - parameter apiConfiguration: The configuration for the http request.
+     - returns: RequestBuilder<Data>
      */
-    open class func generateBodyWithRequestBuilder(generateParams: GenerateParams) -> RequestBuilder<Data> {
+    open class func generateBodyWithRequestBuilder(generateParams: GenerateParams, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) -> RequestBuilder<Data> {
         let localVariablePath = "/barcode/generate-body"
-        let localVariableURLString = AsposeBarcodeCloudAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: generateParams)
+        let localVariableURLString = apiConfiguration.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: generateParams, codableHelper: apiConfiguration.codableHelper)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
-        let localVariableNillableHeaders: [String: Any?] = [
+        let localVariableNillableHeaders: [String: (any Sendable)?] = [
             "Content-Type": "application/json",
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Data>.Type = AsposeBarcodeCloudAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<Data>.Type = apiConfiguration.requestBuilderFactory.getBuilder()
 
-        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true, apiConfiguration: apiConfiguration)
     }
 
     /**
      Generate barcode using POST request with parameters in multipart form.
-     
-     - parameter barcodeType: (form)  
-     - parameter data: (form) String represents data to encode 
-     - parameter dataType: (form)  (optional)
-     - parameter imageFormat: (form)  (optional)
-     - parameter textLocation: (form)  (optional)
+
+     - parameter barcodeType: (form)
+     - parameter data: (form) String represents data to encode
+     - parameter dataType: (form) (optional)
+     - parameter imageFormat: (form) (optional)
+     - parameter textLocation: (form) (optional)
      - parameter foregroundColor: (form) Specify the displaying bars and content Color. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value started with #. For example: AliceBlue or #FF000000 Default value: Black. (optional, default to "Black")
      - parameter backgroundColor: (form) Background color of the barcode image. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value started with #. For example: AliceBlue or #FF000000 Default value: White. (optional, default to "White")
-     - parameter units: (form)  (optional)
+     - parameter units: (form) (optional)
      - parameter resolution: (form) Resolution of the BarCode image. One value for both dimensions. Default value: 96 dpi. Decimal separator is dot. (optional)
      - parameter imageHeight: (form) Height of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
      - parameter imageWidth: (form) Width of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
      - parameter rotationAngle: (form) BarCode image rotation angle, measured in degree, e.g. RotationAngle &#x3D; 0 or RotationAngle &#x3D; 360 means no rotation. If RotationAngle NOT equal to 90, 180, 270 or 0, it may increase the difficulty for the scanner to read the image. Default value: 0. (optional)
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter apiConfiguration: The configuration for the http request.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func generateMultipart(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, apiResponseQueue: DispatchQueue = AsposeBarcodeCloudAPI.apiResponseQueue, completion: @escaping ((_ data: Data?, _ error: Error?) -> Void)) -> RequestTask {
-        return generateMultipartWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, imageFormat: imageFormat, textLocation: textLocation, foregroundColor: foregroundColor, backgroundColor: backgroundColor, units: units, resolution: resolution, imageHeight: imageHeight, imageWidth: imageWidth, rotationAngle: rotationAngle).execute(apiResponseQueue) { result in
+    open class func generateMultipart(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: Data?, _ error: Error?) -> Void) -> RequestTask {
+        return generateMultipartWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, imageFormat: imageFormat, textLocation: textLocation, foregroundColor: foregroundColor, backgroundColor: backgroundColor, units: units, resolution: resolution, imageHeight: imageHeight, imageWidth: imageWidth, rotationAngle: rotationAngle, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -174,40 +206,63 @@ open class GenerateAPI {
 
     /**
      Generate barcode using POST request with parameters in multipart form.
-     - POST /barcode/generate-multipart
-     - OAuth:
-       - type: oauth2
-       - name: JWT
-     - parameter barcodeType: (form)  
-     - parameter data: (form) String represents data to encode 
-     - parameter dataType: (form)  (optional)
-     - parameter imageFormat: (form)  (optional)
-     - parameter textLocation: (form)  (optional)
+
+     - parameter barcodeType: (form)
+     - parameter data: (form) String represents data to encode
+     - parameter dataType: (form) (optional)
+     - parameter imageFormat: (form) (optional)
+     - parameter textLocation: (form) (optional)
      - parameter foregroundColor: (form) Specify the displaying bars and content Color. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value started with #. For example: AliceBlue or #FF000000 Default value: Black. (optional, default to "Black")
      - parameter backgroundColor: (form) Background color of the barcode image. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value started with #. For example: AliceBlue or #FF000000 Default value: White. (optional, default to "White")
-     - parameter units: (form)  (optional)
+     - parameter units: (form) (optional)
      - parameter resolution: (form) Resolution of the BarCode image. One value for both dimensions. Default value: 96 dpi. Decimal separator is dot. (optional)
      - parameter imageHeight: (form) Height of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
      - parameter imageWidth: (form) Width of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
      - parameter rotationAngle: (form) BarCode image rotation angle, measured in degree, e.g. RotationAngle &#x3D; 0 or RotationAngle &#x3D; 360 means no rotation. If RotationAngle NOT equal to 90, 180, 270 or 0, it may increase the difficulty for the scanner to read the image. Default value: 0. (optional)
-     - returns: RequestBuilder<Data> 
+     - parameter apiConfiguration: The configuration for the http request.
+     - returns: Data
      */
-    open class func generateMultipartWithRequestBuilder(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil) -> RequestBuilder<Data> {
+    open class func generateMultipart(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> Data {
+        return try await generateMultipartWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, imageFormat: imageFormat, textLocation: textLocation, foregroundColor: foregroundColor, backgroundColor: backgroundColor, units: units, resolution: resolution, imageHeight: imageHeight, imageWidth: imageWidth, rotationAngle: rotationAngle, apiConfiguration: apiConfiguration).execute().body
+    }
+
+    /**
+     Generate barcode using POST request with parameters in multipart form.
+     - POST /barcode/generate-multipart
+     - OAuth:
+       - type: oauth2
+       - name: JWT
+     - parameter barcodeType: (form)
+     - parameter data: (form) String represents data to encode
+     - parameter dataType: (form) (optional)
+     - parameter imageFormat: (form) (optional)
+     - parameter textLocation: (form) (optional)
+     - parameter foregroundColor: (form) Specify the displaying bars and content Color. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value started with #. For example: AliceBlue or #FF000000 Default value: Black. (optional, default to "Black")
+     - parameter backgroundColor: (form) Background color of the barcode image. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value started with #. For example: AliceBlue or #FF000000 Default value: White. (optional, default to "White")
+     - parameter units: (form) (optional)
+     - parameter resolution: (form) Resolution of the BarCode image. One value for both dimensions. Default value: 96 dpi. Decimal separator is dot. (optional)
+     - parameter imageHeight: (form) Height of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
+     - parameter imageWidth: (form) Width of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
+     - parameter rotationAngle: (form) BarCode image rotation angle, measured in degree, e.g. RotationAngle &#x3D; 0 or RotationAngle &#x3D; 360 means no rotation. If RotationAngle NOT equal to 90, 180, 270 or 0, it may increase the difficulty for the scanner to read the image. Default value: 0. (optional)
+     - parameter apiConfiguration: The configuration for the http request.
+     - returns: RequestBuilder<Data>
+     */
+    open class func generateMultipartWithRequestBuilder(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) -> RequestBuilder<Data> {
         let localVariablePath = "/barcode/generate-multipart"
-        let localVariableURLString = AsposeBarcodeCloudAPI.basePath + localVariablePath
-        let localVariableFormParams: [String: Any?] = [
-            "barcodeType": barcodeType.encodeToJSON(),
-            "dataType": dataType?.encodeToJSON(),
-            "data": data.encodeToJSON(),
-            "imageFormat": imageFormat?.encodeToJSON(),
-            "textLocation": textLocation?.encodeToJSON(),
-            "foregroundColor": foregroundColor?.encodeToJSON(),
-            "backgroundColor": backgroundColor?.encodeToJSON(),
-            "units": units?.encodeToJSON(),
-            "resolution": resolution?.encodeToJSON(),
-            "imageHeight": imageHeight?.encodeToJSON(),
-            "imageWidth": imageWidth?.encodeToJSON(),
-            "rotationAngle": rotationAngle?.encodeToJSON(),
+        let localVariableURLString = apiConfiguration.basePath + localVariablePath
+        let localVariableFormParams: [String: (any Sendable)?] = [
+            "barcodeType": barcodeType.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "dataType": dataType?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "data": data.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "imageFormat": imageFormat?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "textLocation": textLocation?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "foregroundColor": foregroundColor?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "backgroundColor": backgroundColor?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "units": units?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "resolution": resolution?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "imageHeight": imageHeight?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "imageWidth": imageWidth?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "rotationAngle": rotationAngle?.asParameter(codableHelper: apiConfiguration.codableHelper),
         ]
 
         let localVariableNonNullParameters = APIHelper.rejectNil(localVariableFormParams)
@@ -215,14 +270,14 @@ open class GenerateAPI {
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
-        let localVariableNillableHeaders: [String: Any?] = [
+        let localVariableNillableHeaders: [String: (any Sendable)?] = [
             "Content-Type": "multipart/form-data",
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Data>.Type = AsposeBarcodeCloudAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<Data>.Type = apiConfiguration.requestBuilderFactory.getBuilder()
 
-        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true, apiConfiguration: apiConfiguration)
     }
 }

@@ -1,16 +1,17 @@
-// swift-tools-version:5.1
+// swift-tools-version:6.0
 
 import PackageDescription
 
 let package = Package(
     name: "AsposeBarcodeCloud",
     platforms: [
-        .iOS(.v11),
-        .macOS(.v10_13),
-        .tvOS(.v11),
-        .watchOS(.v4),
+        .iOS(.v13),
+        .macOS(.v10_15),
+        .tvOS(.v13),
+        .watchOS(.v6),
     ],
     products: [
+        // Products define the executables and libraries produced by a package, and make them visible to other packages.
         .library(
             name: "AsposeBarcodeCloud",
             targets: ["AsposeBarcodeCloud"]
@@ -21,15 +22,17 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/Flight-School/AnyCodable", .upToNextMajor(from: "0.6.1")),
+        // Dependencies declare other packages that this package depends on.
     ],
     targets: [
+        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
+        // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "AsposeBarcodeCloud",
-            dependencies: ["AnyCodable"],
+            dependencies: [],
             path: "Sources/AsposeBarcodeCloud"
         ),
-        .target(
+        .executableTarget(
             name: "GenerateAndScanExample",
             dependencies: ["AsposeBarcodeCloud"],
             path: "Examples/GenerateAndScan"
@@ -39,5 +42,6 @@ let package = Package(
             dependencies: ["AsposeBarcodeCloud"],
             path: "Tests/AsposeBarcodeCloudTests"
         ),
-    ]
+    ],
+    swiftLanguageModes: [.v6]
 )

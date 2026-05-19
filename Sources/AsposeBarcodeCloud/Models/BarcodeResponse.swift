@@ -6,12 +6,9 @@
 //
 
 import Foundation
-#if canImport(AnyCodable)
-import AnyCodable
-#endif
 
 /** Represents information about barcode. */
-public final class BarcodeResponse: Codable, JSONEncodable, Hashable {
+public final class BarcodeResponse: @unchecked Sendable, Codable, Hashable {
 
     /** Barcode data. */
     public var barcodeValue: String?

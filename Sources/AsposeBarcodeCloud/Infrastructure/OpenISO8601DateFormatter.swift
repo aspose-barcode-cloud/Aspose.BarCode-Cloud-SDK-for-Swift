@@ -8,7 +8,7 @@
 import Foundation
 
 // https://stackoverflow.com/a/50281094/976628
-public class OpenISO8601DateFormatter: DateFormatter {
+public class OpenISO8601DateFormatter: DateFormatter, @unchecked Sendable {
     static let withoutSeconds: DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .iso8601)
@@ -54,7 +54,3 @@ public class OpenISO8601DateFormatter: DateFormatter {
         return OpenISO8601DateFormatter.withoutTime.date(from: string)
     }
 }
-
-#if compiler(>=5.5)
-extension OpenISO8601DateFormatter: @unchecked Sendable {}
-#endif

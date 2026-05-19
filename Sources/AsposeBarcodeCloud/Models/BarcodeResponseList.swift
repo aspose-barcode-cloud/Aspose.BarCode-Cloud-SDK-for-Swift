@@ -6,12 +6,9 @@
 //
 
 import Foundation
-#if canImport(AnyCodable)
-import AnyCodable
-#endif
 
 /** Represents information about barcode list. */
-public final class BarcodeResponseList: Codable, JSONEncodable, Hashable {
+public final class BarcodeResponseList: @unchecked Sendable, Codable, Hashable {
 
     /** List of barcodes which are present in image. */
     public var barcodes: [BarcodeResponse]?

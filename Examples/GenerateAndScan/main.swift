@@ -18,7 +18,19 @@ enum ExampleError: Error, CustomStringConvertible {
     }
 }
 
-let callbackQueue = DispatchQueue.global(qos: .userInitiated)
+final class ThreadSafeBox<Value>: @unchecked Sendable {
+    private let lock = NSLock()
+    private var storedValue: Value?
+
+    var value: Value? {
+        lock.withLock { storedValue }
+    }
+
+    func set(_ value: Value) {
+        lock.withLock { storedValue = value }
+    }
+}
+
 let barcodeValue = CommandLine.arguments.dropFirst().first ?? "Aspose.BarCode Cloud Swift example"
 
 do {
@@ -163,27 +175,26 @@ enum ExampleConfiguration {
 
 func generateBarcodeData(_ value: String) throws -> Data {
     let semaphore = DispatchSemaphore(value: 0)
-    var result: Result<Data, Error>?
+    let result = ThreadSafeBox<Result<Data, Error>>()
 
     GenerateAPI.generate(
         barcodeType: .qr,
         data: value,
-        imageFormat: .png,
-        apiResponseQueue: callbackQueue
+        imageFormat: .png
     ) { data, error in
         if let error = error {
-            result = .failure(error)
+            result.set(.failure(error))
         } else if let data = data, !data.isEmpty {
-            result = .success(data)
+            result.set(.success(data))
         } else {
-            result = .failure(ExampleError.emptyGenerateResponse)
+            result.set(.failure(ExampleError.emptyGenerateResponse))
         }
 
         semaphore.signal()
     }
 
     semaphore.wait()
-    guard let result = result else {
+    guard let result = result.value else {
         throw ExampleError.emptyGenerateResponse
     }
 
@@ -192,21 +203,21 @@ func generateBarcodeData(_ value: String) throws -> Data {
 
 func scanBarcodeData(_ imageData: Data) throws -> [BarcodeResponse] {
     let semaphore = DispatchSemaphore(value: 0)
-    var result: Result<[BarcodeResponse], Error>?
+    let result = ThreadSafeBox<Result<[BarcodeResponse], Error>>()
     let request = ScanBase64Request(fileBase64: imageData.base64EncodedString())
 
-    ScanAPI.scanBase64(scanBase64Request: request, apiResponseQueue: callbackQueue) { response, error in
+    ScanAPI.scanBase64(scanBase64Request: request) { response, error in
         if let error = error {
-            result = .failure(error)
+            result.set(.failure(error))
         } else {
-            result = .success(response?.barcodes ?? [])
+            result.set(.success(response?.barcodes ?? []))
         }
 
         semaphore.signal()
     }
 
     semaphore.wait()
-    guard let result = result else {
+    guard let result = result.value else {
         return []
     }
 

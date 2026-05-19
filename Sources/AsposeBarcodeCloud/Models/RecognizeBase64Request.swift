@@ -6,14 +6,11 @@
 //
 
 import Foundation
-#if canImport(AnyCodable)
-import AnyCodable
-#endif
 
 /** Barcode recognize request */
-public final class RecognizeBase64Request: Codable, JSONEncodable, Hashable {
+public final class RecognizeBase64Request: @unchecked Sendable, Codable, Hashable {
 
-    static let fileBase64Rule = StringRule(minLength: 1, maxLength: 28730982, pattern: nil)
+    public static let fileBase64Rule = StringRule(minLength: 1, maxLength: 28730982, pattern: nil)
     /** Array of decode types to find on barcode */
     public var barcodeTypes: [DecodeBarcodeType]
     /** Barcode image bytes encoded as base-64. */

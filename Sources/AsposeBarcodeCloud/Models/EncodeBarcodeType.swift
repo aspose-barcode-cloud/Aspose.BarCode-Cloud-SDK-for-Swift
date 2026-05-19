@@ -6,12 +6,9 @@
 //
 
 import Foundation
-#if canImport(AnyCodable)
-import AnyCodable
-#endif
 
 /** See Aspose.BarCode.Generation.EncodeTypes */
-public enum EncodeBarcodeType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+public enum EncodeBarcodeType: String, Sendable, Codable, CaseIterable, CaseIterableDefaultsLast {
     case qr = "QR"
     case australiaPost = "AustraliaPost"
     case australianPosteParcel = "AustralianPosteParcel"

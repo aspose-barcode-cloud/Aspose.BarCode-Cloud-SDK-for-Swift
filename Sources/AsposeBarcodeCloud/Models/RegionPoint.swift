@@ -6,12 +6,9 @@
 //
 
 import Foundation
-#if canImport(AnyCodable)
-import AnyCodable
-#endif
 
 /** Wrapper around Drawing.Point for proper specification. */
-public final class RegionPoint: Codable, JSONEncodable, Hashable {
+public final class RegionPoint: @unchecked Sendable, Codable, Hashable {
 
     /** X-coordinate */
     public var x: Int?

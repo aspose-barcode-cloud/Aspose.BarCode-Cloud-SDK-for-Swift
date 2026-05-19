@@ -6,14 +6,11 @@
 //
 
 import Foundation
-#if canImport(AnyCodable)
-import AnyCodable
-#endif
 
 /** Barcode image optional parameters */
-public final class BarcodeImageParams: Codable, JSONEncodable, Hashable {
+public final class BarcodeImageParams: @unchecked Sendable, Codable, Hashable {
 
-    static let resolutionRule = NumericRule<Float>(minimum: 1, exclusiveMinimum: false, maximum: 100000, exclusiveMaximum: false, multipleOf: nil)
+    public static let resolutionRule = NumericRule<Float>(minimum: 1, exclusiveMinimum: false, maximum: 100000, exclusiveMaximum: false, multipleOf: nil)
     public var imageFormat: BarcodeImageFormat?
     public var textLocation: CodeLocation?
     /** Specify the displaying bars and content Color. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value started with #. For example: AliceBlue or #FF000000 Default value: Black. */

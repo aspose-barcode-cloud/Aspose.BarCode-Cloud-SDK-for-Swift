@@ -6,12 +6,9 @@
 //
 
 import Foundation
-#if canImport(AnyCodable)
-import AnyCodable
-#endif
 
 /** Specifies the file format of the image. */
-public enum BarcodeImageFormat: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+public enum BarcodeImageFormat: String, Sendable, Codable, CaseIterable, CaseIterableDefaultsLast {
     case png = "Png"
     case jpeg = "Jpeg"
     case svg = "Svg"
