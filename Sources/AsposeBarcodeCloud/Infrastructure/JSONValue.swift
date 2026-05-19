@@ -15,7 +15,7 @@ public enum JSONValue: Sendable, Codable, Hashable {
     case array([JSONValue])
     case dictionary([String: JSONValue])
     case null
-    
+
     // MARK: - Decoding Logic
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
@@ -42,7 +42,7 @@ public enum JSONValue: Sendable, Codable, Hashable {
     // MARK: - Encoding Logic
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        
+
         switch self {
         case .string(let value):
             try container.encode(value)
@@ -66,32 +66,32 @@ extension JSONValue {
     public init(_ value: String) {
         self = .string(value)
     }
-    
+
     public init(_ value: Int) {
         self = .int(value)
     }
-    
+
     public init(_ value: Double) {
         self = .double(value)
     }
-    
+
     public init(_ value: Bool) {
         self = .bool(value)
     }
-    
+
     public init(_ value: [JSONValue]) {
         self = .array(value)
     }
-    
+
     public init(_ value: [String: JSONValue]) {
         self = .dictionary(value)
     }
-    
+
     public init<T: Codable>(_ codable: T) throws {
         let encoder = JSONEncoder()
         let encodedData = try encoder.encode(codable)
         let decoder = JSONDecoder()
-        
+
         let decodedValue = try decoder.decode(JSONValue.self, from: encodedData)
         self = decodedValue
     }
