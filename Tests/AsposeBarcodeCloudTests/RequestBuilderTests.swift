@@ -3,7 +3,7 @@ import XCTest
 @testable import AsposeBarcodeCloud
 
 final class RequestBuilderTests: XCTestCase {
-    func testGenerateGetRequestShape() {
+    func testGenerateGetRequestShape() async throws {
         let client = makeTestClient()
 
         let builder = GenerateAPI.generateWithRequestBuilder(
@@ -27,9 +27,15 @@ final class RequestBuilderTests: XCTestCase {
         XCTAssertEqual(queryItems["textLocation"], "None")
 
         let headers = (builder as! URLSessionRequestBuilder<Data>).buildHeaders()
-        XCTAssertEqual(headers["Authorization"], "Bearer test-token")
         XCTAssertEqual(headers["x-aspose-client"], "swift sdk test")
         XCTAssertEqual(headers["x-aspose-client-version"], "0.0-test")
+
+        let intercepted = try await intercept(
+            request: URLRequest(url: URL(string: "https://example.com/v4.0/barcode/generate/QR")!),
+            requestBuilder: builder as! URLSessionRequestBuilder<Data>,
+            apiConfiguration: client.apiConfiguration
+        )
+        XCTAssertEqual(intercepted.value(forHTTPHeaderField: "Authorization"), "Bearer test-token")
     }
 
     func testGenerateBodyRequestShape() throws {
@@ -180,6 +186,22 @@ final class RequestBuilderTests: XCTestCase {
                 sdkVersion: "0.0-test"
             )
         )
+    }
+
+    private func intercept(
+        request: URLRequest,
+        requestBuilder: URLSessionRequestBuilder<Data>,
+        apiConfiguration: AsposeBarcodeCloudAPIConfiguration
+    ) async throws -> URLRequest {
+        try await withCheckedThrowingContinuation { continuation in
+            apiConfiguration.interceptor.intercept(
+                urlRequest: request,
+                urlSession: URLSession.shared,
+                requestBuilder: requestBuilder
+            ) { result in
+                continuation.resume(with: result)
+            }
+        }
     }
 
     private func queryItems(from urlString: String) -> [String: String] {

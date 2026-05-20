@@ -35,7 +35,7 @@ final class AsposeBarcodeCloudTests: XCTestCase {
         XCTAssertEqual(bodyItems["client_secret"], "secret/value")
     }
 
-    func testAccessTokenConfigurationAppliesHeadersToGeneratedRequests() {
+    func testAccessTokenConfigurationAppliesHeadersToGeneratedRequests() async throws {
         let client = AsposeBarcodeCloudClient(
             configuration: AsposeBarcodeCloudConfiguration(
                 accessToken: "test-token",
@@ -53,12 +53,18 @@ final class AsposeBarcodeCloudTests: XCTestCase {
         let headers = (requestBuilder as! URLSessionRequestBuilder<Data>).buildHeaders()
 
         XCTAssertEqual(client.apiConfiguration.basePath, "https://example.com/v4.0")
-        XCTAssertEqual(headers["Authorization"], "Bearer test-token")
         XCTAssertEqual(headers["x-aspose-client"], "custom swift sdk")
         XCTAssertEqual(headers["x-aspose-client-version"], "1.2.3")
+
+        let intercepted = try await intercept(
+            request: URLRequest(url: URL(string: "https://example.com/v4.0/barcode/generate/QR")!),
+            requestBuilder: requestBuilder as! URLSessionRequestBuilder<Data>,
+            apiConfiguration: client.apiConfiguration
+        )
+        XCTAssertEqual(intercepted.value(forHTTPHeaderField: "Authorization"), "Bearer test-token")
     }
 
-    func testAuthorizeUsesInjectedTokenFetcher() throws {
+    func testAuthorizeUsesInjectedTokenFetcher() async throws {
         let configuration = AsposeBarcodeCloudConfiguration(
             clientId: "client-id",
             clientSecret: "client-secret"
@@ -70,11 +76,10 @@ final class AsposeBarcodeCloudTests: XCTestCase {
             completion(.success("fetched-token"))
         }
 
-        let token = try client.authorize()
+        let token = try await client.authorize()
 
         XCTAssertEqual(token, "fetched-token")
         XCTAssertEqual(configuration.accessToken, "fetched-token")
-        XCTAssertEqual(client.apiConfiguration.customHeaders["Authorization"], "Bearer fetched-token")
         XCTAssertEqual(client.apiConfiguration.customHeaders["x-aspose-client"], "swift sdk")
         XCTAssertEqual(
             client.apiConfiguration.customHeaders["x-aspose-client-version"],
@@ -82,11 +87,11 @@ final class AsposeBarcodeCloudTests: XCTestCase {
         )
     }
 
-    func testAuthorizeFailsWithoutTokenOrCredentials() {
+    func testAuthorizeFailsWithoutTokenOrCredentials() async {
         let client = AsposeBarcodeCloudClient(configuration: AsposeBarcodeCloudConfiguration())
 
         do {
-            _ = try client.authorize()
+            _ = try await client.authorize()
             XCTFail("Expected missing credentials error")
         } catch AsposeBarcodeCloudClientError.missingCredentials {
             // Expected path.
@@ -95,8 +100,24 @@ final class AsposeBarcodeCloudTests: XCTestCase {
         }
     }
 
-    func testGenerateSmokeWhenIntegrationEnvironmentIsEnabled() throws {
-        guard let client = try makeIntegrationClient() else {
+    private func intercept(
+        request: URLRequest,
+        requestBuilder: URLSessionRequestBuilder<Data>,
+        apiConfiguration: AsposeBarcodeCloudAPIConfiguration
+    ) async throws -> URLRequest {
+        try await withCheckedThrowingContinuation { continuation in
+            apiConfiguration.interceptor.intercept(
+                urlRequest: request,
+                urlSession: URLSession.shared,
+                requestBuilder: requestBuilder
+            ) { result in
+                continuation.resume(with: result)
+            }
+        }
+    }
+
+    func testGenerateSmokeWhenIntegrationEnvironmentIsEnabled() async throws {
+        guard let client = try await makeIntegrationClient() else {
             return
         }
 
@@ -107,8 +128,8 @@ final class AsposeBarcodeCloudTests: XCTestCase {
         XCTAssertGreaterThan(responseData?.count ?? 0, 0)
     }
 
-    func testGenerateScanAndRecognizeBase64SmokeWhenIntegrationEnvironmentIsEnabled() throws {
-        guard let client = try makeIntegrationClient() else {
+    func testGenerateScanAndRecognizeBase64SmokeWhenIntegrationEnvironmentIsEnabled() async throws {
+        guard let client = try await makeIntegrationClient() else {
             return
         }
 
@@ -127,7 +148,7 @@ final class AsposeBarcodeCloudTests: XCTestCase {
         XCTAssertEqual(recognizeResponse?.barcodes?.first?.barcodeValue, barcodeValue)
     }
 
-    private func makeIntegrationClient() throws -> AsposeBarcodeCloudClient? {
+    private func makeIntegrationClient() async throws -> AsposeBarcodeCloudClient? {
         guard ProcessInfo.processInfo.environment["ASPOSE_RUN_INTEGRATION_TESTS"] == "true" else {
             return nil
         }
@@ -137,7 +158,7 @@ final class AsposeBarcodeCloudTests: XCTestCase {
         }
 
         let client = AsposeBarcodeCloudClient(configuration: configuration)
-        try client.authorize()
+        _ = try await client.authorize()
         return client
     }
 

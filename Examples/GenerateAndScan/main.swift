@@ -34,7 +34,7 @@ final class ThreadSafeBox<Value>: @unchecked Sendable {
 let barcodeValue = CommandLine.arguments.dropFirst().first ?? "Aspose.BarCode Cloud Swift example"
 
 do {
-    let client = try makeClient()
+    let client = try await makeClient()
 
     print("Generating QR barcode...")
     let imageData = try generateBarcodeData(barcodeValue, client: client)
@@ -54,13 +54,13 @@ do {
     exit(1)
 }
 
-func makeClient() throws -> AsposeBarcodeCloudClient {
+func makeClient() async throws -> AsposeBarcodeCloudClient {
     guard let configuration = ExampleConfiguration.load() else {
         throw ExampleError.missingCredentials
     }
 
     let client = AsposeBarcodeCloudClient(configuration: configuration)
-    try client.authorize()
+    _ = try await client.authorize()
     return client
 }
 
