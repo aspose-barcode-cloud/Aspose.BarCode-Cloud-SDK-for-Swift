@@ -34,15 +34,15 @@ final class ThreadSafeBox<Value>: @unchecked Sendable {
 let barcodeValue = CommandLine.arguments.dropFirst().first ?? "Aspose.BarCode Cloud Swift example"
 
 do {
-    try configureClient()
+    let client = try makeClient()
 
     print("Generating QR barcode...")
-    let imageData = try generateBarcodeData(barcodeValue)
+    let imageData = try generateBarcodeData(barcodeValue, client: client)
     try imageData.write(to: URL(fileURLWithPath: "QR.png"))
     print("Generated image saved to QR.png")
 
     print("Scanning generated barcode...")
-    let barcodes = try scanBarcodeData(imageData)
+    let barcodes = try scanBarcodeData(imageData, client: client)
     guard let firstBarcode = barcodes.first else {
         throw ExampleError.emptyScanResponse
     }
@@ -54,14 +54,14 @@ do {
     exit(1)
 }
 
-func configureClient() throws {
-    if let configuration = ExampleConfiguration.load() {
-        let client = AsposeBarcodeCloudClient(configuration: configuration)
-        try client.authorize()
-        return
+func makeClient() throws -> AsposeBarcodeCloudClient {
+    guard let configuration = ExampleConfiguration.load() else {
+        throw ExampleError.missingCredentials
     }
 
-    throw ExampleError.missingCredentials
+    let client = AsposeBarcodeCloudClient(configuration: configuration)
+    try client.authorize()
+    return client
 }
 
 enum ExampleConfiguration {
@@ -173,14 +173,15 @@ enum ExampleConfiguration {
     }
 }
 
-func generateBarcodeData(_ value: String) throws -> Data {
+func generateBarcodeData(_ value: String, client: AsposeBarcodeCloudClient) throws -> Data {
     let semaphore = DispatchSemaphore(value: 0)
     let result = ThreadSafeBox<Result<Data, Error>>()
 
     GenerateAPI.generate(
         barcodeType: .qr,
         data: value,
-        imageFormat: .png
+        imageFormat: .png,
+        apiConfiguration: client.apiConfiguration
     ) { data, error in
         if let error = error {
             result.set(.failure(error))
@@ -201,12 +202,15 @@ func generateBarcodeData(_ value: String) throws -> Data {
     return try result.get()
 }
 
-func scanBarcodeData(_ imageData: Data) throws -> [BarcodeResponse] {
+func scanBarcodeData(_ imageData: Data, client: AsposeBarcodeCloudClient) throws -> [BarcodeResponse] {
     let semaphore = DispatchSemaphore(value: 0)
     let result = ThreadSafeBox<Result<[BarcodeResponse], Error>>()
     let request = ScanBase64Request(fileBase64: imageData.base64EncodedString())
 
-    ScanAPI.scanBase64(scanBase64Request: request) { response, error in
+    ScanAPI.scanBase64(
+        scanBase64Request: request,
+        apiConfiguration: client.apiConfiguration
+    ) { response, error in
         if let error = error {
             result.set(.failure(error))
         } else {

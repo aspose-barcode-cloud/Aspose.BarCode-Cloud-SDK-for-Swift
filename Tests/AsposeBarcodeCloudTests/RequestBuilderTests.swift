@@ -3,20 +3,16 @@ import XCTest
 @testable import AsposeBarcodeCloud
 
 final class RequestBuilderTests: XCTestCase {
-    override func tearDown() {
-        AsposeBarcodeCloudClient.resetGlobalConfiguration()
-        super.tearDown()
-    }
-
     func testGenerateGetRequestShape() {
-        applyTestClient()
+        let client = makeTestClient()
 
         let builder = GenerateAPI.generateWithRequestBuilder(
             barcodeType: .qr,
             data: "hello world",
             dataType: .stringData,
             imageFormat: .png,
-            textLocation: ._none
+            textLocation: ._none,
+            apiConfiguration: client.apiConfiguration
         )
 
         XCTAssertEqual(builder.method, "GET")
@@ -175,8 +171,8 @@ final class RequestBuilderTests: XCTestCase {
         XCTAssertEqual(builder.parameters?["file"] as? String, fileData.base64EncodedString())
     }
 
-    private func applyTestClient() {
-        let client = AsposeBarcodeCloudClient(
+    private func makeTestClient() -> AsposeBarcodeCloudClient {
+        return AsposeBarcodeCloudClient(
             configuration: AsposeBarcodeCloudConfiguration(
                 accessToken: "test-token",
                 host: "https://example.com/v4.0",
@@ -184,7 +180,6 @@ final class RequestBuilderTests: XCTestCase {
                 sdkVersion: "0.0-test"
             )
         )
-        client.apply()
     }
 
     private func queryItems(from urlString: String) -> [String: String] {

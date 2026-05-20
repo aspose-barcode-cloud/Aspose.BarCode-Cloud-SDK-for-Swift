@@ -3,13 +3,9 @@ import XCTest
 @testable import AsposeBarcodeCloud
 
 final class AsposeBarcodeCloudTests: XCTestCase {
-    override func tearDown() {
-        AsposeBarcodeCloudClient.resetGlobalConfiguration()
-        super.tearDown()
-    }
-
     func testDefaultBasePath() {
-        XCTAssertEqual(AsposeBarcodeCloudAPI.basePath, "https://api.aspose.cloud/v4.0")
+        let client = AsposeBarcodeCloudClient(configuration: AsposeBarcodeCloudConfiguration())
+        XCTAssertEqual(client.apiConfiguration.basePath, "https://api.aspose.cloud/v4.0")
     }
 
     func testTokenRequestUsesClientCredentialsFormBody() throws {
@@ -49,12 +45,14 @@ final class AsposeBarcodeCloudTests: XCTestCase {
             )
         )
 
-        client.apply()
-
-        let requestBuilder = GenerateAPI.generateWithRequestBuilder(barcodeType: .qr, data: "hello")
+        let requestBuilder = GenerateAPI.generateWithRequestBuilder(
+            barcodeType: .qr,
+            data: "hello",
+            apiConfiguration: client.apiConfiguration
+        )
         let headers = (requestBuilder as! URLSessionRequestBuilder<Data>).buildHeaders()
 
-        XCTAssertEqual(AsposeBarcodeCloudAPI.basePath, "https://example.com/v4.0")
+        XCTAssertEqual(client.apiConfiguration.basePath, "https://example.com/v4.0")
         XCTAssertEqual(headers["Authorization"], "Bearer test-token")
         XCTAssertEqual(headers["x-aspose-client"], "custom swift sdk")
         XCTAssertEqual(headers["x-aspose-client-version"], "1.2.3")
@@ -76,10 +74,10 @@ final class AsposeBarcodeCloudTests: XCTestCase {
 
         XCTAssertEqual(token, "fetched-token")
         XCTAssertEqual(configuration.accessToken, "fetched-token")
-        XCTAssertEqual(AsposeBarcodeCloudAPI.customHeaders["Authorization"], "Bearer fetched-token")
-        XCTAssertEqual(AsposeBarcodeCloudAPI.customHeaders["x-aspose-client"], "swift sdk")
+        XCTAssertEqual(client.apiConfiguration.customHeaders["Authorization"], "Bearer fetched-token")
+        XCTAssertEqual(client.apiConfiguration.customHeaders["x-aspose-client"], "swift sdk")
         XCTAssertEqual(
-            AsposeBarcodeCloudAPI.customHeaders["x-aspose-client-version"],
+            client.apiConfiguration.customHeaders["x-aspose-client-version"],
             AsposeBarcodeCloudConfiguration.defaultSdkVersion
         )
     }
@@ -98,11 +96,11 @@ final class AsposeBarcodeCloudTests: XCTestCase {
     }
 
     func testGenerateSmokeWhenIntegrationEnvironmentIsEnabled() throws {
-        guard try applyIntegrationClientIfEnabled() else {
+        guard let client = try makeIntegrationClient() else {
             return
         }
 
-        let (responseData, responseError) = generateBarcodeData("Aspose.BarCode Swift SDK")
+        let (responseData, responseError) = generateBarcodeData("Aspose.BarCode Swift SDK", client: client)
 
         XCTAssertNil(responseError)
         XCTAssertNotNil(responseData)
@@ -110,45 +108,50 @@ final class AsposeBarcodeCloudTests: XCTestCase {
     }
 
     func testGenerateScanAndRecognizeBase64SmokeWhenIntegrationEnvironmentIsEnabled() throws {
-        guard try applyIntegrationClientIfEnabled() else {
+        guard let client = try makeIntegrationClient() else {
             return
         }
 
         let barcodeValue = "Aspose.BarCode Swift SDK live roundtrip"
-        let (generatedData, generateError) = generateBarcodeData(barcodeValue)
+        let (generatedData, generateError) = generateBarcodeData(barcodeValue, client: client)
         XCTAssertNil(generateError)
 
         let fileBase64 = try XCTUnwrap(generatedData).base64EncodedString()
 
-        let (scanResponse, scanError) = scanBase64(fileBase64)
+        let (scanResponse, scanError) = scanBase64(fileBase64, client: client)
         XCTAssertNil(scanError)
         XCTAssertEqual(scanResponse?.barcodes?.first?.barcodeValue, barcodeValue)
 
-        let (recognizeResponse, recognizeError) = recognizeBase64(fileBase64, barcodeType: .qr)
+        let (recognizeResponse, recognizeError) = recognizeBase64(fileBase64, barcodeType: .qr, client: client)
         XCTAssertNil(recognizeError)
         XCTAssertEqual(recognizeResponse?.barcodes?.first?.barcodeValue, barcodeValue)
     }
 
-    private func applyIntegrationClientIfEnabled() throws -> Bool {
+    private func makeIntegrationClient() throws -> AsposeBarcodeCloudClient? {
         guard ProcessInfo.processInfo.environment["ASPOSE_RUN_INTEGRATION_TESTS"] == "true" else {
-            return false
+            return nil
         }
 
         guard let configuration = TestConfiguration.load() else {
-            return false
+            return nil
         }
 
         let client = AsposeBarcodeCloudClient(configuration: configuration)
         try client.authorize()
-        return true
+        return client
     }
 
-    private func generateBarcodeData(_ value: String) -> (Data?, Error?) {
+    private func generateBarcodeData(_ value: String, client: AsposeBarcodeCloudClient) -> (Data?, Error?) {
         let expectation = self.expectation(description: "generate barcode")
         let responseData = ThreadSafeBox<Data>()
         let responseError = ThreadSafeBox<Error>()
 
-        GenerateAPI.generate(barcodeType: .qr, data: value, imageFormat: .png) { data, error in
+        GenerateAPI.generate(
+            barcodeType: .qr,
+            data: value,
+            imageFormat: .png,
+            apiConfiguration: client.apiConfiguration
+        ) { data, error in
             responseData.set(data)
             responseError.set(error)
             expectation.fulfill()
@@ -159,12 +162,15 @@ final class AsposeBarcodeCloudTests: XCTestCase {
         return (responseData.value, responseError.value)
     }
 
-    private func scanBase64(_ fileBase64: String) -> (BarcodeResponseList?, Error?) {
+    private func scanBase64(_ fileBase64: String, client: AsposeBarcodeCloudClient) -> (BarcodeResponseList?, Error?) {
         let expectation = self.expectation(description: "scan barcode")
         let response = ThreadSafeBox<BarcodeResponseList>()
         let responseError = ThreadSafeBox<Error>()
 
-        ScanAPI.scanBase64(scanBase64Request: ScanBase64Request(fileBase64: fileBase64)) { data, error in
+        ScanAPI.scanBase64(
+            scanBase64Request: ScanBase64Request(fileBase64: fileBase64),
+            apiConfiguration: client.apiConfiguration
+        ) { data, error in
             response.set(data)
             responseError.set(error)
             expectation.fulfill()
@@ -175,7 +181,7 @@ final class AsposeBarcodeCloudTests: XCTestCase {
         return (response.value, responseError.value)
     }
 
-    private func recognizeBase64(_ fileBase64: String, barcodeType: DecodeBarcodeType) -> (BarcodeResponseList?, Error?) {
+    private func recognizeBase64(_ fileBase64: String, barcodeType: DecodeBarcodeType, client: AsposeBarcodeCloudClient) -> (BarcodeResponseList?, Error?) {
         let expectation = self.expectation(description: "recognize barcode")
         let response = ThreadSafeBox<BarcodeResponseList>()
         let responseError = ThreadSafeBox<Error>()
@@ -185,7 +191,10 @@ final class AsposeBarcodeCloudTests: XCTestCase {
             fileBase64: fileBase64
         )
 
-        RecognizeAPI.recognizeBase64(recognizeBase64Request: request) { data, error in
+        RecognizeAPI.recognizeBase64(
+            recognizeBase64Request: request,
+            apiConfiguration: client.apiConfiguration
+        ) { data, error in
             response.set(data)
             responseError.set(error)
             expectation.fulfill()
