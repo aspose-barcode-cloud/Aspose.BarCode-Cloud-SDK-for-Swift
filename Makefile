@@ -24,6 +24,10 @@ format:
 	}
 	swiftformat .
 
+.PHONY: insert-example
+insert-example:
+	./Scripts/insert-example.bash
+
 .PHONY: test
 test:
 	./Scripts/runTests.sh
@@ -45,4 +49,4 @@ clean:
 	rm -rf .build .swiftpm DerivedData Package.resolved
 
 .PHONY: after-gen
-after-gen: build test
+after-gen: format insert-example
