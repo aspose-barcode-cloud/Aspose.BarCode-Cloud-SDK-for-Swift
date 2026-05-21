@@ -16,10 +16,6 @@ let package = Package(
             name: "AsposeBarcodeCloud",
             targets: ["AsposeBarcodeCloud"]
         ),
-        .executable(
-            name: "GenerateAndScanExample",
-            targets: ["GenerateAndScanExample"]
-        ),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
