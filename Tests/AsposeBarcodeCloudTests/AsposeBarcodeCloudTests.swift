@@ -60,8 +60,8 @@ final class AsposeBarcodeCloudTests: XCTestCase {
         XCTAssertEqual(headers["x-aspose-client-version"], "1.2.3")
 
         let intercepted = try await intercept(
-            request: URLRequest(url: URL(string: "https://example.com/v4.0/barcode/generate/QR")!),
-            requestBuilder: requestBuilder as! URLSessionRequestBuilder<Data>,
+            request: URLRequest(url: XCTUnwrap(URL(string: "https://example.com/v4.0/barcode/generate/QR"))),
+            requestBuilder: XCTUnwrap(requestBuilder as? URLSessionRequestBuilder<Data>),
             apiConfiguration: client.apiConfiguration
         )
         XCTAssertEqual(intercepted.value(forHTTPHeaderField: "Authorization"), "Bearer test-token")
