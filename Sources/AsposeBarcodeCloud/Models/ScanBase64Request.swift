@@ -9,7 +9,6 @@ import Foundation
 
 /** Scan barcode request. */
 public final class ScanBase64Request: @unchecked Sendable, Codable, Hashable {
-
     public static let fileBase64Rule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Barcode image bytes encoded as base-64. */
     public var fileBase64: String
@@ -31,12 +30,9 @@ public final class ScanBase64Request: @unchecked Sendable, Codable, Hashable {
 
     public static func == (lhs: ScanBase64Request, rhs: ScanBase64Request) -> Bool {
         lhs.fileBase64 == rhs.fileBase64
-        
     }
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(fileBase64.hashValue)
-        
     }
 }
-

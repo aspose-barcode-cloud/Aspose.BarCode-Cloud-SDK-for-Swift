@@ -8,7 +8,6 @@
 import Foundation
 
 open class RecognizeAPI {
-
     /**
      Recognize barcode from file on server in the Internet using GET requests with parameter in query string. For recognizing files from your hard drive use `recognize-body` or `recognize-multipart` endpoints instead.
 
@@ -21,7 +20,7 @@ open class RecognizeAPI {
      */
     @discardableResult
     open class func recognize(barcodeType: DecodeBarcodeType, fileUrl: String, recognitionMode: RecognitionMode? = nil, recognitionImageKind: RecognitionImageKind? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: BarcodeResponseList?, _ error: Error?) -> Void) -> RequestTask {
-        return recognizeWithRequestBuilder(barcodeType: barcodeType, fileUrl: fileUrl, recognitionMode: recognitionMode, recognitionImageKind: recognitionImageKind, apiConfiguration: apiConfiguration).execute { result in
+        recognizeWithRequestBuilder(barcodeType: barcodeType, fileUrl: fileUrl, recognitionMode: recognitionMode, recognitionImageKind: recognitionImageKind, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -42,7 +41,7 @@ open class RecognizeAPI {
      - returns: BarcodeResponseList
      */
     open class func recognize(barcodeType: DecodeBarcodeType, fileUrl: String, recognitionMode: RecognitionMode? = nil, recognitionImageKind: RecognitionImageKind? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> BarcodeResponseList {
-        return try await recognizeWithRequestBuilder(barcodeType: barcodeType, fileUrl: fileUrl, recognitionMode: recognitionMode, recognitionImageKind: recognitionImageKind, apiConfiguration: apiConfiguration).execute().body
+        try await recognizeWithRequestBuilder(barcodeType: barcodeType, fileUrl: fileUrl, recognitionMode: recognitionMode, recognitionImageKind: recognitionImageKind, apiConfiguration: apiConfiguration).execute().body
     }
 
     /**
@@ -71,9 +70,7 @@ open class RecognizeAPI {
             "recognitionImageKind": (wrappedValue: recognitionImageKind?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
         ])
 
-        let localVariableNillableHeaders: [String: (any Sendable)?] = [
-            :
-        ]
+        let localVariableNillableHeaders: [String: (any Sendable)?] = [:]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
@@ -91,7 +88,7 @@ open class RecognizeAPI {
      */
     @discardableResult
     open class func recognizeBase64(recognizeBase64Request: RecognizeBase64Request, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: BarcodeResponseList?, _ error: Error?) -> Void) -> RequestTask {
-        return recognizeBase64WithRequestBuilder(recognizeBase64Request: recognizeBase64Request, apiConfiguration: apiConfiguration).execute { result in
+        recognizeBase64WithRequestBuilder(recognizeBase64Request: recognizeBase64Request, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -109,7 +106,7 @@ open class RecognizeAPI {
      - returns: BarcodeResponseList
      */
     open class func recognizeBase64(recognizeBase64Request: RecognizeBase64Request, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> BarcodeResponseList {
-        return try await recognizeBase64WithRequestBuilder(recognizeBase64Request: recognizeBase64Request, apiConfiguration: apiConfiguration).execute().body
+        try await recognizeBase64WithRequestBuilder(recognizeBase64Request: recognizeBase64Request, apiConfiguration: apiConfiguration).execute().body
     }
 
     /**
@@ -152,7 +149,7 @@ open class RecognizeAPI {
      */
     @discardableResult
     open class func recognizeMultipart(barcodeType: DecodeBarcodeType, file: Data, recognitionMode: RecognitionMode? = nil, recognitionImageKind: RecognitionImageKind? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: BarcodeResponseList?, _ error: Error?) -> Void) -> RequestTask {
-        return recognizeMultipartWithRequestBuilder(barcodeType: barcodeType, file: file, recognitionMode: recognitionMode, recognitionImageKind: recognitionImageKind, apiConfiguration: apiConfiguration).execute { result in
+        recognizeMultipartWithRequestBuilder(barcodeType: barcodeType, file: file, recognitionMode: recognitionMode, recognitionImageKind: recognitionImageKind, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -173,7 +170,7 @@ open class RecognizeAPI {
      - returns: BarcodeResponseList
      */
     open class func recognizeMultipart(barcodeType: DecodeBarcodeType, file: Data, recognitionMode: RecognitionMode? = nil, recognitionImageKind: RecognitionImageKind? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> BarcodeResponseList {
-        return try await recognizeMultipartWithRequestBuilder(barcodeType: barcodeType, file: file, recognitionMode: recognitionMode, recognitionImageKind: recognitionImageKind, apiConfiguration: apiConfiguration).execute().body
+        try await recognizeMultipartWithRequestBuilder(barcodeType: barcodeType, file: file, recognitionMode: recognitionMode, recognitionImageKind: recognitionImageKind, apiConfiguration: apiConfiguration).execute().body
     }
 
     /**

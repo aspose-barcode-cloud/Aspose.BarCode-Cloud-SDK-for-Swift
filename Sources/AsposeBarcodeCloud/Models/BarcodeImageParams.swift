@@ -9,8 +9,7 @@ import Foundation
 
 /** Barcode image optional parameters */
 public final class BarcodeImageParams: @unchecked Sendable, Codable, Hashable {
-
-    public static let resolutionRule = NumericRule<Float>(minimum: 1, exclusiveMinimum: false, maximum: 100000, exclusiveMaximum: false, multipleOf: nil)
+    public static let resolutionRule = NumericRule<Float>(minimum: 1, exclusiveMinimum: false, maximum: 100_000, exclusiveMaximum: false, multipleOf: nil)
     public var imageFormat: BarcodeImageFormat?
     public var textLocation: CodeLocation?
     /** Specify the displaying bars and content Color. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value started with #. For example: AliceBlue or #FF000000 Default value: Black. */
@@ -68,15 +67,14 @@ public final class BarcodeImageParams: @unchecked Sendable, Codable, Hashable {
 
     public static func == (lhs: BarcodeImageParams, rhs: BarcodeImageParams) -> Bool {
         lhs.imageFormat == rhs.imageFormat &&
-        lhs.textLocation == rhs.textLocation &&
-        lhs.foregroundColor == rhs.foregroundColor &&
-        lhs.backgroundColor == rhs.backgroundColor &&
-        lhs.units == rhs.units &&
-        lhs.resolution == rhs.resolution &&
-        lhs.imageHeight == rhs.imageHeight &&
-        lhs.imageWidth == rhs.imageWidth &&
-        lhs.rotationAngle == rhs.rotationAngle
-        
+            lhs.textLocation == rhs.textLocation &&
+            lhs.foregroundColor == rhs.foregroundColor &&
+            lhs.backgroundColor == rhs.backgroundColor &&
+            lhs.units == rhs.units &&
+            lhs.resolution == rhs.resolution &&
+            lhs.imageHeight == rhs.imageHeight &&
+            lhs.imageWidth == rhs.imageWidth &&
+            lhs.rotationAngle == rhs.rotationAngle
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -89,7 +87,5 @@ public final class BarcodeImageParams: @unchecked Sendable, Codable, Hashable {
         hasher.combine(imageHeight?.hashValue)
         hasher.combine(imageWidth?.hashValue)
         hasher.combine(rotationAngle?.hashValue)
-        
     }
 }
-

@@ -6,11 +6,10 @@
 
 import Foundation
 
-internal final class SynchronizedDictionary<K: Hashable, V>: @unchecked Sendable {
-
+final class SynchronizedDictionary<K: Hashable, V>: @unchecked Sendable {
     private let _state = OpenAPIMutex<[K: V]>([:])
 
-    internal subscript(key: K) -> V? {
+    subscript(key: K) -> V? {
         get { _state.value[key] }
         set { _state.withValue { $0[key] = newValue } }
     }

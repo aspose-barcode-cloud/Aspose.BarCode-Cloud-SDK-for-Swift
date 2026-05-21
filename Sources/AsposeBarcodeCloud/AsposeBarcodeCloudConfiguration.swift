@@ -1,6 +1,6 @@
 import Foundation
 #if canImport(FoundationNetworking)
-import FoundationNetworking
+    import FoundationNetworking
 #endif
 
 public final class AsposeBarcodeCloudConfiguration: @unchecked Sendable {
@@ -39,8 +39,9 @@ public final class AsposeBarcodeCloudConfiguration: @unchecked Sendable {
     }
 
     public func makeTokenRequest() throws -> URLRequest {
-        guard let clientId = clientId, !clientId.isEmpty,
-              let clientSecret = clientSecret, !clientSecret.isEmpty else {
+        guard let clientId, !clientId.isEmpty,
+              let clientSecret, !clientSecret.isEmpty
+        else {
             throw AsposeBarcodeCloudClientError.missingCredentials
         }
 

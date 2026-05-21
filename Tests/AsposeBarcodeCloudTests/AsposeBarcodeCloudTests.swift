@@ -1,6 +1,6 @@
 import Foundation
 #if canImport(FoundationNetworking)
-import FoundationNetworking
+    import FoundationNetworking
 #endif
 import XCTest
 @testable import AsposeBarcodeCloud
@@ -166,7 +166,7 @@ final class AsposeBarcodeCloudTests: XCTestCase {
     }
 
     private func generateBarcodeData(_ value: String, client: AsposeBarcodeCloudClient) -> (Data?, Error?) {
-        let expectation = self.expectation(description: "generate barcode")
+        let expectation = expectation(description: "generate barcode")
         let responseData = ThreadSafeBox<Data>()
         let responseError = ThreadSafeBox<Error>()
 
@@ -187,7 +187,7 @@ final class AsposeBarcodeCloudTests: XCTestCase {
     }
 
     private func scanBase64(_ fileBase64: String, client: AsposeBarcodeCloudClient) -> (BarcodeResponseList?, Error?) {
-        let expectation = self.expectation(description: "scan barcode")
+        let expectation = expectation(description: "scan barcode")
         let response = ThreadSafeBox<BarcodeResponseList>()
         let responseError = ThreadSafeBox<Error>()
 
@@ -206,7 +206,7 @@ final class AsposeBarcodeCloudTests: XCTestCase {
     }
 
     private func recognizeBase64(_ fileBase64: String, barcodeType: DecodeBarcodeType, client: AsposeBarcodeCloudClient) -> (BarcodeResponseList?, Error?) {
-        let expectation = self.expectation(description: "recognize barcode")
+        let expectation = expectation(description: "recognize barcode")
         let response = ThreadSafeBox<BarcodeResponseList>()
         let responseError = ThreadSafeBox<Error>()
 
@@ -256,7 +256,8 @@ private enum TestConfiguration {
 
     private static func loadFromFile(_ path: String) -> AsposeBarcodeCloudConfiguration? {
         guard FileManager.default.fileExists(atPath: path),
-              let data = FileManager.default.contents(atPath: path) else {
+              let data = FileManager.default.contents(atPath: path)
+        else {
             return nil
         }
 
@@ -347,7 +348,7 @@ private enum TestConfiguration {
         }
 
         func makeConfiguration() -> AsposeBarcodeCloudConfiguration? {
-            if let accessToken = accessToken, !accessToken.isEmpty {
+            if let accessToken, !accessToken.isEmpty {
                 return AsposeBarcodeCloudConfiguration(
                     accessToken: accessToken,
                     host: host ?? AsposeBarcodeCloudConfiguration.defaultHost,
@@ -355,8 +356,9 @@ private enum TestConfiguration {
                 )
             }
 
-            guard let clientId = clientId, !clientId.isEmpty,
-                  let clientSecret = clientSecret, !clientSecret.isEmpty else {
+            guard let clientId, !clientId.isEmpty,
+                  let clientSecret, !clientSecret.isEmpty
+            else {
                 return nil
             }
 

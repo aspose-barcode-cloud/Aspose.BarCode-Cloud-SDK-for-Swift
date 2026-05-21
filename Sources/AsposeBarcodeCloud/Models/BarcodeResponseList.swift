@@ -9,7 +9,6 @@ import Foundation
 
 /** Represents information about barcode list. */
 public final class BarcodeResponseList: @unchecked Sendable, Codable, Hashable {
-
     /** List of barcodes which are present in image. */
     public var barcodes: [BarcodeResponse]?
 
@@ -30,12 +29,9 @@ public final class BarcodeResponseList: @unchecked Sendable, Codable, Hashable {
 
     public static func == (lhs: BarcodeResponseList, rhs: BarcodeResponseList) -> Bool {
         lhs.barcodes == rhs.barcodes
-        
     }
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(barcodes.hashValue)
-        
     }
 }
-

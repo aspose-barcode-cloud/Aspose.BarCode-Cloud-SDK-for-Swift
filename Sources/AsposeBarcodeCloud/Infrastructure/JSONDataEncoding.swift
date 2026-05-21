@@ -7,11 +7,10 @@
 
 import Foundation
 #if canImport(FoundationNetworking)
-import FoundationNetworking
+    import FoundationNetworking
 #endif
 
 public struct JSONDataEncoding: Sendable {
-
     // MARK: Properties
 
     private static let jsonDataKey = "jsonData"
@@ -45,12 +44,11 @@ public struct JSONDataEncoding: Sendable {
 
     public static func encodingParameters(jsonData: Data?) -> [String: any Sendable]? {
         var returnedParams: [String: any Sendable]?
-        if let jsonData = jsonData, !jsonData.isEmpty {
+        if let jsonData, !jsonData.isEmpty {
             var params: [String: any Sendable] = [:]
             params[jsonDataKey] = jsonData
             returnedParams = params
         }
         return returnedParams
     }
-
 }

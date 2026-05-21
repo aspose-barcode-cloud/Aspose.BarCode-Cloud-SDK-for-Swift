@@ -9,7 +9,6 @@ import Foundation
 
 /** Barcode generation parameters */
 public final class GenerateParams: @unchecked Sendable, Codable, Hashable {
-
     public var barcodeType: EncodeBarcodeType
     public var encodeData: EncodeData
     public var barcodeImageParams: BarcodeImageParams?
@@ -37,16 +36,13 @@ public final class GenerateParams: @unchecked Sendable, Codable, Hashable {
 
     public static func == (lhs: GenerateParams, rhs: GenerateParams) -> Bool {
         lhs.barcodeType == rhs.barcodeType &&
-        lhs.encodeData == rhs.encodeData &&
-        lhs.barcodeImageParams == rhs.barcodeImageParams
-        
+            lhs.encodeData == rhs.encodeData &&
+            lhs.barcodeImageParams == rhs.barcodeImageParams
     }
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(barcodeType.hashValue)
         hasher.combine(encodeData.hashValue)
         hasher.combine(barcodeImageParams?.hashValue)
-        
     }
 }
-

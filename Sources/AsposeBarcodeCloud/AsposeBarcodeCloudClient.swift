@@ -1,6 +1,6 @@
 import Foundation
 #if canImport(FoundationNetworking)
-import FoundationNetworking
+    import FoundationNetworking
 #endif
 
 public typealias AsposeBarcodeCloudTokenFetcher = @Sendable (
@@ -33,8 +33,8 @@ public final class AsposeBarcodeCloudClient: @unchecked Sendable {
         )
         apiConfig.interceptor = interceptor
 
-        self.apiConfiguration = apiConfig
-        self.authInterceptor = interceptor
+        apiConfiguration = apiConfig
+        authInterceptor = interceptor
     }
 
     public convenience init(
@@ -103,7 +103,7 @@ public final class AsposeBarcodeCloudClient: @unchecked Sendable {
         }
 
         URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
+            if let error {
                 completion(.failure(.transportError(error)))
                 return
             }
@@ -113,16 +113,17 @@ public final class AsposeBarcodeCloudClient: @unchecked Sendable {
                 return
             }
 
-            guard 200..<300 ~= httpResponse.statusCode else {
+            guard 200 ..< 300 ~= httpResponse.statusCode else {
                 let body = data.flatMap { String(data: $0, encoding: .utf8) }
                 completion(.failure(.tokenRequestFailed(statusCode: httpResponse.statusCode, body: body)))
                 return
             }
 
-            guard let data = data,
+            guard let data,
                   let tokenResponse = try? JSONDecoder().decode(TokenResponse.self, from: data),
                   let accessToken = tokenResponse.accessToken,
-                  !accessToken.isEmpty else {
+                  !accessToken.isEmpty
+            else {
                 completion(.failure(.invalidTokenResponse))
                 return
             }

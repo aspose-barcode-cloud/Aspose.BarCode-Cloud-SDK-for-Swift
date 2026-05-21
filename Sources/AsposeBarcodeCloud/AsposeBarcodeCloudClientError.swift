@@ -16,7 +16,7 @@ public enum AsposeBarcodeCloudClientError: Error, CustomStringConvertible, @unch
         case .invalidTokenResponse:
             return "Token response does not contain access_token"
         case let .tokenRequestFailed(statusCode, body):
-            if let body = body, !body.isEmpty {
+            if let body, !body.isEmpty {
                 return "Token request failed with status \(statusCode): \(body)"
             }
             return "Token request failed with status \(statusCode)"

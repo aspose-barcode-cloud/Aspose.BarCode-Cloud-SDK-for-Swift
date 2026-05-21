@@ -9,8 +9,7 @@ import Foundation
 
 /** Barcode recognize request */
 public final class RecognizeBase64Request: @unchecked Sendable, Codable, Hashable {
-
-    public static let fileBase64Rule = StringRule(minLength: 1, maxLength: 28730982, pattern: nil)
+    public static let fileBase64Rule = StringRule(minLength: 1, maxLength: 28_730_982, pattern: nil)
     /** Array of decode types to find on barcode */
     public var barcodeTypes: [DecodeBarcodeType]
     /** Barcode image bytes encoded as base-64. */
@@ -44,10 +43,9 @@ public final class RecognizeBase64Request: @unchecked Sendable, Codable, Hashabl
 
     public static func == (lhs: RecognizeBase64Request, rhs: RecognizeBase64Request) -> Bool {
         lhs.barcodeTypes == rhs.barcodeTypes &&
-        lhs.fileBase64 == rhs.fileBase64 &&
-        lhs.recognitionMode == rhs.recognitionMode &&
-        lhs.recognitionImageKind == rhs.recognitionImageKind
-        
+            lhs.fileBase64 == rhs.fileBase64 &&
+            lhs.recognitionMode == rhs.recognitionMode &&
+            lhs.recognitionImageKind == rhs.recognitionImageKind
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -55,7 +53,5 @@ public final class RecognizeBase64Request: @unchecked Sendable, Codable, Hashabl
         hasher.combine(fileBase64.hashValue)
         hasher.combine(recognitionMode?.hashValue)
         hasher.combine(recognitionImageKind?.hashValue)
-        
     }
 }
-

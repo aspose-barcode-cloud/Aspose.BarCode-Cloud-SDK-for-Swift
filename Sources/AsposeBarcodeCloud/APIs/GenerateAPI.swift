@@ -8,7 +8,6 @@
 import Foundation
 
 open class GenerateAPI {
-
     /**
      Generate barcode using GET request with parameters in route and query string.
 
@@ -29,7 +28,7 @@ open class GenerateAPI {
      */
     @discardableResult
     open class func generate(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: Data?, _ error: Error?) -> Void) -> RequestTask {
-        return generateWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, imageFormat: imageFormat, textLocation: textLocation, foregroundColor: foregroundColor, backgroundColor: backgroundColor, units: units, resolution: resolution, imageHeight: imageHeight, imageWidth: imageWidth, rotationAngle: rotationAngle, apiConfiguration: apiConfiguration).execute { result in
+        generateWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, imageFormat: imageFormat, textLocation: textLocation, foregroundColor: foregroundColor, backgroundColor: backgroundColor, units: units, resolution: resolution, imageHeight: imageHeight, imageWidth: imageWidth, rotationAngle: rotationAngle, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -58,7 +57,7 @@ open class GenerateAPI {
      - returns: Data
      */
     open class func generate(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> Data {
-        return try await generateWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, imageFormat: imageFormat, textLocation: textLocation, foregroundColor: foregroundColor, backgroundColor: backgroundColor, units: units, resolution: resolution, imageHeight: imageHeight, imageWidth: imageWidth, rotationAngle: rotationAngle, apiConfiguration: apiConfiguration).execute().body
+        try await generateWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, imageFormat: imageFormat, textLocation: textLocation, foregroundColor: foregroundColor, backgroundColor: backgroundColor, units: units, resolution: resolution, imageHeight: imageHeight, imageWidth: imageWidth, rotationAngle: rotationAngle, apiConfiguration: apiConfiguration).execute().body
     }
 
     /**
@@ -105,9 +104,7 @@ open class GenerateAPI {
             "rotationAngle": (wrappedValue: rotationAngle?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
         ])
 
-        let localVariableNillableHeaders: [String: (any Sendable)?] = [
-            :
-        ]
+        let localVariableNillableHeaders: [String: (any Sendable)?] = [:]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
@@ -125,7 +122,7 @@ open class GenerateAPI {
      */
     @discardableResult
     open class func generateBody(generateParams: GenerateParams, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: Data?, _ error: Error?) -> Void) -> RequestTask {
-        return generateBodyWithRequestBuilder(generateParams: generateParams, apiConfiguration: apiConfiguration).execute { result in
+        generateBodyWithRequestBuilder(generateParams: generateParams, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -143,7 +140,7 @@ open class GenerateAPI {
      - returns: Data
      */
     open class func generateBody(generateParams: GenerateParams, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> Data {
-        return try await generateBodyWithRequestBuilder(generateParams: generateParams, apiConfiguration: apiConfiguration).execute().body
+        try await generateBodyWithRequestBuilder(generateParams: generateParams, apiConfiguration: apiConfiguration).execute().body
     }
 
     /**
@@ -194,7 +191,7 @@ open class GenerateAPI {
      */
     @discardableResult
     open class func generateMultipart(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: Data?, _ error: Error?) -> Void) -> RequestTask {
-        return generateMultipartWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, imageFormat: imageFormat, textLocation: textLocation, foregroundColor: foregroundColor, backgroundColor: backgroundColor, units: units, resolution: resolution, imageHeight: imageHeight, imageWidth: imageWidth, rotationAngle: rotationAngle, apiConfiguration: apiConfiguration).execute { result in
+        generateMultipartWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, imageFormat: imageFormat, textLocation: textLocation, foregroundColor: foregroundColor, backgroundColor: backgroundColor, units: units, resolution: resolution, imageHeight: imageHeight, imageWidth: imageWidth, rotationAngle: rotationAngle, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -223,7 +220,7 @@ open class GenerateAPI {
      - returns: Data
      */
     open class func generateMultipart(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> Data {
-        return try await generateMultipartWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, imageFormat: imageFormat, textLocation: textLocation, foregroundColor: foregroundColor, backgroundColor: backgroundColor, units: units, resolution: resolution, imageHeight: imageHeight, imageWidth: imageWidth, rotationAngle: rotationAngle, apiConfiguration: apiConfiguration).execute().body
+        try await generateMultipartWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, imageFormat: imageFormat, textLocation: textLocation, foregroundColor: foregroundColor, backgroundColor: backgroundColor, units: units, resolution: resolution, imageHeight: imageHeight, imageWidth: imageWidth, rotationAngle: rotationAngle, apiConfiguration: apiConfiguration).execute().body
     }
 
     /**

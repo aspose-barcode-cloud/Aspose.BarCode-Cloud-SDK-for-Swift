@@ -9,7 +9,6 @@ import Foundation
 
 /** Api Error. */
 public final class ApiError: @unchecked Sendable, Codable, Hashable {
-
     /** Gets or sets api error code. */
     public var code: String?
     /** Gets or sets error message. */
@@ -49,11 +48,10 @@ public final class ApiError: @unchecked Sendable, Codable, Hashable {
 
     public static func == (lhs: ApiError, rhs: ApiError) -> Bool {
         lhs.code == rhs.code &&
-        lhs.message == rhs.message &&
-        lhs.description == rhs.description &&
-        lhs.dateTime == rhs.dateTime &&
-        lhs.innerError == rhs.innerError
-        
+            lhs.message == rhs.message &&
+            lhs.description == rhs.description &&
+            lhs.dateTime == rhs.dateTime &&
+            lhs.innerError == rhs.innerError
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -62,7 +60,5 @@ public final class ApiError: @unchecked Sendable, Codable, Hashable {
         hasher.combine(description?.hashValue)
         hasher.combine(dateTime?.hashValue)
         hasher.combine(innerError?.hashValue)
-        
     }
 }
-

@@ -1,6 +1,6 @@
 import Foundation
 #if canImport(FoundationNetworking)
-import FoundationNetworking
+    import FoundationNetworking
 #endif
 import XCTest
 @testable import AsposeBarcodeCloud
@@ -181,7 +181,7 @@ final class RequestBuilderTests: XCTestCase {
     }
 
     private func makeTestClient() -> AsposeBarcodeCloudClient {
-        return AsposeBarcodeCloudClient(
+        AsposeBarcodeCloudClient(
             configuration: AsposeBarcodeCloudConfiguration(
                 accessToken: "test-token",
                 host: "https://example.com/v4.0",

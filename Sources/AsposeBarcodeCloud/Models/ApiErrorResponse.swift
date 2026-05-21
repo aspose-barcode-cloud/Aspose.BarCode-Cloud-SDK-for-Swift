@@ -9,7 +9,6 @@ import Foundation
 
 /** ApiError Response */
 public final class ApiErrorResponse: @unchecked Sendable, Codable, Hashable {
-
     /** Gets or sets request Id. */
     public var requestId: String?
     public var error: ApiError
@@ -34,14 +33,11 @@ public final class ApiErrorResponse: @unchecked Sendable, Codable, Hashable {
 
     public static func == (lhs: ApiErrorResponse, rhs: ApiErrorResponse) -> Bool {
         lhs.requestId == rhs.requestId &&
-        lhs.error == rhs.error
-        
+            lhs.error == rhs.error
     }
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(requestId.hashValue)
         hasher.combine(error.hashValue)
-        
     }
 }
-

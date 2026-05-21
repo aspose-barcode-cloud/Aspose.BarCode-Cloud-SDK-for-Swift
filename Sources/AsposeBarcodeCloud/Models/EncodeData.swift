@@ -9,7 +9,6 @@ import Foundation
 
 /** Data to encode in barcode */
 public final class EncodeData: @unchecked Sendable, Codable, Hashable {
-
     public static let dataRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var dataType: EncodeDataType?
     /** String represents data to encode */
@@ -35,14 +34,11 @@ public final class EncodeData: @unchecked Sendable, Codable, Hashable {
 
     public static func == (lhs: EncodeData, rhs: EncodeData) -> Bool {
         lhs.dataType == rhs.dataType &&
-        lhs.data == rhs.data
-        
+            lhs.data == rhs.data
     }
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(dataType?.hashValue)
         hasher.combine(data.hashValue)
-        
     }
 }
-

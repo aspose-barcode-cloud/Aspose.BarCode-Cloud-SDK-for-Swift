@@ -9,7 +9,6 @@ import Foundation
 
 /** Represents information about barcode. */
 public final class BarcodeResponse: @unchecked Sendable, Codable, Hashable {
-
     /** Barcode data. */
     public var barcodeValue: String?
     /** Type of the barcode. */
@@ -45,10 +44,9 @@ public final class BarcodeResponse: @unchecked Sendable, Codable, Hashable {
 
     public static func == (lhs: BarcodeResponse, rhs: BarcodeResponse) -> Bool {
         lhs.barcodeValue == rhs.barcodeValue &&
-        lhs.type == rhs.type &&
-        lhs.region == rhs.region &&
-        lhs.checksum == rhs.checksum
-        
+            lhs.type == rhs.type &&
+            lhs.region == rhs.region &&
+            lhs.checksum == rhs.checksum
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -56,7 +54,5 @@ public final class BarcodeResponse: @unchecked Sendable, Codable, Hashable {
         hasher.combine(type?.hashValue)
         hasher.combine(region?.hashValue)
         hasher.combine(checksum?.hashValue)
-        
     }
 }
-

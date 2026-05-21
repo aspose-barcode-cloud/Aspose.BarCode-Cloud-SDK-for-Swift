@@ -6,11 +6,10 @@
 
 import Foundation
 #if canImport(FoundationNetworking)
-import FoundationNetworking
+    import FoundationNetworking
 #endif
 
 open class AsposeBarcodeCloudAPIConfiguration: @unchecked Sendable {
-
     // MARK: - Private state
 
     private struct State {
@@ -80,7 +79,7 @@ open class AsposeBarcodeCloudAPIConfiguration: @unchecked Sendable {
         requestBuilderFactory: RequestBuilderFactory = URLSessionRequestBuilderFactory(),
         apiResponseQueue: DispatchQueue = .main,
         codableHelper: CodableHelper = CodableHelper(),
-        successfulStatusCodeRange: Range<Int> = 200..<300,
+        successfulStatusCodeRange: Range<Int> = 200 ..< 300,
         interceptor: OpenAPIInterceptor = DefaultOpenAPIInterceptor()
     ) {
         _state = OpenAPIMutex(State(
@@ -99,22 +98,21 @@ open class AsposeBarcodeCloudAPIConfiguration: @unchecked Sendable {
 }
 
 open class RequestBuilder<T: Sendable>: @unchecked Sendable, Identifiable {
-
     // MARK: - Immutable properties
 
     public let parameters: [String: any Sendable]?
     public let method: String
     public let URLString: String
-    public let requestTask: RequestTask = RequestTask()
+    public let requestTask: RequestTask = .init()
     public let requiresAuthentication: Bool
     public let apiConfiguration: AsposeBarcodeCloudAPIConfiguration
 
     // MARK: - Private mutable state
 
     private struct MutableState {
-        var credential: URLCredential? = nil
+        var credential: URLCredential?
         var headers: [String: String]
-        var onProgressReady: ((Progress) -> Void)? = nil
+        var onProgressReady: ((Progress) -> Void)?
     }
 
     private let _state: OpenAPIMutex<MutableState>
@@ -139,7 +137,7 @@ open class RequestBuilder<T: Sendable>: @unchecked Sendable, Identifiable {
 
     // MARK: - Init
 
-    required public init(
+    public required init(
         method: String,
         URLString: String,
         parameters: [String: any Sendable]?,
@@ -152,7 +150,7 @@ open class RequestBuilder<T: Sendable>: @unchecked Sendable, Identifiable {
         self.parameters = parameters
         self.requiresAuthentication = requiresAuthentication
         self.apiConfiguration = apiConfiguration
-        self._state = OpenAPIMutex(MutableState(headers: headers))
+        _state = OpenAPIMutex(MutableState(headers: headers))
 
         addHeaders(apiConfiguration.customHeaders)
         addCredential()
@@ -169,33 +167,33 @@ open class RequestBuilder<T: Sendable>: @unchecked Sendable, Identifiable {
     }
 
     @discardableResult
-    open func execute(completion: @Sendable @escaping (_ result: Swift.Result<Response<T>, ErrorResponse>) -> Void) -> RequestTask {
-        return requestTask
+    open func execute(completion _: @Sendable @escaping (_ result: Swift.Result<Response<T>, ErrorResponse>) -> Void) -> RequestTask {
+        requestTask
     }
 
     #if compiler(>=6.2)
-    @concurrent
-    @discardableResult
-    open func execute() async throws(ErrorResponse) -> Response<T> {
-        try await _execute()
-    }
+        @concurrent
+        @discardableResult
+        open func execute() async throws(ErrorResponse) -> Response<T> {
+            try await _execute()
+        }
     #else
-    @discardableResult
-    open func execute() async throws(ErrorResponse) -> Response<T> {
-        try await _execute()
-    }
+        @discardableResult
+        open func execute() async throws(ErrorResponse) -> Response<T> {
+            try await _execute()
+        }
     #endif
 
     @discardableResult
     private func _execute() async throws(ErrorResponse) -> Response<T> {
         do {
-            let requestTask = self.requestTask
+            let requestTask = requestTask
             return try await withTaskCancellationHandler {
                 try Task.checkCancellation()
                 return try await withCheckedThrowingContinuation { continuation in
                     guard !Task.isCancelled else {
-                      continuation.resume(throwing: CancellationError())
-                      return
+                        continuation.resume(throwing: CancellationError())
+                        return
                     }
 
                     self.execute { result in

@@ -6,21 +6,20 @@
 
 import Foundation
 
-internal final class OpenAPIMutex<Value>: @unchecked Sendable {
-
+final class OpenAPIMutex<Value>: @unchecked Sendable {
     private var _value: Value
     private let lock = NSRecursiveLock()
 
-    internal init(_ value: Value) {
-        self._value = value
+    init(_ value: Value) {
+        _value = value
     }
 
-    internal var value: Value {
+    var value: Value {
         lock.withLock { _value }
     }
 
     @discardableResult
-    internal func withValue<Result>(
+    func withValue<Result>(
         _ body: (inout Value) throws -> Result
     ) rethrows -> Result {
         try lock.withLock { try body(&_value) }

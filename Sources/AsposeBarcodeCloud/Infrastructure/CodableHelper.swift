@@ -8,7 +8,6 @@
 import Foundation
 
 open class CodableHelper: @unchecked Sendable {
-
     // MARK: - Private state
 
     private struct State {
@@ -16,10 +15,10 @@ open class CodableHelper: @unchecked Sendable {
         var defaultDateFormatter: DateFormatter = OpenISO8601DateFormatter()
 
         var customJSONDecoder: JSONDecoder?
-        var defaultJSONDecoder: JSONDecoder = JSONDecoder()
+        var defaultJSONDecoder: JSONDecoder = .init()
 
         var customJSONEncoder: JSONEncoder?
-        var defaultJSONEncoder: JSONEncoder = JSONEncoder()
+        var defaultJSONEncoder: JSONEncoder = .init()
 
         init() {
             defaultJSONEncoder.outputFormatting = .prettyPrinted
@@ -60,11 +59,11 @@ open class CodableHelper: @unchecked Sendable {
         set { _state.withValue { $0.customJSONEncoder = newValue } }
     }
 
-    open func decode<T>(_ type: T.Type, from data: Data) -> Swift.Result<T, Error> where T: Decodable {
-        return Swift.Result { try jsonDecoder.decode(type, from: data) }
+    open func decode<T: Decodable>(_ type: T.Type, from data: Data) -> Swift.Result<T, Error> {
+        Swift.Result { try jsonDecoder.decode(type, from: data) }
     }
 
-    open func encode<T>(_ value: T) -> Swift.Result<Data, Error> where T: Encodable {
-        return Swift.Result { try jsonEncoder.encode(value) }
+    open func encode(_ value: some Encodable) -> Swift.Result<Data, Error> {
+        Swift.Result { try jsonEncoder.encode(value) }
     }
 }

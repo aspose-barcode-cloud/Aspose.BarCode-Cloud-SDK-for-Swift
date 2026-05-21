@@ -9,7 +9,6 @@ import Foundation
 
 /** Wrapper around Drawing.Point for proper specification. */
 public final class RegionPoint: @unchecked Sendable, Codable, Hashable {
-
     /** X-coordinate */
     public var x: Int?
     /** Y-coordinate */
@@ -35,14 +34,11 @@ public final class RegionPoint: @unchecked Sendable, Codable, Hashable {
 
     public static func == (lhs: RegionPoint, rhs: RegionPoint) -> Bool {
         lhs.x == rhs.x &&
-        lhs.y == rhs.y
-        
+            lhs.y == rhs.y
     }
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(x?.hashValue)
         hasher.combine(y?.hashValue)
-        
     }
 }
-

@@ -1,6 +1,6 @@
 import Foundation
 #if canImport(FoundationNetworking)
-import FoundationNetworking
+    import FoundationNetworking
 #endif
 
 final class BarcodeAuthInterceptor: OpenAPIInterceptor, @unchecked Sendable {
@@ -21,17 +21,17 @@ final class BarcodeAuthInterceptor: OpenAPIInterceptor, @unchecked Sendable {
         self.configuration = configuration
         self.tokenFetcher = tokenFetcher
         let initialToken = configuration.accessToken.flatMap { $0.isEmpty ? nil : $0 }
-        self.state = OpenAPIMutex(State(
+        state = OpenAPIMutex(State(
             token: initialToken,
             inFlightFetch: false,
             pendingWaiters: []
         ))
     }
 
-    func intercept<T>(
+    func intercept(
         urlRequest: URLRequest,
-        urlSession: URLSessionProtocol,
-        requestBuilder: RequestBuilder<T>,
+        urlSession _: URLSessionProtocol,
+        requestBuilder: RequestBuilder<some Any>,
         completion: @Sendable @escaping (Result<URLRequest, any Error>) -> Void
     ) {
         guard requestBuilder.requiresAuthentication else {
@@ -51,13 +51,13 @@ final class BarcodeAuthInterceptor: OpenAPIInterceptor, @unchecked Sendable {
         }
     }
 
-    func retry<T>(
-        urlRequest: URLRequest,
-        urlSession: URLSessionProtocol,
-        requestBuilder: RequestBuilder<T>,
-        data: Data?,
-        response: URLResponse?,
-        error: any Error,
+    func retry(
+        urlRequest _: URLRequest,
+        urlSession _: URLSessionProtocol,
+        requestBuilder _: RequestBuilder<some Any>,
+        data _: Data?,
+        response _: URLResponse?,
+        error _: any Error,
         completion: @Sendable @escaping (OpenAPIInterceptorRetry) -> Void
     ) {
         completion(.dontRetry)
