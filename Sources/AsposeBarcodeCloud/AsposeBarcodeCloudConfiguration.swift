@@ -7,7 +7,7 @@ public final class AsposeBarcodeCloudConfiguration: @unchecked Sendable {
     public static let defaultHost = "https://api.aspose.cloud/v4.0"
     public static let defaultTokenURL = "https://id.aspose.cloud/connect/token"
     public static let defaultSdkName = "swift sdk"
-    public static let defaultSdkVersion = "26.4.0"
+    public static let defaultSdkVersion = "26.5.0"
 
     public var host: String
     public var tokenURL: String

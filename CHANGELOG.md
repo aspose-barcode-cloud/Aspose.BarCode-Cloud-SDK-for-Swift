@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v26.5.0
+
+* Updated SDK package metadata and generated client version for the Aspose.BarCode Cloud 26.5 release.
+
 ## v26.4.0
 
 * Initial Swift SDK bootstrap for Aspose.BarCode Cloud API v4.0.
