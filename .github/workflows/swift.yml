@@ -7,8 +7,8 @@ on:
     branches: [main]
 
 env:
-  ALLOWED_SWIFT_VERSIONS: "6.0 6.1"
-  ALLOWED_XCODE_VERSIONS: "16.2 16.3"
+  MIN_SWIFT_VERSION: "6.0"
+  MIN_XCODE_VERSION: "16.2"
   IOS_DESTINATION: "platform=iOS Simulator,name=iPhone 16,OS=latest"
 
 jobs:
@@ -22,12 +22,14 @@ jobs:
         run: |
           swift --version
           actual=$(swift --version | grep -oE '[0-9]+\.[0-9]+' | head -n1)
-          allowed=(${ALLOWED_SWIFT_VERSIONS})
-          for v in "${allowed[@]}"; do
-            [ "$actual" = "$v" ] && { echo "Swift $actual is allowed"; exit 0; }
-          done
-          echo "::error::Swift $actual not in allowed set: ${allowed[*]}"
-          exit 1
+          actual_major=${actual%%.*}; actual_minor=${actual#*.}
+          min_major=${MIN_SWIFT_VERSION%%.*}; min_minor=${MIN_SWIFT_VERSION#*.}
+          if [ "$actual_major" -gt "$min_major" ] || { [ "$actual_major" -eq "$min_major" ] && [ "$actual_minor" -ge "$min_minor" ]; }; then
+            echo "Swift $actual satisfies minimum $MIN_SWIFT_VERSION"
+          else
+            echo "::error::Swift $actual is below the minimum supported $MIN_SWIFT_VERSION"
+            exit 1
+          fi
       - name: Build
         run: make build
       - name: Test
@@ -46,21 +48,26 @@ jobs:
         run: |
           xcodebuild -version
           actual=$(xcodebuild -version | head -n1 | grep -oE '[0-9]+\.[0-9]+' | head -n1)
-          allowed=(${ALLOWED_XCODE_VERSIONS})
-          for v in "${allowed[@]}"; do
-            [ "$actual" = "$v" ] && { echo "Xcode $actual is allowed"; exit 0; }
-          done
-          echo "::error::Xcode $actual not in allowed set: ${allowed[*]}"
-          exit 1
+          actual_major=${actual%%.*}; actual_minor=${actual#*.}
+          min_major=${MIN_XCODE_VERSION%%.*}; min_minor=${MIN_XCODE_VERSION#*.}
+          if [ "$actual_major" -gt "$min_major" ] || { [ "$actual_major" -eq "$min_major" ] && [ "$actual_minor" -ge "$min_minor" ]; }; then
+            echo "Xcode $actual satisfies minimum $MIN_XCODE_VERSION"
+          else
+            echo "::error::Xcode $actual is below the minimum supported $MIN_XCODE_VERSION"
+            exit 1
+          fi
       - name: Verify Swift version
         run: |
+          swift --version
           actual=$(swift --version | grep -oE '[0-9]+\.[0-9]+' | head -n1)
-          allowed=(${ALLOWED_SWIFT_VERSIONS})
-          for v in "${allowed[@]}"; do
-            [ "$actual" = "$v" ] && exit 0
-          done
-          echo "::error::Swift $actual not in allowed set: ${allowed[*]}"
-          exit 1
+          actual_major=${actual%%.*}; actual_minor=${actual#*.}
+          min_major=${MIN_SWIFT_VERSION%%.*}; min_minor=${MIN_SWIFT_VERSION#*.}
+          if [ "$actual_major" -gt "$min_major" ] || { [ "$actual_major" -eq "$min_major" ] && [ "$actual_minor" -ge "$min_minor" ]; }; then
+            echo "Swift $actual satisfies minimum $MIN_SWIFT_VERSION"
+          else
+            echo "::error::Swift $actual is below the minimum supported $MIN_SWIFT_VERSION"
+            exit 1
+          fi
       - name: Build
         run: make build
       - name: Test
@@ -79,12 +86,14 @@ jobs:
         run: |
           xcodebuild -version
           actual=$(xcodebuild -version | head -n1 | grep -oE '[0-9]+\.[0-9]+' | head -n1)
-          allowed=(${ALLOWED_XCODE_VERSIONS})
-          for v in "${allowed[@]}"; do
-            [ "$actual" = "$v" ] && exit 0
-          done
-          echo "::error::Xcode $actual not in allowed set: ${allowed[*]}"
-          exit 1
+          actual_major=${actual%%.*}; actual_minor=${actual#*.}
+          min_major=${MIN_XCODE_VERSION%%.*}; min_minor=${MIN_XCODE_VERSION#*.}
+          if [ "$actual_major" -gt "$min_major" ] || { [ "$actual_major" -eq "$min_major" ] && [ "$actual_minor" -ge "$min_minor" ]; }; then
+            echo "Xcode $actual satisfies minimum $MIN_XCODE_VERSION"
+          else
+            echo "::error::Xcode $actual is below the minimum supported $MIN_XCODE_VERSION"
+            exit 1
+          fi
       - name: Build
         run: xcodebuild build -scheme AsposeBarcodeCloud -destination "$IOS_DESTINATION"
       - name: Test
