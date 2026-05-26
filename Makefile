@@ -32,10 +32,6 @@ insert-example:
 test:
 	./Scripts/runTests.sh
 
-.PHONY: integration-test
-integration-test:
-	./Scripts/runIntegrationTests.sh
-
 .PHONY: example
 example:
 	./Scripts/runExample.sh
