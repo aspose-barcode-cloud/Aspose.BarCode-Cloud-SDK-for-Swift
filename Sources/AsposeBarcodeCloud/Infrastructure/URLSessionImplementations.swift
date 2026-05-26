@@ -544,7 +544,7 @@ private class FormDataEncoding: ParameterEncoding {
                     }
 
                 case let data as Data:
-                    urlRequest = configureDataUploadRequest(
+                    urlRequest = configureBinaryUploadRequest(
                         urlRequest: urlRequest,
                         boundary: boundary,
                         name: key,
@@ -625,6 +625,36 @@ private class FormDataEncoding: ParameterEncoding {
 
         // Value headers.
         body.append("Content-Disposition: form-data; name=\"\(name)\"\r\n")
+
+        // Separate headers and body.
+        body.append("\r\n")
+
+        // The value data.
+        body.append(data)
+
+        urlRequest.httpBody = body
+
+        return urlRequest
+    }
+
+    private func configureBinaryUploadRequest(urlRequest: URLRequest, boundary: String, name: String, data: Data) -> URLRequest {
+        var urlRequest = urlRequest
+
+        var body = urlRequest.httpBody.orEmpty
+
+        // If we already added something then we need an additional newline.
+        if !body.isEmpty {
+            body.append("\r\n")
+        }
+
+        // Value boundary.
+        body.append("--\(boundary)\r\n")
+
+        // Value headers. A raw binary value is sent as a file part (with a
+        // filename and a binary content type) so the server treats it as an
+        // uploaded file instead of a plain text form field.
+        body.append("Content-Disposition: form-data; name=\"\(name)\"; filename=\"\(name)\"\r\n")
+        body.append("Content-Type: application/octet-stream\r\n")
 
         // Separate headers and body.
         body.append("\r\n")
