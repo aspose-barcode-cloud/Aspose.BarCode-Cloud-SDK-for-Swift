@@ -191,7 +191,7 @@ open class RecognizeAPI {
         let localVariableURLString = apiConfiguration.basePath + localVariablePath
         let localVariableFormParams: [String: (any Sendable)?] = [
             "barcodeType": barcodeType.asParameter(codableHelper: apiConfiguration.codableHelper),
-            "file": file.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "file": file,
             "recognitionMode": recognitionMode?.asParameter(codableHelper: apiConfiguration.codableHelper),
             "recognitionImageKind": recognitionImageKind?.asParameter(codableHelper: apiConfiguration.codableHelper),
         ]

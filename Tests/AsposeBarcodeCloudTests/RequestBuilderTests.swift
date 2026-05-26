@@ -139,7 +139,7 @@ final class RequestBuilderTests: XCTestCase {
         XCTAssertEqual(URLComponents(string: builder.URLString)?.path, "/v4.0/barcode/recognize-multipart")
         XCTAssertEqual(builder.headers["Content-Type"], "multipart/form-data")
         XCTAssertEqual(builder.parameters?["barcodeType"] as? String, "QR")
-        XCTAssertEqual(builder.parameters?["file"] as? String, fileData.base64EncodedString())
+        XCTAssertEqual(builder.parameters?["file"] as? Data, fileData)
         XCTAssertEqual(builder.parameters?["recognitionMode"] as? String, "Excellent")
         XCTAssertEqual(builder.parameters?["recognitionImageKind"] as? String, "ScannedDocument")
     }
@@ -177,7 +177,7 @@ final class RequestBuilderTests: XCTestCase {
         XCTAssertTrue(builder.requiresAuthentication)
         XCTAssertEqual(URLComponents(string: builder.URLString)?.path, "/v4.0/barcode/scan-multipart")
         XCTAssertEqual(builder.headers["Content-Type"], "multipart/form-data")
-        XCTAssertEqual(builder.parameters?["file"] as? String, fileData.base64EncodedString())
+        XCTAssertEqual(builder.parameters?["file"] as? Data, fileData)
     }
 
     private func makeTestClient() -> AsposeBarcodeCloudClient {

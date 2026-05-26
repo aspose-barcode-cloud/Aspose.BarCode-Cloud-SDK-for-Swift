@@ -169,7 +169,7 @@ open class ScanAPI {
         let localVariablePath = "/barcode/scan-multipart"
         let localVariableURLString = apiConfiguration.basePath + localVariablePath
         let localVariableFormParams: [String: (any Sendable)?] = [
-            "file": file.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "file": file,
         ]
 
         let localVariableNonNullParameters = APIHelper.rejectNil(localVariableFormParams)
