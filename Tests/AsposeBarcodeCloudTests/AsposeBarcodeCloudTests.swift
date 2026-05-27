@@ -279,7 +279,19 @@ private enum TestConfiguration {
             return configuration
         }
 
+        if let configuration = loadFromFile(sourceRelativeConfigPath()) {
+            return configuration
+        }
+
         return loadFromEnvironment(ProcessInfo.processInfo.environment)
+    }
+
+    private static func sourceRelativeConfigPath() -> String {
+        URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appendingPathComponent("configuration.json")
+            .path
     }
 
     private static func loadFromFile(_ path: String) -> AsposeBarcodeCloudConfiguration? {
