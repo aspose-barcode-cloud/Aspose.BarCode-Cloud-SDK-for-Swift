@@ -4,9 +4,9 @@ All URIs are relative to *https://api.aspose.cloud/v4.0*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**scan**](ScanAPI.md#scan) | **GET** /barcode/scan | Scan barcode from file on server in the Internet using GET requests with parameter in query string. For scaning files from your hard drive use &#x60;scan-body&#x60; or &#x60;scan-multipart&#x60; endpoints instead.
-[**scanBase64**](ScanAPI.md#scanbase64) | **POST** /barcode/scan-body | Scan barcode from file in request body using POST requests with parameter in body in json or xml format.
-[**scanMultipart**](ScanAPI.md#scanmultipart) | **POST** /barcode/scan-multipart | Scan barcode from file in request body using POST requests with parameter in multipart form.
+[**scan**](ScanAPI.md#scan) | **GET** /barcode/scan | Scan a barcode from a file on an Internet server using a GET request with a query string parameter. For scanning files from your hard drive, use &#x60;scan-body&#x60; or &#x60;scan-multipart&#x60; endpoints instead.
+[**scanBase64**](ScanAPI.md#scanbase64) | **POST** /barcode/scan-body | Scan a barcode from a file in the request body using a POST request with a JSON or XML body parameter.
+[**scanMultipart**](ScanAPI.md#scanmultipart) | **POST** /barcode/scan-multipart | Scan a barcode from a file in the request body using a POST request with a multipart form parameter.
 
 
 # **scan**
@@ -14,16 +14,16 @@ Method | HTTP request | Description
     open class func scan(fileUrl: String, completion: @escaping (_ data: BarcodeResponseList?, _ error: Error?) -> Void)
 ```
 
-Scan barcode from file on server in the Internet using GET requests with parameter in query string. For scaning files from your hard drive use `scan-body` or `scan-multipart` endpoints instead.
+Scan a barcode from a file on an Internet server using a GET request with a query string parameter. For scanning files from your hard drive, use `scan-body` or `scan-multipart` endpoints instead.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import AsposeBarcodeCloud
 
-let fileUrl = "fileUrl_example" // String | Url to barcode image
+let fileUrl = "fileUrl_example" // String | URL to the barcode image.
 
-// Scan barcode from file on server in the Internet using GET requests with parameter in query string. For scaning files from your hard drive use `scan-body` or `scan-multipart` endpoints instead.
+// Scan a barcode from a file on an Internet server using a GET request with a query string parameter. For scanning files from your hard drive, use `scan-body` or `scan-multipart` endpoints instead.
 ScanAPI.scan(fileUrl: fileUrl) { (response, error) in
     guard error == nil else {
         print(error)
@@ -40,7 +40,7 @@ ScanAPI.scan(fileUrl: fileUrl) { (response, error) in
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **fileUrl** | **String** | Url to barcode image | 
+ **fileUrl** | **String** | URL to the barcode image. | 
 
 ### Return type
 
@@ -62,16 +62,16 @@ Name | Type | Description  | Notes
     open class func scanBase64(scanBase64Request: ScanBase64Request, completion: @escaping (_ data: BarcodeResponseList?, _ error: Error?) -> Void)
 ```
 
-Scan barcode from file in request body using POST requests with parameter in body in json or xml format.
+Scan a barcode from a file in the request body using a POST request with a JSON or XML body parameter.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import AsposeBarcodeCloud
 
-let scanBase64Request = ScanBase64Request(fileBase64: "fileBase64_example") // ScanBase64Request | Barcode scan request
+let scanBase64Request = ScanBase64Request(fileBase64: "fileBase64_example") // ScanBase64Request | Barcode scan request.
 
-// Scan barcode from file in request body using POST requests with parameter in body in json or xml format.
+// Scan a barcode from a file in the request body using a POST request with a JSON or XML body parameter.
 ScanAPI.scanBase64(scanBase64Request: scanBase64Request) { (response, error) in
     guard error == nil else {
         print(error)
@@ -88,7 +88,7 @@ ScanAPI.scanBase64(scanBase64Request: scanBase64Request) { (response, error) in
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scanBase64Request** | [**ScanBase64Request**](ScanBase64Request.md) | Barcode scan request | 
+ **scanBase64Request** | [**ScanBase64Request**](ScanBase64Request.md) | Barcode scan request. | 
 
 ### Return type
 
@@ -110,16 +110,16 @@ Name | Type | Description  | Notes
     open class func scanMultipart(file: Data, completion: @escaping (_ data: BarcodeResponseList?, _ error: Error?) -> Void)
 ```
 
-Scan barcode from file in request body using POST requests with parameter in multipart form.
+Scan a barcode from a file in the request body using a POST request with a multipart form parameter.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import AsposeBarcodeCloud
 
-let file = Data([9, 8, 7]) // Data | Barcode image file
+let file = Data([9, 8, 7]) // Data | Barcode image file.
 
-// Scan barcode from file in request body using POST requests with parameter in multipart form.
+// Scan a barcode from a file in the request body using a POST request with a multipart form parameter.
 ScanAPI.scanMultipart(file: file) { (response, error) in
     guard error == nil else {
         print(error)
@@ -136,7 +136,7 @@ ScanAPI.scanMultipart(file: file) { (response, error) in
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **file** | **Data** | Barcode image file | 
+ **file** | **Data** | Barcode image file. | 
 
 ### Return type
 

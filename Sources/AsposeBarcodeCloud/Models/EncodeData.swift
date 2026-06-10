@@ -7,11 +7,11 @@
 
 import Foundation
 
-/** Data to encode in barcode */
+/** Data to encode in a barcode. */
 public final class EncodeData: @unchecked Sendable, Codable, Hashable {
     public static let dataRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var dataType: EncodeDataType?
-    /** String represents data to encode */
+    /** String that represents the data to encode. */
     public var data: String
 
     public init(dataType: EncodeDataType? = nil, data: String) {

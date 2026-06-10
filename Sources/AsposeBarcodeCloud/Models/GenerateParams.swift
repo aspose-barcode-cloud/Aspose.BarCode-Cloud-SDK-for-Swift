@@ -7,22 +7,31 @@
 
 import Foundation
 
-/** Barcode generation parameters */
+/** Barcode generation parameters. */
 public final class GenerateParams: @unchecked Sendable, Codable, Hashable {
     public var barcodeType: EncodeBarcodeType
     public var encodeData: EncodeData
     public var barcodeImageParams: BarcodeImageParams?
+    public var qrParams: QrParams?
+    public var code128Params: Code128Params?
+    public var pdf417Params: Pdf417Params?
 
-    public init(barcodeType: EncodeBarcodeType, encodeData: EncodeData, barcodeImageParams: BarcodeImageParams? = nil) {
+    public init(barcodeType: EncodeBarcodeType, encodeData: EncodeData, barcodeImageParams: BarcodeImageParams? = nil, qrParams: QrParams? = nil, code128Params: Code128Params? = nil, pdf417Params: Pdf417Params? = nil) {
         self.barcodeType = barcodeType
         self.encodeData = encodeData
         self.barcodeImageParams = barcodeImageParams
+        self.qrParams = qrParams
+        self.code128Params = code128Params
+        self.pdf417Params = pdf417Params
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case barcodeType
         case encodeData
         case barcodeImageParams
+        case qrParams
+        case code128Params
+        case pdf417Params
     }
 
     // Encodable protocol methods
@@ -32,17 +41,26 @@ public final class GenerateParams: @unchecked Sendable, Codable, Hashable {
         try container.encode(barcodeType, forKey: .barcodeType)
         try container.encode(encodeData, forKey: .encodeData)
         try container.encodeIfPresent(barcodeImageParams, forKey: .barcodeImageParams)
+        try container.encodeIfPresent(qrParams, forKey: .qrParams)
+        try container.encodeIfPresent(code128Params, forKey: .code128Params)
+        try container.encodeIfPresent(pdf417Params, forKey: .pdf417Params)
     }
 
     public static func == (lhs: GenerateParams, rhs: GenerateParams) -> Bool {
         lhs.barcodeType == rhs.barcodeType &&
             lhs.encodeData == rhs.encodeData &&
-            lhs.barcodeImageParams == rhs.barcodeImageParams
+            lhs.barcodeImageParams == rhs.barcodeImageParams &&
+            lhs.qrParams == rhs.qrParams &&
+            lhs.code128Params == rhs.code128Params &&
+            lhs.pdf417Params == rhs.pdf417Params
     }
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(barcodeType.hashValue)
         hasher.combine(encodeData.hashValue)
         hasher.combine(barcodeImageParams?.hashValue)
+        hasher.combine(qrParams?.hashValue)
+        hasher.combine(code128Params?.hashValue)
+        hasher.combine(pdf417Params?.hashValue)
     }
 }

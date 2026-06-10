@@ -7,7 +7,7 @@
 
 import Foundation
 
-/** Types of data can be encoded to barcode */
+/** Types of data that can be encoded into a barcode. */
 public enum EncodeDataType: String, Sendable, Codable, CaseIterable, CaseIterableDefaultsLast {
     case stringData = "StringData"
     case base64Bytes = "Base64Bytes"

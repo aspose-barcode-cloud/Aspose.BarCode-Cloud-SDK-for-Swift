@@ -138,6 +138,10 @@ let imageData = try await GenerateAPI.generate(
     barcodeType: .qr,
     data: barcodeValue,
     imageFormat: .png,
+    qrEncodeMode: .auto,
+    qrErrorLevel: .levelM,
+    qrVersion: .auto,
+    qrAspectRatio: 0.75,
     apiConfiguration: client.apiConfiguration
 )
 try imageData.write(to: URL(fileURLWithPath: "QR.png"))

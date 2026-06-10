@@ -9,26 +9,45 @@ import Foundation
 
 open class GenerateAPI {
     /**
-     Generate barcode using GET request with parameters in route and query string.
+     Generate a barcode using a GET request with parameters in the route and query string.
 
      - parameter barcodeType: (path) Type of barcode to generate.
-     - parameter data: (query) String represents data to encode
+     - parameter data: (query) String that represents the data to encode.
      - parameter dataType: (query) Type of data to encode. Default value: StringData. (optional)
-     - parameter imageFormat: (query) Barcode output image format. Default value: png (optional)
-     - parameter textLocation: (query) Specify the displaying Text Location, set to CodeLocation.None to hide CodeText. Default value: Depends on BarcodeType. CodeLocation.Below for 1D Barcodes. CodeLocation.None for 2D Barcodes. (optional)
-     - parameter foregroundColor: (query) Specify the displaying bars and content Color. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value started with #. For example: AliceBlue or #FF000000 Default value: Black. (optional, default to "Black")
-     - parameter backgroundColor: (query) Background color of the barcode image. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value started with #. For example: AliceBlue or #FF000000 Default value: White. (optional, default to "White")
-     - parameter units: (query) Common Units for all measuring in query. Default units: pixel. (optional)
-     - parameter resolution: (query) Resolution of the BarCode image. One value for both dimensions. Default value: 96 dpi. Decimal separator is dot. (optional)
-     - parameter imageHeight: (query) Height of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
-     - parameter imageWidth: (query) Width of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
-     - parameter rotationAngle: (query) BarCode image rotation angle, measured in degree, e.g. RotationAngle &#x3D; 0 or RotationAngle &#x3D; 360 means no rotation. If RotationAngle NOT equal to 90, 180, 270 or 0, it may increase the difficulty for the scanner to read the image. Default value: 0. (optional)
+     - parameter imageFormat: (query) Barcode output image format. Default value: png. (optional)
+     - parameter textLocation: (query) Specify the displayed text location. Set to CodeLocation.None to hide CodeText. Default value depends on BarcodeType: CodeLocation.Below for 1D barcodes and CodeLocation.None for 2D barcodes. (optional)
+     - parameter foregroundColor: (query) Specify the display color for bars and content. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value starting with #. For example: AliceBlue or #FF000000. Default value: Black. (optional, default to "Black")
+     - parameter backgroundColor: (query) Background color of the barcode image. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value starting with #. For example: AliceBlue or #FF000000. Default value: White. (optional, default to "White")
+     - parameter units: (query) Common units for all measurements. Default units: pixels. (optional)
+     - parameter resolution: (query) Resolution of the barcode image. One value for both dimensions. Default value: 96 dpi. Decimal separator is a dot. (optional)
+     - parameter imageHeight: (query) Height of the barcode image in the specified units. Default units: pixels. Decimal separator is a dot. (optional)
+     - parameter imageWidth: (query) Width of the barcode image in the specified units. Default units: pixels. Decimal separator is a dot. (optional)
+     - parameter rotationAngle: (query) Barcode image rotation angle, measured in degrees. For example, RotationAngle &#x3D; 0 or RotationAngle &#x3D; 360 means no rotation. If RotationAngle is not equal to 90, 180, 270, or 0, it may increase the difficulty for the scanner to read the image. Default value: 0. (optional)
+     - parameter qrEncodeMode: (query) QR barcode encode mode. (optional)
+     - parameter qrErrorLevel: (query) QR barcode error correction level. (optional)
+     - parameter qrVersion: (query) QR barcode version. Automatically selects the smallest version that fits the data. (optional)
+     - parameter qrECIEncoding: (query) ECI encoding for QR barcode data. (optional)
+     - parameter qrAspectRatio: (query) QR barcode aspect ratio. Values: 0 to 1. (optional)
+     - parameter microQRVersion: (query) MicroQR barcode version. Used when BarcodeType is MicroQR. (optional)
+     - parameter rectMicroQrVersion: (query) RectMicroQR barcode version. Used when BarcodeType is RectMicroQR. (optional)
+     - parameter code128EncodeMode: (query) Code128 barcode encode mode. Controls which Code 128 subset (A, B, C, or mix) is used. (optional)
+     - parameter pdf417EncodeMode: (query) PDF417 barcode encode mode. (optional)
+     - parameter pdf417ErrorLevel: (query) PDF417 barcode error correction level. (optional)
+     - parameter pdf417Truncate: (query) Whether to use truncated PDF417 format (removes right-side stop pattern). (optional)
+     - parameter pdf417Columns: (query) Number of columns in the PDF417 barcode. Values between 1 and 30. 0 for auto. (optional)
+     - parameter pdf417Rows: (query) Number of rows in the PDF417 barcode. Values between 3 and 90. 0 for automatic. (optional)
+     - parameter pdf417AspectRatio: (query) PDF417 barcode aspect ratio (height/width of the barcode module). Values are defined by the standard: 2 to 5 for MicroPdf417; 3 to 5 for Pdf417 and MacroPdf417. (optional)
+     - parameter pdf417ECIEncoding: (query) ECI encoding for PDF417 barcode data. (optional)
+     - parameter pdf417IsReaderInitialization: (query) Whether the barcode is used for reader initialization (programming). (optional)
+     - parameter pdf417MacroCharacters: (query) Macro character to prepend (structured append). (optional)
+     - parameter pdf417IsLinked: (query) Whether to use linked mode (for MicroPdf417). (optional)
+     - parameter pdf417IsCode128Emulation: (query) Whether to use Code128 emulation for MicroPdf417. (optional)
      - parameter apiConfiguration: The configuration for the http request.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func generate(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: Data?, _ error: Error?) -> Void) -> RequestTask {
-        generateWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, imageFormat: imageFormat, textLocation: textLocation, foregroundColor: foregroundColor, backgroundColor: backgroundColor, units: units, resolution: resolution, imageHeight: imageHeight, imageWidth: imageWidth, rotationAngle: rotationAngle, apiConfiguration: apiConfiguration).execute { result in
+    open class func generate(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, qrEncodeMode: QREncodeMode? = nil, qrErrorLevel: QRErrorLevel? = nil, qrVersion: QRVersion? = nil, qrECIEncoding: ECIEncodings? = nil, qrAspectRatio: Float? = nil, microQRVersion: MicroQRVersion? = nil, rectMicroQrVersion: RectMicroQRVersion? = nil, code128EncodeMode: Code128EncodeMode? = nil, pdf417EncodeMode: Pdf417EncodeMode? = nil, pdf417ErrorLevel: Pdf417ErrorLevel? = nil, pdf417Truncate: Bool? = nil, pdf417Columns: Int? = nil, pdf417Rows: Int? = nil, pdf417AspectRatio: Float? = nil, pdf417ECIEncoding: ECIEncodings? = nil, pdf417IsReaderInitialization: Bool? = nil, pdf417MacroCharacters: MacroCharacter? = nil, pdf417IsLinked: Bool? = nil, pdf417IsCode128Emulation: Bool? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: Data?, _ error: Error?) -> Void) -> RequestTask {
+        generateWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, imageFormat: imageFormat, textLocation: textLocation, foregroundColor: foregroundColor, backgroundColor: backgroundColor, units: units, resolution: resolution, imageHeight: imageHeight, imageWidth: imageWidth, rotationAngle: rotationAngle, qrEncodeMode: qrEncodeMode, qrErrorLevel: qrErrorLevel, qrVersion: qrVersion, qrECIEncoding: qrECIEncoding, qrAspectRatio: qrAspectRatio, microQRVersion: microQRVersion, rectMicroQrVersion: rectMicroQrVersion, code128EncodeMode: code128EncodeMode, pdf417EncodeMode: pdf417EncodeMode, pdf417ErrorLevel: pdf417ErrorLevel, pdf417Truncate: pdf417Truncate, pdf417Columns: pdf417Columns, pdf417Rows: pdf417Rows, pdf417AspectRatio: pdf417AspectRatio, pdf417ECIEncoding: pdf417ECIEncoding, pdf417IsReaderInitialization: pdf417IsReaderInitialization, pdf417MacroCharacters: pdf417MacroCharacters, pdf417IsLinked: pdf417IsLinked, pdf417IsCode128Emulation: pdf417IsCode128Emulation, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -39,49 +58,87 @@ open class GenerateAPI {
     }
 
     /**
-     Generate barcode using GET request with parameters in route and query string.
+     Generate a barcode using a GET request with parameters in the route and query string.
 
      - parameter barcodeType: (path) Type of barcode to generate.
-     - parameter data: (query) String represents data to encode
+     - parameter data: (query) String that represents the data to encode.
      - parameter dataType: (query) Type of data to encode. Default value: StringData. (optional)
-     - parameter imageFormat: (query) Barcode output image format. Default value: png (optional)
-     - parameter textLocation: (query) Specify the displaying Text Location, set to CodeLocation.None to hide CodeText. Default value: Depends on BarcodeType. CodeLocation.Below for 1D Barcodes. CodeLocation.None for 2D Barcodes. (optional)
-     - parameter foregroundColor: (query) Specify the displaying bars and content Color. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value started with #. For example: AliceBlue or #FF000000 Default value: Black. (optional, default to "Black")
-     - parameter backgroundColor: (query) Background color of the barcode image. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value started with #. For example: AliceBlue or #FF000000 Default value: White. (optional, default to "White")
-     - parameter units: (query) Common Units for all measuring in query. Default units: pixel. (optional)
-     - parameter resolution: (query) Resolution of the BarCode image. One value for both dimensions. Default value: 96 dpi. Decimal separator is dot. (optional)
-     - parameter imageHeight: (query) Height of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
-     - parameter imageWidth: (query) Width of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
-     - parameter rotationAngle: (query) BarCode image rotation angle, measured in degree, e.g. RotationAngle &#x3D; 0 or RotationAngle &#x3D; 360 means no rotation. If RotationAngle NOT equal to 90, 180, 270 or 0, it may increase the difficulty for the scanner to read the image. Default value: 0. (optional)
+     - parameter imageFormat: (query) Barcode output image format. Default value: png. (optional)
+     - parameter textLocation: (query) Specify the displayed text location. Set to CodeLocation.None to hide CodeText. Default value depends on BarcodeType: CodeLocation.Below for 1D barcodes and CodeLocation.None for 2D barcodes. (optional)
+     - parameter foregroundColor: (query) Specify the display color for bars and content. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value starting with #. For example: AliceBlue or #FF000000. Default value: Black. (optional, default to "Black")
+     - parameter backgroundColor: (query) Background color of the barcode image. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value starting with #. For example: AliceBlue or #FF000000. Default value: White. (optional, default to "White")
+     - parameter units: (query) Common units for all measurements. Default units: pixels. (optional)
+     - parameter resolution: (query) Resolution of the barcode image. One value for both dimensions. Default value: 96 dpi. Decimal separator is a dot. (optional)
+     - parameter imageHeight: (query) Height of the barcode image in the specified units. Default units: pixels. Decimal separator is a dot. (optional)
+     - parameter imageWidth: (query) Width of the barcode image in the specified units. Default units: pixels. Decimal separator is a dot. (optional)
+     - parameter rotationAngle: (query) Barcode image rotation angle, measured in degrees. For example, RotationAngle &#x3D; 0 or RotationAngle &#x3D; 360 means no rotation. If RotationAngle is not equal to 90, 180, 270, or 0, it may increase the difficulty for the scanner to read the image. Default value: 0. (optional)
+     - parameter qrEncodeMode: (query) QR barcode encode mode. (optional)
+     - parameter qrErrorLevel: (query) QR barcode error correction level. (optional)
+     - parameter qrVersion: (query) QR barcode version. Automatically selects the smallest version that fits the data. (optional)
+     - parameter qrECIEncoding: (query) ECI encoding for QR barcode data. (optional)
+     - parameter qrAspectRatio: (query) QR barcode aspect ratio. Values: 0 to 1. (optional)
+     - parameter microQRVersion: (query) MicroQR barcode version. Used when BarcodeType is MicroQR. (optional)
+     - parameter rectMicroQrVersion: (query) RectMicroQR barcode version. Used when BarcodeType is RectMicroQR. (optional)
+     - parameter code128EncodeMode: (query) Code128 barcode encode mode. Controls which Code 128 subset (A, B, C, or mix) is used. (optional)
+     - parameter pdf417EncodeMode: (query) PDF417 barcode encode mode. (optional)
+     - parameter pdf417ErrorLevel: (query) PDF417 barcode error correction level. (optional)
+     - parameter pdf417Truncate: (query) Whether to use truncated PDF417 format (removes right-side stop pattern). (optional)
+     - parameter pdf417Columns: (query) Number of columns in the PDF417 barcode. Values between 1 and 30. 0 for auto. (optional)
+     - parameter pdf417Rows: (query) Number of rows in the PDF417 barcode. Values between 3 and 90. 0 for automatic. (optional)
+     - parameter pdf417AspectRatio: (query) PDF417 barcode aspect ratio (height/width of the barcode module). Values are defined by the standard: 2 to 5 for MicroPdf417; 3 to 5 for Pdf417 and MacroPdf417. (optional)
+     - parameter pdf417ECIEncoding: (query) ECI encoding for PDF417 barcode data. (optional)
+     - parameter pdf417IsReaderInitialization: (query) Whether the barcode is used for reader initialization (programming). (optional)
+     - parameter pdf417MacroCharacters: (query) Macro character to prepend (structured append). (optional)
+     - parameter pdf417IsLinked: (query) Whether to use linked mode (for MicroPdf417). (optional)
+     - parameter pdf417IsCode128Emulation: (query) Whether to use Code128 emulation for MicroPdf417. (optional)
      - parameter apiConfiguration: The configuration for the http request.
      - returns: Data
      */
-    open class func generate(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> Data {
-        try await generateWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, imageFormat: imageFormat, textLocation: textLocation, foregroundColor: foregroundColor, backgroundColor: backgroundColor, units: units, resolution: resolution, imageHeight: imageHeight, imageWidth: imageWidth, rotationAngle: rotationAngle, apiConfiguration: apiConfiguration).execute().body
+    open class func generate(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, qrEncodeMode: QREncodeMode? = nil, qrErrorLevel: QRErrorLevel? = nil, qrVersion: QRVersion? = nil, qrECIEncoding: ECIEncodings? = nil, qrAspectRatio: Float? = nil, microQRVersion: MicroQRVersion? = nil, rectMicroQrVersion: RectMicroQRVersion? = nil, code128EncodeMode: Code128EncodeMode? = nil, pdf417EncodeMode: Pdf417EncodeMode? = nil, pdf417ErrorLevel: Pdf417ErrorLevel? = nil, pdf417Truncate: Bool? = nil, pdf417Columns: Int? = nil, pdf417Rows: Int? = nil, pdf417AspectRatio: Float? = nil, pdf417ECIEncoding: ECIEncodings? = nil, pdf417IsReaderInitialization: Bool? = nil, pdf417MacroCharacters: MacroCharacter? = nil, pdf417IsLinked: Bool? = nil, pdf417IsCode128Emulation: Bool? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> Data {
+        try await generateWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, imageFormat: imageFormat, textLocation: textLocation, foregroundColor: foregroundColor, backgroundColor: backgroundColor, units: units, resolution: resolution, imageHeight: imageHeight, imageWidth: imageWidth, rotationAngle: rotationAngle, qrEncodeMode: qrEncodeMode, qrErrorLevel: qrErrorLevel, qrVersion: qrVersion, qrECIEncoding: qrECIEncoding, qrAspectRatio: qrAspectRatio, microQRVersion: microQRVersion, rectMicroQrVersion: rectMicroQrVersion, code128EncodeMode: code128EncodeMode, pdf417EncodeMode: pdf417EncodeMode, pdf417ErrorLevel: pdf417ErrorLevel, pdf417Truncate: pdf417Truncate, pdf417Columns: pdf417Columns, pdf417Rows: pdf417Rows, pdf417AspectRatio: pdf417AspectRatio, pdf417ECIEncoding: pdf417ECIEncoding, pdf417IsReaderInitialization: pdf417IsReaderInitialization, pdf417MacroCharacters: pdf417MacroCharacters, pdf417IsLinked: pdf417IsLinked, pdf417IsCode128Emulation: pdf417IsCode128Emulation, apiConfiguration: apiConfiguration).execute().body
     }
 
     /**
-     Generate barcode using GET request with parameters in route and query string.
+     Generate a barcode using a GET request with parameters in the route and query string.
      - GET /barcode/generate/{barcodeType}
      - OAuth:
        - type: oauth2
        - name: JWT
      - parameter barcodeType: (path) Type of barcode to generate.
-     - parameter data: (query) String represents data to encode
+     - parameter data: (query) String that represents the data to encode.
      - parameter dataType: (query) Type of data to encode. Default value: StringData. (optional)
-     - parameter imageFormat: (query) Barcode output image format. Default value: png (optional)
-     - parameter textLocation: (query) Specify the displaying Text Location, set to CodeLocation.None to hide CodeText. Default value: Depends on BarcodeType. CodeLocation.Below for 1D Barcodes. CodeLocation.None for 2D Barcodes. (optional)
-     - parameter foregroundColor: (query) Specify the displaying bars and content Color. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value started with #. For example: AliceBlue or #FF000000 Default value: Black. (optional, default to "Black")
-     - parameter backgroundColor: (query) Background color of the barcode image. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value started with #. For example: AliceBlue or #FF000000 Default value: White. (optional, default to "White")
-     - parameter units: (query) Common Units for all measuring in query. Default units: pixel. (optional)
-     - parameter resolution: (query) Resolution of the BarCode image. One value for both dimensions. Default value: 96 dpi. Decimal separator is dot. (optional)
-     - parameter imageHeight: (query) Height of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
-     - parameter imageWidth: (query) Width of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
-     - parameter rotationAngle: (query) BarCode image rotation angle, measured in degree, e.g. RotationAngle &#x3D; 0 or RotationAngle &#x3D; 360 means no rotation. If RotationAngle NOT equal to 90, 180, 270 or 0, it may increase the difficulty for the scanner to read the image. Default value: 0. (optional)
+     - parameter imageFormat: (query) Barcode output image format. Default value: png. (optional)
+     - parameter textLocation: (query) Specify the displayed text location. Set to CodeLocation.None to hide CodeText. Default value depends on BarcodeType: CodeLocation.Below for 1D barcodes and CodeLocation.None for 2D barcodes. (optional)
+     - parameter foregroundColor: (query) Specify the display color for bars and content. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value starting with #. For example: AliceBlue or #FF000000. Default value: Black. (optional, default to "Black")
+     - parameter backgroundColor: (query) Background color of the barcode image. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value starting with #. For example: AliceBlue or #FF000000. Default value: White. (optional, default to "White")
+     - parameter units: (query) Common units for all measurements. Default units: pixels. (optional)
+     - parameter resolution: (query) Resolution of the barcode image. One value for both dimensions. Default value: 96 dpi. Decimal separator is a dot. (optional)
+     - parameter imageHeight: (query) Height of the barcode image in the specified units. Default units: pixels. Decimal separator is a dot. (optional)
+     - parameter imageWidth: (query) Width of the barcode image in the specified units. Default units: pixels. Decimal separator is a dot. (optional)
+     - parameter rotationAngle: (query) Barcode image rotation angle, measured in degrees. For example, RotationAngle &#x3D; 0 or RotationAngle &#x3D; 360 means no rotation. If RotationAngle is not equal to 90, 180, 270, or 0, it may increase the difficulty for the scanner to read the image. Default value: 0. (optional)
+     - parameter qrEncodeMode: (query) QR barcode encode mode. (optional)
+     - parameter qrErrorLevel: (query) QR barcode error correction level. (optional)
+     - parameter qrVersion: (query) QR barcode version. Automatically selects the smallest version that fits the data. (optional)
+     - parameter qrECIEncoding: (query) ECI encoding for QR barcode data. (optional)
+     - parameter qrAspectRatio: (query) QR barcode aspect ratio. Values: 0 to 1. (optional)
+     - parameter microQRVersion: (query) MicroQR barcode version. Used when BarcodeType is MicroQR. (optional)
+     - parameter rectMicroQrVersion: (query) RectMicroQR barcode version. Used when BarcodeType is RectMicroQR. (optional)
+     - parameter code128EncodeMode: (query) Code128 barcode encode mode. Controls which Code 128 subset (A, B, C, or mix) is used. (optional)
+     - parameter pdf417EncodeMode: (query) PDF417 barcode encode mode. (optional)
+     - parameter pdf417ErrorLevel: (query) PDF417 barcode error correction level. (optional)
+     - parameter pdf417Truncate: (query) Whether to use truncated PDF417 format (removes right-side stop pattern). (optional)
+     - parameter pdf417Columns: (query) Number of columns in the PDF417 barcode. Values between 1 and 30. 0 for auto. (optional)
+     - parameter pdf417Rows: (query) Number of rows in the PDF417 barcode. Values between 3 and 90. 0 for automatic. (optional)
+     - parameter pdf417AspectRatio: (query) PDF417 barcode aspect ratio (height/width of the barcode module). Values are defined by the standard: 2 to 5 for MicroPdf417; 3 to 5 for Pdf417 and MacroPdf417. (optional)
+     - parameter pdf417ECIEncoding: (query) ECI encoding for PDF417 barcode data. (optional)
+     - parameter pdf417IsReaderInitialization: (query) Whether the barcode is used for reader initialization (programming). (optional)
+     - parameter pdf417MacroCharacters: (query) Macro character to prepend (structured append). (optional)
+     - parameter pdf417IsLinked: (query) Whether to use linked mode (for MicroPdf417). (optional)
+     - parameter pdf417IsCode128Emulation: (query) Whether to use Code128 emulation for MicroPdf417. (optional)
      - parameter apiConfiguration: The configuration for the http request.
      - returns: RequestBuilder<Data>
      */
-    open class func generateWithRequestBuilder(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) -> RequestBuilder<Data> {
+    open class func generateWithRequestBuilder(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, qrEncodeMode: QREncodeMode? = nil, qrErrorLevel: QRErrorLevel? = nil, qrVersion: QRVersion? = nil, qrECIEncoding: ECIEncodings? = nil, qrAspectRatio: Float? = nil, microQRVersion: MicroQRVersion? = nil, rectMicroQrVersion: RectMicroQRVersion? = nil, code128EncodeMode: Code128EncodeMode? = nil, pdf417EncodeMode: Pdf417EncodeMode? = nil, pdf417ErrorLevel: Pdf417ErrorLevel? = nil, pdf417Truncate: Bool? = nil, pdf417Columns: Int? = nil, pdf417Rows: Int? = nil, pdf417AspectRatio: Float? = nil, pdf417ECIEncoding: ECIEncodings? = nil, pdf417IsReaderInitialization: Bool? = nil, pdf417MacroCharacters: MacroCharacter? = nil, pdf417IsLinked: Bool? = nil, pdf417IsCode128Emulation: Bool? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) -> RequestBuilder<Data> {
         var localVariablePath = "/barcode/generate/{barcodeType}"
         let barcodeTypePreEscape = "\(APIHelper.mapValueToPathItem(barcodeType))"
         let barcodeTypePostEscape = barcodeTypePreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -102,6 +159,25 @@ open class GenerateAPI {
             "imageHeight": (wrappedValue: imageHeight?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
             "imageWidth": (wrappedValue: imageWidth?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
             "rotationAngle": (wrappedValue: rotationAngle?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "qrEncodeMode": (wrappedValue: qrEncodeMode?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "qrErrorLevel": (wrappedValue: qrErrorLevel?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "qrVersion": (wrappedValue: qrVersion?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "qrECIEncoding": (wrappedValue: qrECIEncoding?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "qrAspectRatio": (wrappedValue: qrAspectRatio?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "microQRVersion": (wrappedValue: microQRVersion?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "rectMicroQrVersion": (wrappedValue: rectMicroQrVersion?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "code128EncodeMode": (wrappedValue: code128EncodeMode?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "pdf417EncodeMode": (wrappedValue: pdf417EncodeMode?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "pdf417ErrorLevel": (wrappedValue: pdf417ErrorLevel?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "pdf417Truncate": (wrappedValue: pdf417Truncate?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "pdf417Columns": (wrappedValue: pdf417Columns?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "pdf417Rows": (wrappedValue: pdf417Rows?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "pdf417AspectRatio": (wrappedValue: pdf417AspectRatio?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "pdf417ECIEncoding": (wrappedValue: pdf417ECIEncoding?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "pdf417IsReaderInitialization": (wrappedValue: pdf417IsReaderInitialization?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "pdf417MacroCharacters": (wrappedValue: pdf417MacroCharacters?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "pdf417IsLinked": (wrappedValue: pdf417IsLinked?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
+            "pdf417IsCode128Emulation": (wrappedValue: pdf417IsCode128Emulation?.asParameter(codableHelper: apiConfiguration.codableHelper), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: (any Sendable)?] = [:]
@@ -114,9 +190,9 @@ open class GenerateAPI {
     }
 
     /**
-     Generate barcode using POST request with parameters in body in json or xml format.
+     Generate a barcode using a POST request with parameters in the request body in JSON or XML format.
 
-     - parameter generateParams: (body) Parameters of generation
+     - parameter generateParams: (body) Generation parameters.
      - parameter apiConfiguration: The configuration for the http request.
      - parameter completion: completion handler to receive the data and the error objects
      */
@@ -133,9 +209,9 @@ open class GenerateAPI {
     }
 
     /**
-     Generate barcode using POST request with parameters in body in json or xml format.
+     Generate a barcode using a POST request with parameters in the request body in JSON or XML format.
 
-     - parameter generateParams: (body) Parameters of generation
+     - parameter generateParams: (body) Generation parameters.
      - parameter apiConfiguration: The configuration for the http request.
      - returns: Data
      */
@@ -144,12 +220,12 @@ open class GenerateAPI {
     }
 
     /**
-     Generate barcode using POST request with parameters in body in json or xml format.
+     Generate a barcode using a POST request with parameters in the request body in JSON or XML format.
      - POST /barcode/generate-body
      - OAuth:
        - type: oauth2
        - name: JWT
-     - parameter generateParams: (body) Parameters of generation
+     - parameter generateParams: (body) Generation parameters.
      - parameter apiConfiguration: The configuration for the http request.
      - returns: RequestBuilder<Data>
      */
@@ -172,26 +248,45 @@ open class GenerateAPI {
     }
 
     /**
-     Generate barcode using POST request with parameters in multipart form.
+     Generate a barcode using a POST request with parameters in a multipart form.
 
      - parameter barcodeType: (form)
-     - parameter data: (form) String represents data to encode
+     - parameter data: (form) String that represents the data to encode.
      - parameter dataType: (form) (optional)
      - parameter imageFormat: (form) (optional)
      - parameter textLocation: (form) (optional)
-     - parameter foregroundColor: (form) Specify the displaying bars and content Color. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value started with #. For example: AliceBlue or #FF000000 Default value: Black. (optional, default to "Black")
-     - parameter backgroundColor: (form) Background color of the barcode image. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value started with #. For example: AliceBlue or #FF000000 Default value: White. (optional, default to "White")
+     - parameter foregroundColor: (form) Specify the display color for bars and content. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value starting with #. For example: AliceBlue or #FF000000. Default value: Black. (optional, default to "Black")
+     - parameter backgroundColor: (form) Background color of the barcode image. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value starting with #. For example: AliceBlue or #FF000000. Default value: White. (optional, default to "White")
      - parameter units: (form) (optional)
-     - parameter resolution: (form) Resolution of the BarCode image. One value for both dimensions. Default value: 96 dpi. Decimal separator is dot. (optional)
-     - parameter imageHeight: (form) Height of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
-     - parameter imageWidth: (form) Width of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
-     - parameter rotationAngle: (form) BarCode image rotation angle, measured in degree, e.g. RotationAngle &#x3D; 0 or RotationAngle &#x3D; 360 means no rotation. If RotationAngle NOT equal to 90, 180, 270 or 0, it may increase the difficulty for the scanner to read the image. Default value: 0. (optional)
+     - parameter resolution: (form) Resolution of the barcode image. One value for both dimensions. Default value: 96 dpi. Decimal separator is a dot. (optional)
+     - parameter imageHeight: (form) Height of the barcode image in the specified units. Default units: pixels. Decimal separator is a dot. (optional)
+     - parameter imageWidth: (form) Width of the barcode image in the specified units. Default units: pixels. Decimal separator is a dot. (optional)
+     - parameter rotationAngle: (form) Barcode image rotation angle, measured in degrees. For example, RotationAngle &#x3D; 0 or RotationAngle &#x3D; 360 means no rotation. If RotationAngle is not equal to 90, 180, 270, or 0, it may increase the difficulty for the scanner to read the image. Default value: 0. (optional)
+     - parameter qrEncodeMode: (form) (optional)
+     - parameter qrErrorLevel: (form) (optional)
+     - parameter qrVersion: (form) (optional)
+     - parameter qrECIEncoding: (form) (optional)
+     - parameter qrAspectRatio: (form) QR barcode aspect ratio. Values: 0 to 1. (optional)
+     - parameter microQRVersion: (form) (optional)
+     - parameter rectMicroQrVersion: (form) (optional)
+     - parameter code128EncodeMode: (form) (optional)
+     - parameter pdf417EncodeMode: (form) (optional)
+     - parameter pdf417ErrorLevel: (form) (optional)
+     - parameter pdf417Truncate: (form) Whether to use truncated PDF417 format (removes right-side stop pattern). (optional)
+     - parameter pdf417Columns: (form) Number of columns in the PDF417 barcode. Values between 1 and 30. 0 for auto. (optional)
+     - parameter pdf417Rows: (form) Number of rows in the PDF417 barcode. Values between 3 and 90. 0 for automatic. (optional)
+     - parameter pdf417AspectRatio: (form) PDF417 barcode aspect ratio (height/width of the barcode module). Values are defined by the standard: 2 to 5 for MicroPdf417; 3 to 5 for Pdf417 and MacroPdf417. (optional)
+     - parameter pdf417ECIEncoding: (form) (optional)
+     - parameter pdf417IsReaderInitialization: (form) Whether the barcode is used for reader initialization (programming). (optional)
+     - parameter pdf417MacroCharacters: (form) (optional)
+     - parameter pdf417IsLinked: (form) Whether to use linked mode (for MicroPdf417). (optional)
+     - parameter pdf417IsCode128Emulation: (form) Whether to use Code128 emulation for MicroPdf417. (optional)
      - parameter apiConfiguration: The configuration for the http request.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func generateMultipart(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: Data?, _ error: Error?) -> Void) -> RequestTask {
-        generateMultipartWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, imageFormat: imageFormat, textLocation: textLocation, foregroundColor: foregroundColor, backgroundColor: backgroundColor, units: units, resolution: resolution, imageHeight: imageHeight, imageWidth: imageWidth, rotationAngle: rotationAngle, apiConfiguration: apiConfiguration).execute { result in
+    open class func generateMultipart(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, qrEncodeMode: QREncodeMode? = nil, qrErrorLevel: QRErrorLevel? = nil, qrVersion: QRVersion? = nil, qrECIEncoding: ECIEncodings? = nil, qrAspectRatio: Float? = nil, microQRVersion: MicroQRVersion? = nil, rectMicroQrVersion: RectMicroQRVersion? = nil, code128EncodeMode: Code128EncodeMode? = nil, pdf417EncodeMode: Pdf417EncodeMode? = nil, pdf417ErrorLevel: Pdf417ErrorLevel? = nil, pdf417Truncate: Bool? = nil, pdf417Columns: Int? = nil, pdf417Rows: Int? = nil, pdf417AspectRatio: Float? = nil, pdf417ECIEncoding: ECIEncodings? = nil, pdf417IsReaderInitialization: Bool? = nil, pdf417MacroCharacters: MacroCharacter? = nil, pdf417IsLinked: Bool? = nil, pdf417IsCode128Emulation: Bool? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: Data?, _ error: Error?) -> Void) -> RequestTask {
+        generateMultipartWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, imageFormat: imageFormat, textLocation: textLocation, foregroundColor: foregroundColor, backgroundColor: backgroundColor, units: units, resolution: resolution, imageHeight: imageHeight, imageWidth: imageWidth, rotationAngle: rotationAngle, qrEncodeMode: qrEncodeMode, qrErrorLevel: qrErrorLevel, qrVersion: qrVersion, qrECIEncoding: qrECIEncoding, qrAspectRatio: qrAspectRatio, microQRVersion: microQRVersion, rectMicroQrVersion: rectMicroQrVersion, code128EncodeMode: code128EncodeMode, pdf417EncodeMode: pdf417EncodeMode, pdf417ErrorLevel: pdf417ErrorLevel, pdf417Truncate: pdf417Truncate, pdf417Columns: pdf417Columns, pdf417Rows: pdf417Rows, pdf417AspectRatio: pdf417AspectRatio, pdf417ECIEncoding: pdf417ECIEncoding, pdf417IsReaderInitialization: pdf417IsReaderInitialization, pdf417MacroCharacters: pdf417MacroCharacters, pdf417IsLinked: pdf417IsLinked, pdf417IsCode128Emulation: pdf417IsCode128Emulation, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -202,49 +297,87 @@ open class GenerateAPI {
     }
 
     /**
-     Generate barcode using POST request with parameters in multipart form.
+     Generate a barcode using a POST request with parameters in a multipart form.
 
      - parameter barcodeType: (form)
-     - parameter data: (form) String represents data to encode
+     - parameter data: (form) String that represents the data to encode.
      - parameter dataType: (form) (optional)
      - parameter imageFormat: (form) (optional)
      - parameter textLocation: (form) (optional)
-     - parameter foregroundColor: (form) Specify the displaying bars and content Color. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value started with #. For example: AliceBlue or #FF000000 Default value: Black. (optional, default to "Black")
-     - parameter backgroundColor: (form) Background color of the barcode image. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value started with #. For example: AliceBlue or #FF000000 Default value: White. (optional, default to "White")
+     - parameter foregroundColor: (form) Specify the display color for bars and content. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value starting with #. For example: AliceBlue or #FF000000. Default value: Black. (optional, default to "Black")
+     - parameter backgroundColor: (form) Background color of the barcode image. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value starting with #. For example: AliceBlue or #FF000000. Default value: White. (optional, default to "White")
      - parameter units: (form) (optional)
-     - parameter resolution: (form) Resolution of the BarCode image. One value for both dimensions. Default value: 96 dpi. Decimal separator is dot. (optional)
-     - parameter imageHeight: (form) Height of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
-     - parameter imageWidth: (form) Width of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
-     - parameter rotationAngle: (form) BarCode image rotation angle, measured in degree, e.g. RotationAngle &#x3D; 0 or RotationAngle &#x3D; 360 means no rotation. If RotationAngle NOT equal to 90, 180, 270 or 0, it may increase the difficulty for the scanner to read the image. Default value: 0. (optional)
+     - parameter resolution: (form) Resolution of the barcode image. One value for both dimensions. Default value: 96 dpi. Decimal separator is a dot. (optional)
+     - parameter imageHeight: (form) Height of the barcode image in the specified units. Default units: pixels. Decimal separator is a dot. (optional)
+     - parameter imageWidth: (form) Width of the barcode image in the specified units. Default units: pixels. Decimal separator is a dot. (optional)
+     - parameter rotationAngle: (form) Barcode image rotation angle, measured in degrees. For example, RotationAngle &#x3D; 0 or RotationAngle &#x3D; 360 means no rotation. If RotationAngle is not equal to 90, 180, 270, or 0, it may increase the difficulty for the scanner to read the image. Default value: 0. (optional)
+     - parameter qrEncodeMode: (form) (optional)
+     - parameter qrErrorLevel: (form) (optional)
+     - parameter qrVersion: (form) (optional)
+     - parameter qrECIEncoding: (form) (optional)
+     - parameter qrAspectRatio: (form) QR barcode aspect ratio. Values: 0 to 1. (optional)
+     - parameter microQRVersion: (form) (optional)
+     - parameter rectMicroQrVersion: (form) (optional)
+     - parameter code128EncodeMode: (form) (optional)
+     - parameter pdf417EncodeMode: (form) (optional)
+     - parameter pdf417ErrorLevel: (form) (optional)
+     - parameter pdf417Truncate: (form) Whether to use truncated PDF417 format (removes right-side stop pattern). (optional)
+     - parameter pdf417Columns: (form) Number of columns in the PDF417 barcode. Values between 1 and 30. 0 for auto. (optional)
+     - parameter pdf417Rows: (form) Number of rows in the PDF417 barcode. Values between 3 and 90. 0 for automatic. (optional)
+     - parameter pdf417AspectRatio: (form) PDF417 barcode aspect ratio (height/width of the barcode module). Values are defined by the standard: 2 to 5 for MicroPdf417; 3 to 5 for Pdf417 and MacroPdf417. (optional)
+     - parameter pdf417ECIEncoding: (form) (optional)
+     - parameter pdf417IsReaderInitialization: (form) Whether the barcode is used for reader initialization (programming). (optional)
+     - parameter pdf417MacroCharacters: (form) (optional)
+     - parameter pdf417IsLinked: (form) Whether to use linked mode (for MicroPdf417). (optional)
+     - parameter pdf417IsCode128Emulation: (form) Whether to use Code128 emulation for MicroPdf417. (optional)
      - parameter apiConfiguration: The configuration for the http request.
      - returns: Data
      */
-    open class func generateMultipart(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> Data {
-        try await generateMultipartWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, imageFormat: imageFormat, textLocation: textLocation, foregroundColor: foregroundColor, backgroundColor: backgroundColor, units: units, resolution: resolution, imageHeight: imageHeight, imageWidth: imageWidth, rotationAngle: rotationAngle, apiConfiguration: apiConfiguration).execute().body
+    open class func generateMultipart(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, qrEncodeMode: QREncodeMode? = nil, qrErrorLevel: QRErrorLevel? = nil, qrVersion: QRVersion? = nil, qrECIEncoding: ECIEncodings? = nil, qrAspectRatio: Float? = nil, microQRVersion: MicroQRVersion? = nil, rectMicroQrVersion: RectMicroQRVersion? = nil, code128EncodeMode: Code128EncodeMode? = nil, pdf417EncodeMode: Pdf417EncodeMode? = nil, pdf417ErrorLevel: Pdf417ErrorLevel? = nil, pdf417Truncate: Bool? = nil, pdf417Columns: Int? = nil, pdf417Rows: Int? = nil, pdf417AspectRatio: Float? = nil, pdf417ECIEncoding: ECIEncodings? = nil, pdf417IsReaderInitialization: Bool? = nil, pdf417MacroCharacters: MacroCharacter? = nil, pdf417IsLinked: Bool? = nil, pdf417IsCode128Emulation: Bool? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> Data {
+        try await generateMultipartWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, imageFormat: imageFormat, textLocation: textLocation, foregroundColor: foregroundColor, backgroundColor: backgroundColor, units: units, resolution: resolution, imageHeight: imageHeight, imageWidth: imageWidth, rotationAngle: rotationAngle, qrEncodeMode: qrEncodeMode, qrErrorLevel: qrErrorLevel, qrVersion: qrVersion, qrECIEncoding: qrECIEncoding, qrAspectRatio: qrAspectRatio, microQRVersion: microQRVersion, rectMicroQrVersion: rectMicroQrVersion, code128EncodeMode: code128EncodeMode, pdf417EncodeMode: pdf417EncodeMode, pdf417ErrorLevel: pdf417ErrorLevel, pdf417Truncate: pdf417Truncate, pdf417Columns: pdf417Columns, pdf417Rows: pdf417Rows, pdf417AspectRatio: pdf417AspectRatio, pdf417ECIEncoding: pdf417ECIEncoding, pdf417IsReaderInitialization: pdf417IsReaderInitialization, pdf417MacroCharacters: pdf417MacroCharacters, pdf417IsLinked: pdf417IsLinked, pdf417IsCode128Emulation: pdf417IsCode128Emulation, apiConfiguration: apiConfiguration).execute().body
     }
 
     /**
-     Generate barcode using POST request with parameters in multipart form.
+     Generate a barcode using a POST request with parameters in a multipart form.
      - POST /barcode/generate-multipart
      - OAuth:
        - type: oauth2
        - name: JWT
      - parameter barcodeType: (form)
-     - parameter data: (form) String represents data to encode
+     - parameter data: (form) String that represents the data to encode.
      - parameter dataType: (form) (optional)
      - parameter imageFormat: (form) (optional)
      - parameter textLocation: (form) (optional)
-     - parameter foregroundColor: (form) Specify the displaying bars and content Color. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value started with #. For example: AliceBlue or #FF000000 Default value: Black. (optional, default to "Black")
-     - parameter backgroundColor: (form) Background color of the barcode image. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value started with #. For example: AliceBlue or #FF000000 Default value: White. (optional, default to "White")
+     - parameter foregroundColor: (form) Specify the display color for bars and content. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value starting with #. For example: AliceBlue or #FF000000. Default value: Black. (optional, default to "Black")
+     - parameter backgroundColor: (form) Background color of the barcode image. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value starting with #. For example: AliceBlue or #FF000000. Default value: White. (optional, default to "White")
      - parameter units: (form) (optional)
-     - parameter resolution: (form) Resolution of the BarCode image. One value for both dimensions. Default value: 96 dpi. Decimal separator is dot. (optional)
-     - parameter imageHeight: (form) Height of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
-     - parameter imageWidth: (form) Width of the barcode image in given units. Default units: pixel. Decimal separator is dot. (optional)
-     - parameter rotationAngle: (form) BarCode image rotation angle, measured in degree, e.g. RotationAngle &#x3D; 0 or RotationAngle &#x3D; 360 means no rotation. If RotationAngle NOT equal to 90, 180, 270 or 0, it may increase the difficulty for the scanner to read the image. Default value: 0. (optional)
+     - parameter resolution: (form) Resolution of the barcode image. One value for both dimensions. Default value: 96 dpi. Decimal separator is a dot. (optional)
+     - parameter imageHeight: (form) Height of the barcode image in the specified units. Default units: pixels. Decimal separator is a dot. (optional)
+     - parameter imageWidth: (form) Width of the barcode image in the specified units. Default units: pixels. Decimal separator is a dot. (optional)
+     - parameter rotationAngle: (form) Barcode image rotation angle, measured in degrees. For example, RotationAngle &#x3D; 0 or RotationAngle &#x3D; 360 means no rotation. If RotationAngle is not equal to 90, 180, 270, or 0, it may increase the difficulty for the scanner to read the image. Default value: 0. (optional)
+     - parameter qrEncodeMode: (form) (optional)
+     - parameter qrErrorLevel: (form) (optional)
+     - parameter qrVersion: (form) (optional)
+     - parameter qrECIEncoding: (form) (optional)
+     - parameter qrAspectRatio: (form) QR barcode aspect ratio. Values: 0 to 1. (optional)
+     - parameter microQRVersion: (form) (optional)
+     - parameter rectMicroQrVersion: (form) (optional)
+     - parameter code128EncodeMode: (form) (optional)
+     - parameter pdf417EncodeMode: (form) (optional)
+     - parameter pdf417ErrorLevel: (form) (optional)
+     - parameter pdf417Truncate: (form) Whether to use truncated PDF417 format (removes right-side stop pattern). (optional)
+     - parameter pdf417Columns: (form) Number of columns in the PDF417 barcode. Values between 1 and 30. 0 for auto. (optional)
+     - parameter pdf417Rows: (form) Number of rows in the PDF417 barcode. Values between 3 and 90. 0 for automatic. (optional)
+     - parameter pdf417AspectRatio: (form) PDF417 barcode aspect ratio (height/width of the barcode module). Values are defined by the standard: 2 to 5 for MicroPdf417; 3 to 5 for Pdf417 and MacroPdf417. (optional)
+     - parameter pdf417ECIEncoding: (form) (optional)
+     - parameter pdf417IsReaderInitialization: (form) Whether the barcode is used for reader initialization (programming). (optional)
+     - parameter pdf417MacroCharacters: (form) (optional)
+     - parameter pdf417IsLinked: (form) Whether to use linked mode (for MicroPdf417). (optional)
+     - parameter pdf417IsCode128Emulation: (form) Whether to use Code128 emulation for MicroPdf417. (optional)
      - parameter apiConfiguration: The configuration for the http request.
      - returns: RequestBuilder<Data>
      */
-    open class func generateMultipartWithRequestBuilder(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) -> RequestBuilder<Data> {
+    open class func generateMultipartWithRequestBuilder(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, imageFormat: BarcodeImageFormat? = nil, textLocation: CodeLocation? = nil, foregroundColor: String? = nil, backgroundColor: String? = nil, units: GraphicsUnit? = nil, resolution: Float? = nil, imageHeight: Float? = nil, imageWidth: Float? = nil, rotationAngle: Int? = nil, qrEncodeMode: QREncodeMode? = nil, qrErrorLevel: QRErrorLevel? = nil, qrVersion: QRVersion? = nil, qrECIEncoding: ECIEncodings? = nil, qrAspectRatio: Float? = nil, microQRVersion: MicroQRVersion? = nil, rectMicroQrVersion: RectMicroQRVersion? = nil, code128EncodeMode: Code128EncodeMode? = nil, pdf417EncodeMode: Pdf417EncodeMode? = nil, pdf417ErrorLevel: Pdf417ErrorLevel? = nil, pdf417Truncate: Bool? = nil, pdf417Columns: Int? = nil, pdf417Rows: Int? = nil, pdf417AspectRatio: Float? = nil, pdf417ECIEncoding: ECIEncodings? = nil, pdf417IsReaderInitialization: Bool? = nil, pdf417MacroCharacters: MacroCharacter? = nil, pdf417IsLinked: Bool? = nil, pdf417IsCode128Emulation: Bool? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) -> RequestBuilder<Data> {
         let localVariablePath = "/barcode/generate-multipart"
         let localVariableURLString = apiConfiguration.basePath + localVariablePath
         let localVariableFormParams: [String: (any Sendable)?] = [
@@ -260,6 +393,25 @@ open class GenerateAPI {
             "imageHeight": imageHeight?.asParameter(codableHelper: apiConfiguration.codableHelper),
             "imageWidth": imageWidth?.asParameter(codableHelper: apiConfiguration.codableHelper),
             "rotationAngle": rotationAngle?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "qrEncodeMode": qrEncodeMode?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "qrErrorLevel": qrErrorLevel?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "qrVersion": qrVersion?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "qrECIEncoding": qrECIEncoding?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "qrAspectRatio": qrAspectRatio?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "microQRVersion": microQRVersion?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "rectMicroQrVersion": rectMicroQrVersion?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "code128EncodeMode": code128EncodeMode?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "pdf417EncodeMode": pdf417EncodeMode?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "pdf417ErrorLevel": pdf417ErrorLevel?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "pdf417Truncate": pdf417Truncate?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "pdf417Columns": pdf417Columns?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "pdf417Rows": pdf417Rows?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "pdf417AspectRatio": pdf417AspectRatio?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "pdf417ECIEncoding": pdf417ECIEncoding?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "pdf417IsReaderInitialization": pdf417IsReaderInitialization?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "pdf417MacroCharacters": pdf417MacroCharacters?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "pdf417IsLinked": pdf417IsLinked?.asParameter(codableHelper: apiConfiguration.codableHelper),
+            "pdf417IsCode128Emulation": pdf417IsCode128Emulation?.asParameter(codableHelper: apiConfiguration.codableHelper),
         ]
 
         let localVariableNonNullParameters = APIHelper.rejectNil(localVariableFormParams)

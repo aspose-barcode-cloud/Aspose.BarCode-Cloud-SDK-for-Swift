@@ -7,7 +7,7 @@
 
 import Foundation
 
-/** See Aspose.BarCode.BarCodeRecognition.DecodeType */
+/** See https://reference.aspose.com/barcode/net/aspose.barcode.barcoderecognition/decodetype/ */
 public enum DecodeBarcodeType: String, Sendable, Codable, CaseIterable, CaseIterableDefaultsLast {
     case mostCommonlyUsed = "MostCommonlyUsed"
     case qr = "QR"

@@ -7,9 +7,9 @@
 
 import Foundation
 
-/** Represents information about barcode list. */
+/** Represents information about a barcode list. */
 public final class BarcodeResponseList: @unchecked Sendable, Codable, Hashable {
-    /** List of barcodes which are present in image. */
+    /** List of barcodes that are present in the image. */
     public var barcodes: [BarcodeResponse]?
 
     public init(barcodes: [BarcodeResponse]?) {
