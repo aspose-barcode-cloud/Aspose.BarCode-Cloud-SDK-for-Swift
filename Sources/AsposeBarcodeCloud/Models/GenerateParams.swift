@@ -9,11 +9,17 @@ import Foundation
 
 /** Barcode generation parameters. */
 public final class GenerateParams: @unchecked Sendable, Codable, Hashable {
+    /** Barcode type. */
     public var barcodeType: EncodeBarcodeType
+    /** Data to encode into a barcode. */
     public var encodeData: EncodeData
+    /** Optional barcode image parameters. */
     public var barcodeImageParams: BarcodeImageParams?
+    /** Optional QR barcode generation parameters. */
     public var qrParams: QrParams?
+    /** Optional Code128 barcode generation parameters. */
     public var code128Params: Code128Params?
+    /** Optional PDF417 barcode generation parameters. */
     public var pdf417Params: Pdf417Params?
 
     public init(barcodeType: EncodeBarcodeType, encodeData: EncodeData, barcodeImageParams: BarcodeImageParams? = nil, qrParams: QrParams? = nil, code128Params: Code128Params? = nil, pdf417Params: Pdf417Params? = nil) {

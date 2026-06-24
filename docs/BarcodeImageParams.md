@@ -3,11 +3,11 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**imageFormat** | [**BarcodeImageFormat**](BarcodeImageFormat.md) |  | [optional] 
-**textLocation** | [**CodeLocation**](CodeLocation.md) |  | [optional] 
+**imageFormat** | [**BarcodeImageFormat**](BarcodeImageFormat.md) | Barcode output image format. Default value: png. | [optional] 
+**textLocation** | [**CodeLocation**](CodeLocation.md) | Specify the displayed text location. Set to CodeLocation.None to hide CodeText. Default value depends on BarcodeType: CodeLocation.Below for 1D barcodes and CodeLocation.None for 2D barcodes. | [optional] 
 **foregroundColor** | **String** | Specify the display color for bars and content. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value starting with #. For example: AliceBlue or #FF000000. Default value: Black. | [optional] [default to "Black"]
 **backgroundColor** | **String** | Background color of the barcode image. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value starting with #. For example: AliceBlue or #FF000000. Default value: White. | [optional] [default to "White"]
-**units** | [**GraphicsUnit**](GraphicsUnit.md) |  | [optional] 
+**units** | [**GraphicsUnit**](GraphicsUnit.md) | Common units for all measurements. Default units: pixels. | [optional] 
 **resolution** | **Float** | Resolution of the barcode image. One value for both dimensions. Default value: 96 dpi. Decimal separator is a dot. | [optional] 
 **imageHeight** | **Float** | Height of the barcode image in the specified units. Default units: pixels. Decimal separator is a dot. | [optional] 
 **imageWidth** | **Float** | Width of the barcode image in the specified units. Default units: pixels. Decimal separator is a dot. | [optional] 

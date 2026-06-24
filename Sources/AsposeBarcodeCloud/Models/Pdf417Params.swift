@@ -12,7 +12,9 @@ public final class Pdf417Params: @unchecked Sendable, Codable, Hashable {
     public static let pdf417ColumnsRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: 30, exclusiveMaximum: false, multipleOf: nil)
     public static let pdf417RowsRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: 90, exclusiveMaximum: false, multipleOf: nil)
     public static let pdf417AspectRatioRule = NumericRule<Float>(minimum: 2, exclusiveMinimum: false, maximum: 10, exclusiveMaximum: false, multipleOf: nil)
+    /** PDF417 barcode encode mode. */
     public var pdf417EncodeMode: Pdf417EncodeMode?
+    /** PDF417 barcode error correction level. */
     public var pdf417ErrorLevel: Pdf417ErrorLevel?
     /** Whether to use truncated PDF417 format (removes right-side stop pattern). */
     public var pdf417Truncate: Bool?
@@ -22,9 +24,11 @@ public final class Pdf417Params: @unchecked Sendable, Codable, Hashable {
     public var pdf417Rows: Int?
     /** PDF417 barcode aspect ratio (height/width of the barcode module). Values are defined by the standard: 2 to 5 for MicroPdf417; 3 to 5 for Pdf417 and MacroPdf417. */
     public var pdf417AspectRatio: Float?
+    /** ECI encoding for PDF417 barcode data. */
     public var pdf417ECIEncoding: ECIEncodings?
     /** Whether the barcode is used for reader initialization (programming). */
     public var pdf417IsReaderInitialization: Bool?
+    /** Macro character to prepend (structured append). */
     public var pdf417MacroCharacters: MacroCharacter?
     /** Whether to use linked mode (for MicroPdf417). */
     public var pdf417IsLinked: Bool?

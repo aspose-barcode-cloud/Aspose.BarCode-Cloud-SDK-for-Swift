@@ -123,10 +123,10 @@ Recognize a barcode from a file in the request body using a POST request with mu
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import AsposeBarcodeCloud
 
-let barcodeType = DecodeBarcodeType() // DecodeBarcodeType | 
+let barcodeType = DecodeBarcodeType() // DecodeBarcodeType | See https://reference.aspose.com/barcode/net/aspose.barcode.barcoderecognition/decodetype/
 let file = Data([9, 8, 7]) // Data | Barcode image file.
-let recognitionMode = RecognitionMode() // RecognitionMode |  (optional)
-let recognitionImageKind = RecognitionImageKind() // RecognitionImageKind |  (optional)
+let recognitionMode = RecognitionMode() // RecognitionMode | Recognition mode. (optional)
+let recognitionImageKind = RecognitionImageKind() // RecognitionImageKind | Image kind for recognition. (optional)
 
 // Recognize a barcode from a file in the request body using a POST request with multipart form parameters.
 RecognizeAPI.recognizeMultipart(barcodeType: barcodeType, file: file, recognitionMode: recognitionMode, recognitionImageKind: recognitionImageKind) { (response, error) in
@@ -145,10 +145,10 @@ RecognizeAPI.recognizeMultipart(barcodeType: barcodeType, file: file, recognitio
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **barcodeType** | [**DecodeBarcodeType**](DecodeBarcodeType.md) |  | 
+ **barcodeType** | [**DecodeBarcodeType**](DecodeBarcodeType.md) | See https://reference.aspose.com/barcode/net/aspose.barcode.barcoderecognition/decodetype/ | 
  **file** | **Data** | Barcode image file. | 
- **recognitionMode** | [**RecognitionMode**](RecognitionMode.md) |  | [optional] 
- **recognitionImageKind** | [**RecognitionImageKind**](RecognitionImageKind.md) |  | [optional] 
+ **recognitionMode** | [**RecognitionMode**](RecognitionMode.md) | Recognition mode. | [optional] 
+ **recognitionImageKind** | [**RecognitionImageKind**](RecognitionImageKind.md) | Image kind for recognition. | [optional] 
 
 ### Return type
 

@@ -14,7 +14,9 @@ public final class RecognizeBase64Request: @unchecked Sendable, Codable, Hashabl
     public var barcodeTypes: [DecodeBarcodeType]
     /** Barcode image bytes encoded as base-64. */
     public var fileBase64: String
+    /** Barcode recognition mode. */
     public var recognitionMode: RecognitionMode?
+    /** Image kind for recognition. */
     public var recognitionImageKind: RecognitionImageKind?
 
     public init(barcodeTypes: [DecodeBarcodeType], fileBase64: String, recognitionMode: RecognitionMode? = nil, recognitionImageKind: RecognitionImageKind? = nil) {

@@ -9,6 +9,7 @@ import Foundation
 
 /** Optional Code128 barcode generation parameters. */
 public final class Code128Params: @unchecked Sendable, Codable, Hashable {
+    /** Code128 barcode encode mode. Controls which Code 128 subset (A, B, C, or mix) is used. */
     public var code128EncodeMode: Code128EncodeMode?
 
     public init(code128EncodeMode: Code128EncodeMode? = nil) {

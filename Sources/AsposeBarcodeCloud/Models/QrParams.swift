@@ -10,13 +10,19 @@ import Foundation
 /** Optional QR barcode generation parameters. Applies to QR, GS1QR, MicroQR, and RectMicroQR barcode types. */
 public final class QrParams: @unchecked Sendable, Codable, Hashable {
     public static let qrAspectRatioRule = NumericRule<Float>(minimum: 0.001, exclusiveMinimum: false, maximum: 1, exclusiveMaximum: false, multipleOf: nil)
+    /** QR barcode encode mode. */
     public var qrEncodeMode: QREncodeMode?
+    /** QR barcode error correction level. */
     public var qrErrorLevel: QRErrorLevel?
+    /** QR barcode version. Automatically selects the smallest version that fits the data. */
     public var qrVersion: QRVersion?
+    /** ECI encoding for QR barcode data. */
     public var qrECIEncoding: ECIEncodings?
     /** QR barcode aspect ratio. Values: 0 to 1. */
     public var qrAspectRatio: Float?
+    /** MicroQR barcode version. Used when BarcodeType is MicroQR. */
     public var microQRVersion: MicroQRVersion?
+    /** RectMicroQR barcode version. Used when BarcodeType is RectMicroQR. */
     public var rectMicroQrVersion: RectMicroQRVersion?
 
     public init(qrEncodeMode: QREncodeMode? = nil, qrErrorLevel: QRErrorLevel? = nil, qrVersion: QRVersion? = nil, qrECIEncoding: ECIEncodings? = nil, qrAspectRatio: Float? = nil, microQRVersion: MicroQRVersion? = nil, rectMicroQrVersion: RectMicroQRVersion? = nil) {
