@@ -56,37 +56,14 @@ open class GenerateAPI {
      - OAuth:
        - type: oauth2
        - name: JWT
+
      - parameter barcodeType: (path) Type of barcode to generate.
      - parameter data: (query) String that represents the data to encode.
      - parameter dataType: (query) Type of data to encode. Default value: StringData. (optional)
-     - parameter imageFormat: (query) Barcode output image format. Default value: png. (optional)
-     - parameter textLocation: (query) Specify the displayed text location. Set to CodeLocation.None to hide CodeText. Default value depends on BarcodeType: CodeLocation.Below for 1D barcodes and CodeLocation.None for 2D barcodes. (optional)
-     - parameter foregroundColor: (query) Specify the display color for bars and content. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value starting with #. For example: AliceBlue or #FF000000. Default value: Black. (optional, default to "Black")
-     - parameter backgroundColor: (query) Background color of the barcode image. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value starting with #. For example: AliceBlue or #FF000000. Default value: White. (optional, default to "White")
-     - parameter units: (query) Common units for all measurements. Default units: pixels. (optional)
-     - parameter resolution: (query) Resolution of the barcode image. One value for both dimensions. Default value: 96 dpi. Decimal separator is a dot. (optional)
-     - parameter imageHeight: (query) Height of the barcode image in the specified units. Default units: pixels. Decimal separator is a dot. (optional)
-     - parameter imageWidth: (query) Width of the barcode image in the specified units. Default units: pixels. Decimal separator is a dot. (optional)
-     - parameter rotationAngle: (query) Barcode image rotation angle, measured in degrees. For example, RotationAngle &#x3D; 0 or RotationAngle &#x3D; 360 means no rotation. If RotationAngle is not equal to 90, 180, 270, or 0, it may increase the difficulty for the scanner to read the image. Default value: 0. (optional)
-     - parameter qrEncodeMode: (query) QR barcode encode mode. (optional)
-     - parameter qrErrorLevel: (query) QR barcode error correction level. (optional)
-     - parameter qrVersion: (query) QR barcode version. Automatically selects the smallest version that fits the data. (optional)
-     - parameter qrECIEncoding: (query) ECI encoding for QR barcode data. (optional)
-     - parameter qrAspectRatio: (query) QR barcode aspect ratio. Values: 0 to 1. (optional)
-     - parameter microQRVersion: (query) MicroQR barcode version. Used when BarcodeType is MicroQR. (optional)
-     - parameter rectMicroQrVersion: (query) RectMicroQR barcode version. Used when BarcodeType is RectMicroQR. (optional)
-     - parameter code128EncodeMode: (query) Code128 barcode encode mode. Controls which Code 128 subset (A, B, C, or mix) is used. (optional)
-     - parameter pdf417EncodeMode: (query) PDF417 barcode encode mode. (optional)
-     - parameter pdf417ErrorLevel: (query) PDF417 barcode error correction level. (optional)
-     - parameter pdf417Truncate: (query) Whether to use truncated PDF417 format (removes right-side stop pattern). (optional)
-     - parameter pdf417Columns: (query) Number of columns in the PDF417 barcode. Values between 1 and 30. 0 for auto. (optional)
-     - parameter pdf417Rows: (query) Number of rows in the PDF417 barcode. Values between 3 and 90. 0 for automatic. (optional)
-     - parameter pdf417AspectRatio: (query) PDF417 barcode aspect ratio (height/width of the barcode module). Values are defined by the standard: 2 to 5 for MicroPdf417; 3 to 5 for Pdf417 and MacroPdf417. (optional)
-     - parameter pdf417ECIEncoding: (query) ECI encoding for PDF417 barcode data. (optional)
-     - parameter pdf417IsReaderInitialization: (query) Whether the barcode is used for reader initialization (programming). (optional)
-     - parameter pdf417MacroCharacters: (query) Macro character to prepend (structured append). (optional)
-     - parameter pdf417IsLinked: (query) Whether to use linked mode (for MicroPdf417). (optional)
-     - parameter pdf417IsCode128Emulation: (query) Whether to use Code128 emulation for MicroPdf417. (optional)
+     - parameter barcodeImageParams: (BarcodeImageParams) Grouped barcodeImageParams parameters.
+     - parameter qrParams: (QrParams) Grouped qrParams parameters.
+     - parameter code128Params: (Code128Params) Grouped code128Params parameters.
+     - parameter pdf417Params: (Pdf417Params) Grouped pdf417Params parameters.
      - parameter apiConfiguration: The configuration for the http request.
      - returns: RequestBuilder<Data>
      */
@@ -177,6 +154,7 @@ open class GenerateAPI {
      - OAuth:
        - type: oauth2
        - name: JWT
+
      - parameter generateParams: (body) Generation parameters.
      - parameter apiConfiguration: The configuration for the http request.
      - returns: RequestBuilder<Data>
@@ -247,37 +225,14 @@ open class GenerateAPI {
      - OAuth:
        - type: oauth2
        - name: JWT
+
      - parameter barcodeType: (form) See https://reference.aspose.com/barcode/net/aspose.barcode.generation/encodetypes/
      - parameter data: (form) String that represents the data to encode.
      - parameter dataType: (form) Type of data to encode. Default value: StringData. (optional)
-     - parameter imageFormat: (form) Barcode output image format. Default value: png. (optional)
-     - parameter textLocation: (form) Specify the displayed text location. Set to CodeLocation.None to hide CodeText. Default value depends on BarcodeType: CodeLocation.Below for 1D barcodes and CodeLocation.None for 2D barcodes. (optional)
-     - parameter foregroundColor: (form) Specify the display color for bars and content. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value starting with #. For example: AliceBlue or #FF000000. Default value: Black. (optional, default to "Black")
-     - parameter backgroundColor: (form) Background color of the barcode image. Value: Color name from https://reference.aspose.com/drawing/net/system.drawing/color/ or ARGB value starting with #. For example: AliceBlue or #FF000000. Default value: White. (optional, default to "White")
-     - parameter units: (form) Common units for all measurements. Default units: pixels. (optional)
-     - parameter resolution: (form) Resolution of the barcode image. One value for both dimensions. Default value: 96 dpi. Decimal separator is a dot. (optional)
-     - parameter imageHeight: (form) Height of the barcode image in the specified units. Default units: pixels. Decimal separator is a dot. (optional)
-     - parameter imageWidth: (form) Width of the barcode image in the specified units. Default units: pixels. Decimal separator is a dot. (optional)
-     - parameter rotationAngle: (form) Barcode image rotation angle, measured in degrees. For example, RotationAngle &#x3D; 0 or RotationAngle &#x3D; 360 means no rotation. If RotationAngle is not equal to 90, 180, 270, or 0, it may increase the difficulty for the scanner to read the image. Default value: 0. (optional)
-     - parameter qrEncodeMode: (form) QR barcode encode mode. (optional)
-     - parameter qrErrorLevel: (form) QR barcode error correction level. (optional)
-     - parameter qrVersion: (form) QR barcode version. Automatically selects the smallest version that fits the data. (optional)
-     - parameter qrECIEncoding: (form) ECI encoding for QR barcode data. (optional)
-     - parameter qrAspectRatio: (form) QR barcode aspect ratio. Values: 0 to 1. (optional)
-     - parameter microQRVersion: (form) MicroQR barcode version. Used when BarcodeType is MicroQR. (optional)
-     - parameter rectMicroQrVersion: (form) RectMicroQR barcode version. Used when BarcodeType is RectMicroQR. (optional)
-     - parameter code128EncodeMode: (form) Code128 barcode encode mode. Controls which Code 128 subset (A, B, C, or mix) is used. (optional)
-     - parameter pdf417EncodeMode: (form) PDF417 barcode encode mode. (optional)
-     - parameter pdf417ErrorLevel: (form) PDF417 barcode error correction level. (optional)
-     - parameter pdf417Truncate: (form) Whether to use truncated PDF417 format (removes right-side stop pattern). (optional)
-     - parameter pdf417Columns: (form) Number of columns in the PDF417 barcode. Values between 1 and 30. 0 for auto. (optional)
-     - parameter pdf417Rows: (form) Number of rows in the PDF417 barcode. Values between 3 and 90. 0 for automatic. (optional)
-     - parameter pdf417AspectRatio: (form) PDF417 barcode aspect ratio (height/width of the barcode module). Values are defined by the standard: 2 to 5 for MicroPdf417; 3 to 5 for Pdf417 and MacroPdf417. (optional)
-     - parameter pdf417ECIEncoding: (form) ECI encoding for PDF417 barcode data. (optional)
-     - parameter pdf417IsReaderInitialization: (form) Whether the barcode is used for reader initialization (programming). (optional)
-     - parameter pdf417MacroCharacters: (form) Macro character to prepend (structured append). (optional)
-     - parameter pdf417IsLinked: (form) Whether to use linked mode (for MicroPdf417). (optional)
-     - parameter pdf417IsCode128Emulation: (form) Whether to use Code128 emulation for MicroPdf417. (optional)
+     - parameter barcodeImageParams: (BarcodeImageParams) Grouped barcodeImageParams parameters.
+     - parameter qrParams: (QrParams) Grouped qrParams parameters.
+     - parameter code128Params: (Code128Params) Grouped code128Params parameters.
+     - parameter pdf417Params: (Pdf417Params) Grouped pdf417Params parameters.
      - parameter apiConfiguration: The configuration for the http request.
      - returns: RequestBuilder<Data>
      */
