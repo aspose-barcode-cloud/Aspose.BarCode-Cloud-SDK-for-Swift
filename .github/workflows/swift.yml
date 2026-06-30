@@ -9,7 +9,7 @@ on:
 env:
   MIN_SWIFT_VERSION: "6.0"
   MIN_XCODE_VERSION: "16.2"
-  IOS_DESTINATION: "platform=iOS Simulator,name=iPhone 16e,OS=latest"
+  IOS_DESTINATION: "platform=iOS Simulator,name=iPhone 16e,OS=26.2"
 
 jobs:
   linux-test:
