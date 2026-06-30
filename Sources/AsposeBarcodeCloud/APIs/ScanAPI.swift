@@ -9,9 +9,9 @@ import Foundation
 
 open class ScanAPI {
     /**
-     Scan barcode from file on server in the Internet using GET requests with parameter in query string. For scaning files from your hard drive use `scan-body` or `scan-multipart` endpoints instead.
+     Scan a barcode from a file on an Internet server using a GET request with a query string parameter. For scanning files from your hard drive, use `scan-body` or `scan-multipart` endpoints instead.
 
-     - parameter fileUrl: (query) Url to barcode image
+     - parameter fileUrl: (query) URL to the barcode image.
      - parameter apiConfiguration: The configuration for the http request.
      - parameter completion: completion handler to receive the data and the error objects
      */
@@ -28,9 +28,9 @@ open class ScanAPI {
     }
 
     /**
-     Scan barcode from file on server in the Internet using GET requests with parameter in query string. For scaning files from your hard drive use `scan-body` or `scan-multipart` endpoints instead.
+     Scan a barcode from a file on an Internet server using a GET request with a query string parameter. For scanning files from your hard drive, use `scan-body` or `scan-multipart` endpoints instead.
 
-     - parameter fileUrl: (query) Url to barcode image
+     - parameter fileUrl: (query) URL to the barcode image.
      - parameter apiConfiguration: The configuration for the http request.
      - returns: BarcodeResponseList
      */
@@ -39,12 +39,12 @@ open class ScanAPI {
     }
 
     /**
-     Scan barcode from file on server in the Internet using GET requests with parameter in query string. For scaning files from your hard drive use `scan-body` or `scan-multipart` endpoints instead.
+     Scan a barcode from a file on an Internet server using a GET request with a query string parameter. For scanning files from your hard drive, use `scan-body` or `scan-multipart` endpoints instead.
      - GET /barcode/scan
      - OAuth:
        - type: oauth2
        - name: JWT
-     - parameter fileUrl: (query) Url to barcode image
+     - parameter fileUrl: (query) URL to the barcode image.
      - parameter apiConfiguration: The configuration for the http request.
      - returns: RequestBuilder<BarcodeResponseList>
      */
@@ -68,9 +68,9 @@ open class ScanAPI {
     }
 
     /**
-     Scan barcode from file in request body using POST requests with parameter in body in json or xml format.
+     Scan a barcode from a file in the request body using a POST request with a JSON or XML body parameter.
 
-     - parameter scanBase64Request: (body) Barcode scan request
+     - parameter scanBase64Request: (body) Barcode scan request.
      - parameter apiConfiguration: The configuration for the http request.
      - parameter completion: completion handler to receive the data and the error objects
      */
@@ -87,9 +87,9 @@ open class ScanAPI {
     }
 
     /**
-     Scan barcode from file in request body using POST requests with parameter in body in json or xml format.
+     Scan a barcode from a file in the request body using a POST request with a JSON or XML body parameter.
 
-     - parameter scanBase64Request: (body) Barcode scan request
+     - parameter scanBase64Request: (body) Barcode scan request.
      - parameter apiConfiguration: The configuration for the http request.
      - returns: BarcodeResponseList
      */
@@ -98,12 +98,12 @@ open class ScanAPI {
     }
 
     /**
-     Scan barcode from file in request body using POST requests with parameter in body in json or xml format.
+     Scan a barcode from a file in the request body using a POST request with a JSON or XML body parameter.
      - POST /barcode/scan-body
      - OAuth:
        - type: oauth2
        - name: JWT
-     - parameter scanBase64Request: (body) Barcode scan request
+     - parameter scanBase64Request: (body) Barcode scan request.
      - parameter apiConfiguration: The configuration for the http request.
      - returns: RequestBuilder<BarcodeResponseList>
      */
@@ -126,9 +126,9 @@ open class ScanAPI {
     }
 
     /**
-     Scan barcode from file in request body using POST requests with parameter in multipart form.
+     Scan a barcode from a file in the request body using a POST request with a multipart form parameter.
 
-     - parameter file: (form) Barcode image file
+     - parameter file: (form) Barcode image file.
      - parameter apiConfiguration: The configuration for the http request.
      - parameter completion: completion handler to receive the data and the error objects
      */
@@ -145,9 +145,9 @@ open class ScanAPI {
     }
 
     /**
-     Scan barcode from file in request body using POST requests with parameter in multipart form.
+     Scan a barcode from a file in the request body using a POST request with a multipart form parameter.
 
-     - parameter file: (form) Barcode image file
+     - parameter file: (form) Barcode image file.
      - parameter apiConfiguration: The configuration for the http request.
      - returns: BarcodeResponseList
      */
@@ -156,12 +156,12 @@ open class ScanAPI {
     }
 
     /**
-     Scan barcode from file in request body using POST requests with parameter in multipart form.
+     Scan a barcode from a file in the request body using a POST request with a multipart form parameter.
      - POST /barcode/scan-multipart
      - OAuth:
        - type: oauth2
        - name: JWT
-     - parameter file: (form) Barcode image file
+     - parameter file: (form) Barcode image file.
      - parameter apiConfiguration: The configuration for the http request.
      - returns: RequestBuilder<BarcodeResponseList>
      */

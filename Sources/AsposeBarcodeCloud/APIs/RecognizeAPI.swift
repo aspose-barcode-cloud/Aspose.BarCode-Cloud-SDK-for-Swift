@@ -9,12 +9,12 @@ import Foundation
 
 open class RecognizeAPI {
     /**
-     Recognize barcode from file on server in the Internet using GET requests with parameter in query string. For recognizing files from your hard drive use `recognize-body` or `recognize-multipart` endpoints instead.
+     Recognize a barcode from a file on an Internet server using a GET request with a query string parameter. For recognizing files from your hard drive, use `recognize-body` or `recognize-multipart` endpoints instead.
 
-     - parameter barcodeType: (query) Type of barcode to recognize
-     - parameter fileUrl: (query) Url to barcode image
-     - parameter recognitionMode: (query) Recognition mode (optional)
-     - parameter recognitionImageKind: (query) Image kind for recognition (optional)
+     - parameter barcodeType: (query) Type of barcode to recognize.
+     - parameter fileUrl: (query) URL to the barcode image.
+     - parameter recognitionMode: (query) Recognition mode. (optional)
+     - parameter recognitionImageKind: (query) Image kind for recognition. (optional)
      - parameter apiConfiguration: The configuration for the http request.
      - parameter completion: completion handler to receive the data and the error objects
      */
@@ -31,12 +31,12 @@ open class RecognizeAPI {
     }
 
     /**
-     Recognize barcode from file on server in the Internet using GET requests with parameter in query string. For recognizing files from your hard drive use `recognize-body` or `recognize-multipart` endpoints instead.
+     Recognize a barcode from a file on an Internet server using a GET request with a query string parameter. For recognizing files from your hard drive, use `recognize-body` or `recognize-multipart` endpoints instead.
 
-     - parameter barcodeType: (query) Type of barcode to recognize
-     - parameter fileUrl: (query) Url to barcode image
-     - parameter recognitionMode: (query) Recognition mode (optional)
-     - parameter recognitionImageKind: (query) Image kind for recognition (optional)
+     - parameter barcodeType: (query) Type of barcode to recognize.
+     - parameter fileUrl: (query) URL to the barcode image.
+     - parameter recognitionMode: (query) Recognition mode. (optional)
+     - parameter recognitionImageKind: (query) Image kind for recognition. (optional)
      - parameter apiConfiguration: The configuration for the http request.
      - returns: BarcodeResponseList
      */
@@ -45,15 +45,15 @@ open class RecognizeAPI {
     }
 
     /**
-     Recognize barcode from file on server in the Internet using GET requests with parameter in query string. For recognizing files from your hard drive use `recognize-body` or `recognize-multipart` endpoints instead.
+     Recognize a barcode from a file on an Internet server using a GET request with a query string parameter. For recognizing files from your hard drive, use `recognize-body` or `recognize-multipart` endpoints instead.
      - GET /barcode/recognize
      - OAuth:
        - type: oauth2
        - name: JWT
-     - parameter barcodeType: (query) Type of barcode to recognize
-     - parameter fileUrl: (query) Url to barcode image
-     - parameter recognitionMode: (query) Recognition mode (optional)
-     - parameter recognitionImageKind: (query) Image kind for recognition (optional)
+     - parameter barcodeType: (query) Type of barcode to recognize.
+     - parameter fileUrl: (query) URL to the barcode image.
+     - parameter recognitionMode: (query) Recognition mode. (optional)
+     - parameter recognitionImageKind: (query) Image kind for recognition. (optional)
      - parameter apiConfiguration: The configuration for the http request.
      - returns: RequestBuilder<BarcodeResponseList>
      */
@@ -80,9 +80,9 @@ open class RecognizeAPI {
     }
 
     /**
-     Recognize barcode from file in request body using POST requests with parameters in body in json or xml format.
+     Recognize a barcode from a file in the request body using a POST request with JSON or XML body parameters.
 
-     - parameter recognizeBase64Request: (body) Barcode recognition request
+     - parameter recognizeBase64Request: (body) Barcode recognition request.
      - parameter apiConfiguration: The configuration for the http request.
      - parameter completion: completion handler to receive the data and the error objects
      */
@@ -99,9 +99,9 @@ open class RecognizeAPI {
     }
 
     /**
-     Recognize barcode from file in request body using POST requests with parameters in body in json or xml format.
+     Recognize a barcode from a file in the request body using a POST request with JSON or XML body parameters.
 
-     - parameter recognizeBase64Request: (body) Barcode recognition request
+     - parameter recognizeBase64Request: (body) Barcode recognition request.
      - parameter apiConfiguration: The configuration for the http request.
      - returns: BarcodeResponseList
      */
@@ -110,12 +110,12 @@ open class RecognizeAPI {
     }
 
     /**
-     Recognize barcode from file in request body using POST requests with parameters in body in json or xml format.
+     Recognize a barcode from a file in the request body using a POST request with JSON or XML body parameters.
      - POST /barcode/recognize-body
      - OAuth:
        - type: oauth2
        - name: JWT
-     - parameter recognizeBase64Request: (body) Barcode recognition request
+     - parameter recognizeBase64Request: (body) Barcode recognition request.
      - parameter apiConfiguration: The configuration for the http request.
      - returns: RequestBuilder<BarcodeResponseList>
      */
@@ -138,12 +138,12 @@ open class RecognizeAPI {
     }
 
     /**
-     Recognize barcode from file in request body using POST requests with parameters in multipart form.
+     Recognize a barcode from a file in the request body using a POST request with multipart form parameters.
 
-     - parameter barcodeType: (form)
-     - parameter file: (form) Barcode image file
-     - parameter recognitionMode: (form) (optional)
-     - parameter recognitionImageKind: (form) (optional)
+     - parameter barcodeType: (form) See https://reference.aspose.com/barcode/net/aspose.barcode.barcoderecognition/decodetype/
+     - parameter file: (form) Barcode image file.
+     - parameter recognitionMode: (form) Recognition mode. (optional)
+     - parameter recognitionImageKind: (form) Image kind for recognition. (optional)
      - parameter apiConfiguration: The configuration for the http request.
      - parameter completion: completion handler to receive the data and the error objects
      */
@@ -160,12 +160,12 @@ open class RecognizeAPI {
     }
 
     /**
-     Recognize barcode from file in request body using POST requests with parameters in multipart form.
+     Recognize a barcode from a file in the request body using a POST request with multipart form parameters.
 
-     - parameter barcodeType: (form)
-     - parameter file: (form) Barcode image file
-     - parameter recognitionMode: (form) (optional)
-     - parameter recognitionImageKind: (form) (optional)
+     - parameter barcodeType: (form) See https://reference.aspose.com/barcode/net/aspose.barcode.barcoderecognition/decodetype/
+     - parameter file: (form) Barcode image file.
+     - parameter recognitionMode: (form) Recognition mode. (optional)
+     - parameter recognitionImageKind: (form) Image kind for recognition. (optional)
      - parameter apiConfiguration: The configuration for the http request.
      - returns: BarcodeResponseList
      */
@@ -174,15 +174,15 @@ open class RecognizeAPI {
     }
 
     /**
-     Recognize barcode from file in request body using POST requests with parameters in multipart form.
+     Recognize a barcode from a file in the request body using a POST request with multipart form parameters.
      - POST /barcode/recognize-multipart
      - OAuth:
        - type: oauth2
        - name: JWT
-     - parameter barcodeType: (form)
-     - parameter file: (form) Barcode image file
-     - parameter recognitionMode: (form) (optional)
-     - parameter recognitionImageKind: (form) (optional)
+     - parameter barcodeType: (form) See https://reference.aspose.com/barcode/net/aspose.barcode.barcoderecognition/decodetype/
+     - parameter file: (form) Barcode image file.
+     - parameter recognitionMode: (form) Recognition mode. (optional)
+     - parameter recognitionImageKind: (form) Image kind for recognition. (optional)
      - parameter apiConfiguration: The configuration for the http request.
      - returns: RequestBuilder<BarcodeResponseList>
      */

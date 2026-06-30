@@ -7,7 +7,7 @@
 
 import Foundation
 
-/** See Aspose.BarCode.Generation.EncodeTypes */
+/** See https://reference.aspose.com/barcode/net/aspose.barcode.generation/encodetypes/ */
 public enum EncodeBarcodeType: String, Sendable, Codable, CaseIterable, CaseIterableDefaultsLast {
     case qr = "QR"
     case australiaPost = "AustraliaPost"

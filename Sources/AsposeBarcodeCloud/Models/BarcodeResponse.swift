@@ -7,15 +7,15 @@
 
 import Foundation
 
-/** Represents information about barcode. */
+/** Represents information about a barcode. */
 public final class BarcodeResponse: @unchecked Sendable, Codable, Hashable {
     /** Barcode data. */
     public var barcodeValue: String?
     /** Type of the barcode. */
     public var type: String?
-    /** Region with barcode. */
+    /** Region with the barcode. */
     public var region: [RegionPoint]?
-    /** Checksum of barcode. */
+    /** Checksum of the barcode. */
     public var checksum: String?
 
     public init(barcodeValue: String? = nil, type: String? = nil, region: [RegionPoint]? = nil, checksum: String? = nil) {

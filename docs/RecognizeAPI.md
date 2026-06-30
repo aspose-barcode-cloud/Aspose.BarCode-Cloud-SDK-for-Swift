@@ -4,9 +4,9 @@ All URIs are relative to *https://api.aspose.cloud/v4.0*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**recognize**](RecognizeAPI.md#recognize) | **GET** /barcode/recognize | Recognize barcode from file on server in the Internet using GET requests with parameter in query string. For recognizing files from your hard drive use &#x60;recognize-body&#x60; or &#x60;recognize-multipart&#x60; endpoints instead.
-[**recognizeBase64**](RecognizeAPI.md#recognizebase64) | **POST** /barcode/recognize-body | Recognize barcode from file in request body using POST requests with parameters in body in json or xml format.
-[**recognizeMultipart**](RecognizeAPI.md#recognizemultipart) | **POST** /barcode/recognize-multipart | Recognize barcode from file in request body using POST requests with parameters in multipart form.
+[**recognize**](RecognizeAPI.md#recognize) | **GET** /barcode/recognize | Recognize a barcode from a file on an Internet server using a GET request with a query string parameter. For recognizing files from your hard drive, use &#x60;recognize-body&#x60; or &#x60;recognize-multipart&#x60; endpoints instead.
+[**recognizeBase64**](RecognizeAPI.md#recognizebase64) | **POST** /barcode/recognize-body | Recognize a barcode from a file in the request body using a POST request with JSON or XML body parameters.
+[**recognizeMultipart**](RecognizeAPI.md#recognizemultipart) | **POST** /barcode/recognize-multipart | Recognize a barcode from a file in the request body using a POST request with multipart form parameters.
 
 
 # **recognize**
@@ -14,19 +14,19 @@ Method | HTTP request | Description
     open class func recognize(barcodeType: DecodeBarcodeType, fileUrl: String, recognitionMode: RecognitionMode? = nil, recognitionImageKind: RecognitionImageKind? = nil, completion: @escaping (_ data: BarcodeResponseList?, _ error: Error?) -> Void)
 ```
 
-Recognize barcode from file on server in the Internet using GET requests with parameter in query string. For recognizing files from your hard drive use `recognize-body` or `recognize-multipart` endpoints instead.
+Recognize a barcode from a file on an Internet server using a GET request with a query string parameter. For recognizing files from your hard drive, use `recognize-body` or `recognize-multipart` endpoints instead.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import AsposeBarcodeCloud
 
-let barcodeType = DecodeBarcodeType() // DecodeBarcodeType | Type of barcode to recognize
-let fileUrl = "fileUrl_example" // String | Url to barcode image
-let recognitionMode = RecognitionMode() // RecognitionMode | Recognition mode (optional)
-let recognitionImageKind = RecognitionImageKind() // RecognitionImageKind | Image kind for recognition (optional)
+let barcodeType = DecodeBarcodeType() // DecodeBarcodeType | Type of barcode to recognize.
+let fileUrl = "fileUrl_example" // String | URL to the barcode image.
+let recognitionMode = RecognitionMode() // RecognitionMode | Recognition mode. (optional)
+let recognitionImageKind = RecognitionImageKind() // RecognitionImageKind | Image kind for recognition. (optional)
 
-// Recognize barcode from file on server in the Internet using GET requests with parameter in query string. For recognizing files from your hard drive use `recognize-body` or `recognize-multipart` endpoints instead.
+// Recognize a barcode from a file on an Internet server using a GET request with a query string parameter. For recognizing files from your hard drive, use `recognize-body` or `recognize-multipart` endpoints instead.
 RecognizeAPI.recognize(barcodeType: barcodeType, fileUrl: fileUrl, recognitionMode: recognitionMode, recognitionImageKind: recognitionImageKind) { (response, error) in
     guard error == nil else {
         print(error)
@@ -43,10 +43,10 @@ RecognizeAPI.recognize(barcodeType: barcodeType, fileUrl: fileUrl, recognitionMo
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **barcodeType** | [**DecodeBarcodeType**](.md) | Type of barcode to recognize | 
- **fileUrl** | **String** | Url to barcode image | 
- **recognitionMode** | [**RecognitionMode**](.md) | Recognition mode | [optional] 
- **recognitionImageKind** | [**RecognitionImageKind**](.md) | Image kind for recognition | [optional] 
+ **barcodeType** | [**DecodeBarcodeType**](.md) | Type of barcode to recognize. | 
+ **fileUrl** | **String** | URL to the barcode image. | 
+ **recognitionMode** | [**RecognitionMode**](.md) | Recognition mode. | [optional] 
+ **recognitionImageKind** | [**RecognitionImageKind**](.md) | Image kind for recognition. | [optional] 
 
 ### Return type
 
@@ -68,16 +68,16 @@ Name | Type | Description  | Notes
     open class func recognizeBase64(recognizeBase64Request: RecognizeBase64Request, completion: @escaping (_ data: BarcodeResponseList?, _ error: Error?) -> Void)
 ```
 
-Recognize barcode from file in request body using POST requests with parameters in body in json or xml format.
+Recognize a barcode from a file in the request body using a POST request with JSON or XML body parameters.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import AsposeBarcodeCloud
 
-let recognizeBase64Request = RecognizeBase64Request(barcodeTypes: [DecodeBarcodeType()], fileBase64: "fileBase64_example", recognitionMode: RecognitionMode(), recognitionImageKind: RecognitionImageKind()) // RecognizeBase64Request | Barcode recognition request
+let recognizeBase64Request = RecognizeBase64Request(barcodeTypes: [DecodeBarcodeType()], fileBase64: "fileBase64_example", recognitionMode: RecognitionMode(), recognitionImageKind: RecognitionImageKind()) // RecognizeBase64Request | Barcode recognition request.
 
-// Recognize barcode from file in request body using POST requests with parameters in body in json or xml format.
+// Recognize a barcode from a file in the request body using a POST request with JSON or XML body parameters.
 RecognizeAPI.recognizeBase64(recognizeBase64Request: recognizeBase64Request) { (response, error) in
     guard error == nil else {
         print(error)
@@ -94,7 +94,7 @@ RecognizeAPI.recognizeBase64(recognizeBase64Request: recognizeBase64Request) { (
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **recognizeBase64Request** | [**RecognizeBase64Request**](RecognizeBase64Request.md) | Barcode recognition request | 
+ **recognizeBase64Request** | [**RecognizeBase64Request**](RecognizeBase64Request.md) | Barcode recognition request. | 
 
 ### Return type
 
@@ -116,19 +116,19 @@ Name | Type | Description  | Notes
     open class func recognizeMultipart(barcodeType: DecodeBarcodeType, file: Data, recognitionMode: RecognitionMode? = nil, recognitionImageKind: RecognitionImageKind? = nil, completion: @escaping (_ data: BarcodeResponseList?, _ error: Error?) -> Void)
 ```
 
-Recognize barcode from file in request body using POST requests with parameters in multipart form.
+Recognize a barcode from a file in the request body using a POST request with multipart form parameters.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import AsposeBarcodeCloud
 
-let barcodeType = DecodeBarcodeType() // DecodeBarcodeType | 
-let file = Data([9, 8, 7]) // Data | Barcode image file
-let recognitionMode = RecognitionMode() // RecognitionMode |  (optional)
-let recognitionImageKind = RecognitionImageKind() // RecognitionImageKind |  (optional)
+let barcodeType = DecodeBarcodeType() // DecodeBarcodeType | See https://reference.aspose.com/barcode/net/aspose.barcode.barcoderecognition/decodetype/
+let file = Data([9, 8, 7]) // Data | Barcode image file.
+let recognitionMode = RecognitionMode() // RecognitionMode | Recognition mode. (optional)
+let recognitionImageKind = RecognitionImageKind() // RecognitionImageKind | Image kind for recognition. (optional)
 
-// Recognize barcode from file in request body using POST requests with parameters in multipart form.
+// Recognize a barcode from a file in the request body using a POST request with multipart form parameters.
 RecognizeAPI.recognizeMultipart(barcodeType: barcodeType, file: file, recognitionMode: recognitionMode, recognitionImageKind: recognitionImageKind) { (response, error) in
     guard error == nil else {
         print(error)
@@ -145,10 +145,10 @@ RecognizeAPI.recognizeMultipart(barcodeType: barcodeType, file: file, recognitio
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **barcodeType** | [**DecodeBarcodeType**](DecodeBarcodeType.md) |  | 
- **file** | **Data** | Barcode image file | 
- **recognitionMode** | [**RecognitionMode**](RecognitionMode.md) |  | [optional] 
- **recognitionImageKind** | [**RecognitionImageKind**](RecognitionImageKind.md) |  | [optional] 
+ **barcodeType** | [**DecodeBarcodeType**](DecodeBarcodeType.md) | See https://reference.aspose.com/barcode/net/aspose.barcode.barcoderecognition/decodetype/ | 
+ **file** | **Data** | Barcode image file. | 
+ **recognitionMode** | [**RecognitionMode**](RecognitionMode.md) | Recognition mode. | [optional] 
+ **recognitionImageKind** | [**RecognitionImageKind**](RecognitionImageKind.md) | Image kind for recognition. | [optional] 
 
 ### Return type
 

@@ -7,14 +7,16 @@
 
 import Foundation
 
-/** Barcode recognize request */
+/** Barcode recognition request. */
 public final class RecognizeBase64Request: @unchecked Sendable, Codable, Hashable {
     public static let fileBase64Rule = StringRule(minLength: 1, maxLength: 28_730_982, pattern: nil)
-    /** Array of decode types to find on barcode */
+    /** Array of barcode decode types to find. */
     public var barcodeTypes: [DecodeBarcodeType]
     /** Barcode image bytes encoded as base-64. */
     public var fileBase64: String
+    /** Barcode recognition mode. */
     public var recognitionMode: RecognitionMode?
+    /** Image kind for recognition. */
     public var recognitionImageKind: RecognitionImageKind?
 
     public init(barcodeTypes: [DecodeBarcodeType], fileBase64: String, recognitionMode: RecognitionMode? = nil, recognitionImageKind: RecognitionImageKind? = nil) {

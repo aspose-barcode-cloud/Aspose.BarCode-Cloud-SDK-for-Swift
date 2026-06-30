@@ -17,6 +17,7 @@ public final class ApiError: @unchecked Sendable, Codable, Hashable {
     public var description: String?
     /** Gets or sets server datetime. */
     public var dateTime: Date?
+    /** Gets or sets inner error. */
     public var innerError: ApiError?
 
     public init(code: String?, message: String?, description: String? = nil, dateTime: Date? = nil, innerError: ApiError? = nil) {

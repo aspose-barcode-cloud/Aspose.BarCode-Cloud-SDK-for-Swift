@@ -115,7 +115,7 @@ final class AsposeBarcodeCloudTests: XCTestCase {
         let data = try await GenerateAPI.generate(
             barcodeType: .qr,
             data: "Aspose.BarCode Swift SDK",
-            imageFormat: .png,
+            barcodeImageParams: BarcodeImageParams(imageFormat: .png),
             apiConfiguration: client.apiConfiguration
         )
         XCTAssertGreaterThan(data.count, 0)
@@ -141,7 +141,7 @@ final class AsposeBarcodeCloudTests: XCTestCase {
             barcodeType: .qr,
             data: "54657374",
             dataType: .hexBytes,
-            backgroundColor: "0xffe",
+            barcodeImageParams: BarcodeImageParams(backgroundColor: "0xffe"),
             apiConfiguration: client.apiConfiguration
         )
         XCTAssertGreaterThan(data.count, 0)
