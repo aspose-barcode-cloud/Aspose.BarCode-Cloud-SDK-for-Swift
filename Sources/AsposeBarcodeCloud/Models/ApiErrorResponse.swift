@@ -11,6 +11,7 @@ import Foundation
 public final class ApiErrorResponse: @unchecked Sendable, Codable, Hashable {
     /** Gets or sets request Id. */
     public var requestId: String?
+    /** Gets or sets error. */
     public var error: ApiError
 
     public init(requestId: String?, error: ApiError) {

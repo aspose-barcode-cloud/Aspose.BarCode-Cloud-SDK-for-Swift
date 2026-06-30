@@ -140,10 +140,10 @@ open class RecognizeAPI {
     /**
      Recognize a barcode from a file in the request body using a POST request with multipart form parameters.
 
-     - parameter barcodeType: (form)
+     - parameter barcodeType: (form) See https://reference.aspose.com/barcode/net/aspose.barcode.barcoderecognition/decodetype/
      - parameter file: (form) Barcode image file.
-     - parameter recognitionMode: (form) (optional)
-     - parameter recognitionImageKind: (form) (optional)
+     - parameter recognitionMode: (form) Recognition mode. (optional)
+     - parameter recognitionImageKind: (form) Image kind for recognition. (optional)
      - parameter apiConfiguration: The configuration for the http request.
      - parameter completion: completion handler to receive the data and the error objects
      */
@@ -162,10 +162,10 @@ open class RecognizeAPI {
     /**
      Recognize a barcode from a file in the request body using a POST request with multipart form parameters.
 
-     - parameter barcodeType: (form)
+     - parameter barcodeType: (form) See https://reference.aspose.com/barcode/net/aspose.barcode.barcoderecognition/decodetype/
      - parameter file: (form) Barcode image file.
-     - parameter recognitionMode: (form) (optional)
-     - parameter recognitionImageKind: (form) (optional)
+     - parameter recognitionMode: (form) Recognition mode. (optional)
+     - parameter recognitionImageKind: (form) Image kind for recognition. (optional)
      - parameter apiConfiguration: The configuration for the http request.
      - returns: BarcodeResponseList
      */
@@ -179,10 +179,10 @@ open class RecognizeAPI {
      - OAuth:
        - type: oauth2
        - name: JWT
-     - parameter barcodeType: (form)
+     - parameter barcodeType: (form) See https://reference.aspose.com/barcode/net/aspose.barcode.barcoderecognition/decodetype/
      - parameter file: (form) Barcode image file.
-     - parameter recognitionMode: (form) (optional)
-     - parameter recognitionImageKind: (form) (optional)
+     - parameter recognitionMode: (form) Recognition mode. (optional)
+     - parameter recognitionImageKind: (form) Image kind for recognition. (optional)
      - parameter apiConfiguration: The configuration for the http request.
      - returns: RequestBuilder<BarcodeResponseList>
      */

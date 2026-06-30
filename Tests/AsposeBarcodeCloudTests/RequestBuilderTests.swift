@@ -13,8 +13,7 @@ final class RequestBuilderTests: XCTestCase {
             barcodeType: .qr,
             data: "hello world",
             dataType: .stringData,
-            imageFormat: .png,
-            textLocation: ._none,
+            barcodeImageParams: BarcodeImageParams(imageFormat: .png, textLocation: ._none),
             apiConfiguration: client.apiConfiguration
         )
 
@@ -67,8 +66,7 @@ final class RequestBuilderTests: XCTestCase {
             barcodeType: .qr,
             data: "payload",
             dataType: .stringData,
-            imageFormat: .png,
-            textLocation: ._none
+            barcodeImageParams: BarcodeImageParams(imageFormat: .png, textLocation: ._none)
         )
 
         XCTAssertEqual(builder.method, "POST")
