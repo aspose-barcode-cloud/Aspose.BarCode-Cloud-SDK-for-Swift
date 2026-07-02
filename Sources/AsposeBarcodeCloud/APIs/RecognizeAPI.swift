@@ -50,6 +50,7 @@ open class RecognizeAPI {
      - OAuth:
        - type: oauth2
        - name: JWT
+
      - parameter barcodeType: (query) Type of barcode to recognize.
      - parameter fileUrl: (query) URL to the barcode image.
      - parameter recognitionMode: (query) Recognition mode. (optional)
@@ -115,6 +116,7 @@ open class RecognizeAPI {
      - OAuth:
        - type: oauth2
        - name: JWT
+
      - parameter recognizeBase64Request: (body) Barcode recognition request.
      - parameter apiConfiguration: The configuration for the http request.
      - returns: RequestBuilder<BarcodeResponseList>
@@ -179,6 +181,7 @@ open class RecognizeAPI {
      - OAuth:
        - type: oauth2
        - name: JWT
+
      - parameter barcodeType: (form) See https://reference.aspose.com/barcode/net/aspose.barcode.barcoderecognition/decodetype/
      - parameter file: (form) Barcode image file.
      - parameter recognitionMode: (form) Recognition mode. (optional)

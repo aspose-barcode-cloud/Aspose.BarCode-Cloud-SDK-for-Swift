@@ -44,6 +44,7 @@ open class ScanAPI {
      - OAuth:
        - type: oauth2
        - name: JWT
+
      - parameter fileUrl: (query) URL to the barcode image.
      - parameter apiConfiguration: The configuration for the http request.
      - returns: RequestBuilder<BarcodeResponseList>
@@ -103,6 +104,7 @@ open class ScanAPI {
      - OAuth:
        - type: oauth2
        - name: JWT
+
      - parameter scanBase64Request: (body) Barcode scan request.
      - parameter apiConfiguration: The configuration for the http request.
      - returns: RequestBuilder<BarcodeResponseList>
@@ -161,6 +163,7 @@ open class ScanAPI {
      - OAuth:
        - type: oauth2
        - name: JWT
+
      - parameter file: (form) Barcode image file.
      - parameter apiConfiguration: The configuration for the http request.
      - returns: RequestBuilder<BarcodeResponseList>
