@@ -6,9 +6,9 @@ let client = AsposeBarcodeCloudClient(
     clientSecret: "Client Secret from https://dashboard.aspose.cloud/applications"
 )
 
-let imageData = try Data(contentsOf: URL(fileURLWithPath: "qr.png"))
+let imageData = try Data(contentsOf: URL(fileURLWithPath: "pdf417.png"))
 let response = try await RecognizeAPI.recognizeMultipart(
-    barcodeType: .qr,
+    barcodeType: .pdf417,
     file: imageData,
     apiConfiguration: client.apiConfiguration
 )

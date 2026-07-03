@@ -7,7 +7,7 @@ let client = AsposeBarcodeCloudClient(
 )
 
 let response = try await RecognizeAPI.recognize(
-    barcodeType: .qr,
+    barcodeType: .mostCommonlyUsed,
     fileUrl: "https://products.aspose.app/barcode/scan/img/how-to/scan/step2.png",
     apiConfiguration: client.apiConfiguration
 )

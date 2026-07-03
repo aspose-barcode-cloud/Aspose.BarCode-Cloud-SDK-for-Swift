@@ -8,7 +8,7 @@ let client = AsposeBarcodeCloudClient(
 
 let imageData = try Data(contentsOf: URL(fileURLWithPath: "barcode.png"))
 let request = RecognizeBase64Request(
-    barcodeTypes: [.qr, .code128],
+    barcodeTypes: [.qr, .pdf417],
     fileBase64: imageData.base64EncodedString()
 )
 
