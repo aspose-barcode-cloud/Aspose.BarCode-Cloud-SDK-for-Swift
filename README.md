@@ -306,6 +306,12 @@ cp .env.integration.example .env.integration
 make integration-test
 ```
 
+Run documentation snippets with the same credentials:
+
+```bash
+make snippets-test
+```
+
 Run the sample program:
 
 ```bash

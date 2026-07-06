@@ -36,6 +36,8 @@ jobs:
         run: make test
       - name: Run example
         run: make example
+      - name: Run snippets
+        run: make snippets-test
 
   macos-test:
     runs-on: macos-latest

@@ -32,6 +32,14 @@ insert-example:
 test:
 	./Scripts/runTests.sh
 
+.PHONY: integration-test
+integration-test:
+	./Scripts/runTests.sh
+
+.PHONY: snippets-test
+snippets-test:
+	./Scripts/runSnippets.sh
+
 .PHONY: example
 example:
 	./Scripts/runExample.sh
