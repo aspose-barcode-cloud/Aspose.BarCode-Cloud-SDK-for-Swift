@@ -46,8 +46,6 @@ jobs:
       TEST_CONFIGURATION_ACCESS_TOKEN: ${{ secrets.TEST_CONFIGURATION_ACCESS_TOKEN }}
     steps:
       - uses: actions/checkout@v6
-      - name: Install coverage tooling
-        run: sudo apt-get update && sudo apt-get install -y jq
       - name: Verify Swift version
         run: swift --version
       - name: Enforce coverage gate (>= 80%)
