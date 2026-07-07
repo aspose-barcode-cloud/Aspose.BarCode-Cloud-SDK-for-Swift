@@ -12,6 +12,32 @@ import XCTest
 /// encoding, auth interception, response decoding) runs without any network
 /// access.
 final class CompletionHandlerAPITests: XCTestCase {
+    override func setUp() {
+        super.setUp()
+        MockTransport.reset()
+        // Serve generate requests with image bytes and recognize/scan requests
+        // with a canned barcode list, keyed on the request path.
+        MockTransport.set { request in
+            let url = request.url ?? URL(string: "https://example.com/")!
+            let body: Data
+            let contentType: String
+            if url.path.contains("/barcode/generate") {
+                body = MockBarcodeTransport.generatedImageBytes
+                contentType = "image/png"
+            } else {
+                body = MockBarcodeTransport.recognizeResponseJSON
+                contentType = "application/json"
+            }
+            let response = HTTPURLResponse(
+                url: url,
+                statusCode: 200,
+                httpVersion: "HTTP/1.1",
+                headerFields: ["Content-Type": contentType]
+            )
+            return MockTransport.Reply(data: body, response: response)
+        }
+    }
+
     // MARK: - Generate
 
     func testGenerateCompletionVariant() {
@@ -198,78 +224,4 @@ private enum MockBarcodeTransport {
     static let recognizeResponseJSON = Data(
         #"{"barcodes":[{"barcodeValue":"mock-barcode-value","type":"QR"}]}"#.utf8
     )
-}
-
-/// A `URLSessionProtocol` stand-in that answers generate requests with image
-/// bytes and recognize/scan requests with a canned barcode list, without
-/// touching the network.
-private final class MockURLSession: URLSessionProtocol {
-    func dataTaskFromProtocol(
-        with request: URLRequest,
-        completionHandler: @escaping @Sendable (Data?, URLResponse?, (any Error)?) -> Void
-    ) -> URLSessionDataTaskProtocol {
-        MockURLSessionDataTask(request: request, completionHandler: completionHandler)
-    }
-}
-
-private final class MockURLSessionDataTask: URLSessionDataTaskProtocol, @unchecked Sendable {
-    let taskIdentifier = 0
-    let progress = Progress(totalUnitCount: 1)
-
-    private let request: URLRequest
-    private let completionHandler: @Sendable (Data?, URLResponse?, (any Error)?) -> Void
-
-    init(request: URLRequest, completionHandler: @escaping @Sendable (Data?, URLResponse?, (any Error)?) -> Void) {
-        self.request = request
-        self.completionHandler = completionHandler
-    }
-
-    func resume() {
-        guard let url = request.url else {
-            completionHandler(nil, nil, URLError(.badURL))
-            return
-        }
-
-        let body: Data
-        let contentType: String
-        if url.path.contains("/barcode/generate") {
-            body = MockBarcodeTransport.generatedImageBytes
-            contentType = "image/png"
-        } else {
-            body = MockBarcodeTransport.recognizeResponseJSON
-            contentType = "application/json"
-        }
-
-        let response = HTTPURLResponse(
-            url: url,
-            statusCode: 200,
-            httpVersion: "HTTP/1.1",
-            headerFields: ["Content-Type": contentType]
-        )
-        completionHandler(body, response, nil)
-    }
-
-    func cancel() {}
-}
-
-private final class MockURLSessionRequestBuilder<T: Sendable>: URLSessionRequestBuilder<T>, @unchecked Sendable {
-    override func createURLSession() -> URLSessionProtocol {
-        MockURLSession()
-    }
-}
-
-private final class MockURLSessionDecodableRequestBuilder<T: Decodable & Sendable>: URLSessionDecodableRequestBuilder<T>, @unchecked Sendable {
-    override func createURLSession() -> URLSessionProtocol {
-        MockURLSession()
-    }
-}
-
-private final class MockRequestBuilderFactory: RequestBuilderFactory, Sendable {
-    func getNonDecodableBuilder<T>() -> RequestBuilder<T>.Type {
-        MockURLSessionRequestBuilder<T>.self
-    }
-
-    func getBuilder<T: Decodable>() -> RequestBuilder<T>.Type {
-        MockURLSessionDecodableRequestBuilder<T>.self
-    }
 }
