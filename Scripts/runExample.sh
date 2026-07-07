@@ -4,13 +4,6 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$repo_root"
 
-if [ -f .env.integration ]; then
-    set -a
-    # shellcheck disable=SC1091
-    source .env.integration
-    set +a
-fi
-
 has_access_token=false
 has_client_credentials=false
 
@@ -33,8 +26,8 @@ fi
 if [ "$has_access_token" != true ] && [ "$has_client_credentials" != true ]; then
     echo "Missing example credentials."
     echo "Create Tests/configuration.json from Tests/configuration.example.json,"
-    echo "or create .env.integration from .env.integration.example and set TEST_CONFIGURATION_ACCESS_TOKEN"
-    echo "or TEST_CONFIGURATION_CLIENT_ID/TEST_CONFIGURATION_CLIENT_SECRET."
+    echo "or export TEST_CONFIGURATION_ACCESS_TOKEN,"
+    echo "or export TEST_CONFIGURATION_CLIENT_ID and TEST_CONFIGURATION_CLIENT_SECRET."
     exit 1
 fi
 

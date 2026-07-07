@@ -4,31 +4,34 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$repo_root"
 
-if [ -f .env.integration ]; then
-    set -a
-    # shellcheck disable=SC1091
-    source .env.integration
-    set +a
-fi
-
 access_token="${TEST_CONFIGURATION_ACCESS_TOKEN:-}"
 client_id="${TEST_CONFIGURATION_CLIENT_ID:-${ASPOSE_CLIENT_ID:-}}"
 client_secret="${TEST_CONFIGURATION_CLIENT_SECRET:-${ASPOSE_CLIENT_SECRET:-}}"
 swift_bin="${SWIFT_BIN:-swift}"
 
-if [ -f Tests/configuration.json ]; then
-    IFS="$(printf '\t')" read -r config_access_token config_client_id config_client_secret < <(python3 -c '
-import json
+config_file=""
+for candidate in Tests/configuration.json Tests/Configuration.json; do
+    if [ -f "$candidate" ]; then
+        config_file="$candidate"
+        break
+    fi
+done
 
-with open("Tests/configuration.json", encoding="utf-8") as file:
+if [ -n "$config_file" ]; then
+    IFS="$(printf '\t')" read -r config_access_token config_client_id config_client_secret < <(python3 - "$config_file" <<'PY'
+import json
+import sys
+
+with open(sys.argv[1], encoding="utf-8") as file:
     payload = json.load(file)
 
 print("\t".join([
-    payload.get("accessToken") or "",
-    payload.get("clientId") or "",
-    payload.get("clientSecret") or "",
+    payload.get("accessToken") or payload.get("AccessToken") or "",
+    payload.get("clientId") or payload.get("ClientId") or "",
+    payload.get("clientSecret") or payload.get("ClientSecret") or "",
 ]))
-')
+PY
+)
 
     access_token="${access_token:-$config_access_token}"
     client_id="${client_id:-$config_client_id}"
@@ -89,20 +92,23 @@ sanitize_log() {
     SNIPPET_ACCESS_TOKEN="$access_token" \
     SNIPPET_CLIENT_ID="$client_id" \
     SNIPPET_CLIENT_SECRET="$client_secret" \
-    perl -pe '
-        BEGIN {
-            @replacements = (
-                [$ENV{SNIPPET_ACCESS_TOKEN} // "", "<access-token>"],
-                [$ENV{SNIPPET_CLIENT_ID} // "", "<client-id>"],
-                [$ENV{SNIPPET_CLIENT_SECRET} // "", "<client-secret>"],
-            );
-        }
-        for my $replacement (@replacements) {
-            my ($value, $label) = @$replacement;
-            next if $value eq "";
-            s/\Q$value\E/$label/g;
-        }
-    ' "$log_file"
+    python3 - "$log_file" <<'PY'
+import os
+import sys
+
+with open(sys.argv[1], encoding="utf-8", errors="replace") as file:
+    content = file.read()
+
+for value, label in [
+    (os.environ.get("SNIPPET_ACCESS_TOKEN", ""), "<access-token>"),
+    (os.environ.get("SNIPPET_CLIENT_ID", ""), "<client-id>"),
+    (os.environ.get("SNIPPET_CLIENT_SECRET", ""), "<client-secret>"),
+]:
+    if value:
+        content = content.replace(value, label)
+
+print(content, end="")
+PY
 }
 
 prepare_snippet() {
@@ -111,19 +117,46 @@ prepare_snippet() {
 
     cp "$source_file" "$target_file"
 
-    if [ -n "$access_token" ] && [ "$(basename "$source_file")" != "manual_fetch_token.swift" ]; then
-        SNIPPET_ACCESS_TOKEN="$access_token" perl -0pi -e '
-            s/AsposeBarcodeCloudClient\(\s*clientId:\s*"Client Id from https:\/\/dashboard\.aspose\.cloud\/applications",\s*clientSecret:\s*"Client Secret from https:\/\/dashboard\.aspose\.cloud\/applications"\s*\)/AsposeBarcodeCloudClient(accessToken: "$ENV{SNIPPET_ACCESS_TOKEN}")/g
-        ' "$target_file"
-        return
-    fi
+    SNIPPET_ACCESS_TOKEN="$access_token" \
+    SNIPPET_CLIENT_ID="$client_id" \
+    SNIPPET_CLIENT_SECRET="$client_secret" \
+    SNIPPET_IS_MANUAL_FETCH="$([ "$(basename "$source_file")" = "manual_fetch_token.swift" ] && echo "1" || echo "0")" \
+    python3 - "$target_file" <<'PY'
+import os
+import re
+import sys
 
-    if [ -n "$client_id" ] && [ -n "$client_secret" ]; then
-        SNIPPET_CLIENT_ID="$client_id" SNIPPET_CLIENT_SECRET="$client_secret" perl -pi -e '
-            s|Client Id from https://dashboard\.aspose\.cloud/applications|$ENV{SNIPPET_CLIENT_ID}|g;
-            s|Client Secret from https://dashboard\.aspose\.cloud/applications|$ENV{SNIPPET_CLIENT_SECRET}|g;
-        ' "$target_file"
-    fi
+target_file = sys.argv[1]
+access_token = os.environ.get("SNIPPET_ACCESS_TOKEN", "")
+client_id = os.environ.get("SNIPPET_CLIENT_ID", "")
+client_secret = os.environ.get("SNIPPET_CLIENT_SECRET", "")
+is_manual_fetch = os.environ.get("SNIPPET_IS_MANUAL_FETCH") == "1"
+
+with open(target_file, encoding="utf-8") as file:
+    content = file.read()
+
+def swift_string(value: str) -> str:
+    return value.replace("\\", "\\\\").replace('"', '\\"')
+
+if access_token and not is_manual_fetch:
+    content = re.sub(
+        r'AsposeBarcodeCloudClient\(\s*clientId:\s*"Client Id from https://dashboard\.aspose\.cloud/applications",\s*clientSecret:\s*"Client Secret from https://dashboard\.aspose\.cloud/applications"\s*\)',
+        f'AsposeBarcodeCloudClient(accessToken: "{swift_string(access_token)}")',
+        content,
+    )
+elif client_id and client_secret:
+    content = content.replace(
+        "Client Id from https://dashboard.aspose.cloud/applications",
+        swift_string(client_id),
+    )
+    content = content.replace(
+        "Client Secret from https://dashboard.aspose.cloud/applications",
+        swift_string(client_secret),
+    )
+
+with open(target_file, "w", encoding="utf-8") as file:
+    file.write(content)
+PY
 }
 
 typecheck_snippet() {

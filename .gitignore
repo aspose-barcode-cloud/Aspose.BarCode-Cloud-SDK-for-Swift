@@ -1,7 +1,6 @@
 .build/
 .swiftpm/
 Package.resolved
-.env.integration
 Tests/configuration.json
 QR.png
 DerivedData/
