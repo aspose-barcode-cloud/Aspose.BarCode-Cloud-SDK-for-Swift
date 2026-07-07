@@ -32,6 +32,10 @@ insert-example:
 test:
 	./Scripts/runTests.sh
 
+.PHONY: cover
+cover:
+	./Scripts/coverage.sh
+
 .PHONY: integration-test
 integration-test:
 	./Scripts/runTests.sh
