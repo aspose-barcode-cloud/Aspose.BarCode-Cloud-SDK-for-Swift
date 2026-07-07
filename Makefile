@@ -38,7 +38,7 @@ cover:
 
 .PHONY: integration-test
 integration-test:
-	./Scripts/runTests.sh
+	./Scripts/runIntegrationTests.sh
 
 .PHONY: snippets-test
 snippets-test:
