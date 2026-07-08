@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'AsposeBarcodeCloud'
-  s.version = '26.6.0'
+  s.version = '26.7.0'
   s.summary = 'Aspose.BarCode Cloud SDK for Swift'
   s.description = 'Swift SDK for Aspose.BarCode Cloud barcode generation and recognition APIs.'
   s.homepage = 'https://github.com/aspose-barcode-cloud/Aspose.BarCode-Cloud-SDK-for-Swift'
