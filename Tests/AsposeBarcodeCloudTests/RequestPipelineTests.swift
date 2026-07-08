@@ -40,10 +40,10 @@ final class RequestPipelineTests: XCTestCase {
         XCTAssertNil(builder.contentTypeForFormPart(fileURL: URL(fileURLWithPath: "/tmp/x.png")))
     }
 
-    func testDefaultInterceptorPassthroughAndRetry() {
+    func testDefaultInterceptorPassthroughAndRetry() throws {
         let interceptor = DefaultOpenAPIInterceptor()
         let builder = makeDecodableBuilder(SampleModel.self, method: "GET")
-        let request = URLRequest(url: URL(string: "https://example.com/v4.0/x")!)
+        let request = try URLRequest(url: XCTUnwrap(URL(string: "https://example.com/v4.0/x")))
 
         let passthrough = expectation(description: "intercept")
         interceptor.intercept(urlRequest: request, urlSession: MockURLSession(), requestBuilder: builder) { result in
@@ -207,18 +207,18 @@ final class RequestPipelineTests: XCTestCase {
     func testDecodeMalformedJSONFails() throws {
         MockTransport.respond(status: 200, body: Data("not json".utf8))
         let builder = makeDecodableBuilder(SampleModel.self, method: "GET")
-        assertFailure(try XCTUnwrap(execute(builder)))
+        try assertFailure(XCTUnwrap(execute(builder)))
     }
 
     func testEmptyDataRequiredModelFails() throws {
         MockTransport.respond(status: 200, body: Data())
         let builder = makeDecodableBuilder(SampleModel.self, method: "GET")
-        assertFailure(try XCTUnwrap(execute(builder)))
+        try assertFailure(XCTUnwrap(execute(builder)))
     }
 
     func testEmptyDataOptionalModelSucceedsWithNil() throws {
         MockTransport.respond(status: 200, body: Data())
-        let builder = makeDecodableBuilder(Optional<SampleModel>.self, method: "GET")
+        let builder = makeDecodableBuilder(SampleModel?.self, method: "GET")
         let result = try XCTUnwrap(execute(builder))
         XCTAssertNil(try successBody(result))
     }
@@ -244,7 +244,7 @@ final class RequestPipelineTests: XCTestCase {
             return MockTransport.Reply(data: Data(), response: response)
         }
         let builder = makeDecodableBuilder(SampleModel.self, method: "GET")
-        assertFailure(try XCTUnwrap(execute(builder)))
+        try assertFailure(XCTUnwrap(execute(builder)))
     }
 
     func testNon2xxStatusFails() throws {
@@ -261,7 +261,7 @@ final class RequestPipelineTests: XCTestCase {
     func testTransportErrorFails() throws {
         MockTransport.set { _ in MockTransport.Reply(error: URLError(.timedOut)) }
         let builder = makeDecodableBuilder(SampleModel.self, method: "GET")
-        assertFailure(try XCTUnwrap(execute(builder)))
+        try assertFailure(XCTUnwrap(execute(builder)))
     }
 
     // MARK: - Base (non-decodable) builder
@@ -276,7 +276,7 @@ final class RequestPipelineTests: XCTestCase {
     func testUnsupportedResponseBodyTypeFails() throws {
         MockTransport.respond(status: 200, body: Data())
         let builder = makeBuilder(Int.self, method: "GET")
-        assertFailure(try XCTUnwrap(execute(builder)))
+        try assertFailure(XCTUnwrap(execute(builder)))
     }
 
     // MARK: - Download to file (URL response)
@@ -309,33 +309,33 @@ final class RequestPipelineTests: XCTestCase {
             MockTransport.Reply(data: nil, response: MockTransport.httpResponse(200, url: request.url!.absoluteString))
         }
         let builder = makeDecodableBuilder(URL.self, method: "GET", urlString: "https://example.com/v4.0/barcode/download")
-        assertFailure(try XCTUnwrap(execute(builder)))
+        try assertFailure(XCTUnwrap(execute(builder)))
     }
 
     // MARK: - Request build failures
 
     func testInvalidHTTPMethodFails() throws {
         let builder = makeDecodableBuilder(SampleModel.self, method: "FOOBAR")
-        assertFailure(try XCTUnwrap(execute(builder)))
+        try assertFailure(XCTUnwrap(execute(builder)))
     }
 
     func testMalformedURLStringFails() throws {
         let builder = makeDecodableBuilder(SampleModel.self, method: "GET", urlString: "https://example.com/v4.0/a b c")
-        assertFailure(try XCTUnwrap(execute(builder)))
+        try assertFailure(XCTUnwrap(execute(builder)))
     }
 
     // MARK: - Interceptor behaviour
 
     func testInterceptorFailurePropagates() throws {
         let builder = makeDecodableBuilder(SampleModel.self, method: "GET", interceptor: FailingInterceptor())
-        assertFailure(try XCTUnwrap(execute(builder)))
+        try assertFailure(XCTUnwrap(execute(builder)))
     }
 
     func testInterceptorRetryIsHonoured() throws {
         MockTransport.respond(status: 500, body: Data("err".utf8))
         let interceptor = RetryOnceInterceptor(retries: 1)
         let builder = makeDecodableBuilder(SampleModel.self, method: "GET", interceptor: interceptor)
-        assertFailure(try XCTUnwrap(execute(builder)))
+        try assertFailure(XCTUnwrap(execute(builder)))
         XCTAssertEqual(interceptor.retryCalls, 2, "should retry once then stop")
     }
 
@@ -404,7 +404,7 @@ final class RequestPipelineTests: XCTestCase {
         }
     }
 
-    private func assertFailure<T>(_ result: Result<Response<T>, ErrorResponse>, file: StaticString = #filePath, line: UInt = #line) {
+    private func assertFailure(_ result: Result<Response<some Any>, ErrorResponse>, file: StaticString = #filePath, line: UInt = #line) {
         if case .success = result {
             XCTFail("expected failure", file: file, line: line)
         }
@@ -416,16 +416,18 @@ final class RequestPipelineTests: XCTestCase {
         return url
     }
 
-    private var sampleJSON: Data { Data(#"{"name":"abc"}"#.utf8) }
+    private var sampleJSON: Data {
+        Data(#"{"name":"abc"}"#.utf8)
+    }
 }
 
 // MARK: - Test fixtures
 
-struct SampleModel: Codable, Sendable, Equatable {
+struct SampleModel: Codable, Equatable {
     let name: String
 }
 
-struct UnsupportedValue: Sendable {}
+struct UnsupportedValue {}
 
 private final class ResultBox<T>: @unchecked Sendable {
     private let lock = NSLock()

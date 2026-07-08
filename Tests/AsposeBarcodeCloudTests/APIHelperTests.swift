@@ -42,24 +42,24 @@ final class APIHelperTests: XCTestCase {
     }
 
     func testAPIHelperQueryItemMapping() {
-        XCTAssertNil(APIHelper.mapValuesToQueryItems(["a": Optional<any Sendable>.none]))
+        XCTAssertNil(APIHelper.mapValuesToQueryItems(["a": (any Sendable)?.none]))
 
         let exploded = APIHelper.mapValuesToQueryItems([
             "single": "value",
             "list": ["a", "b"] as [String?],
-            "skip": Optional<any Sendable>.none,
+            "skip": (any Sendable)?.none,
         ])
-        XCTAssertEqual(exploded?.filter { $0.name == "list" }.count, 2)
+        XCTAssertEqual(exploded?.count(where: { $0.name == "list" }), 2)
         XCTAssertEqual(exploded?.first { $0.name == "single" }?.value, "value")
 
         let explodeControlled = APIHelper.mapValuesToQueryItems([
             "joined": (wrappedValue: ["a", "b"] as [String?], isExplode: false),
             "spread": (wrappedValue: ["c", "d"] as [String?], isExplode: true),
             "scalar": (wrappedValue: "z", isExplode: true),
-            "skip": (wrappedValue: Optional<any Sendable>.none, isExplode: true),
+            "skip": (wrappedValue: (any Sendable)?.none, isExplode: true),
         ])
         XCTAssertEqual(explodeControlled?.first { $0.name == "joined" }?.value, "a,b")
-        XCTAssertEqual(explodeControlled?.filter { $0.name == "spread" }.count, 2)
+        XCTAssertEqual(explodeControlled?.count(where: { $0.name == "spread" }), 2)
         XCTAssertEqual(explodeControlled?.first { $0.name == "scalar" }?.value, "z")
 
         XCTAssertNil(APIHelper.mapValuesToQueryItems([String: (wrappedValue: (any Sendable)?, isExplode: Bool)]()))

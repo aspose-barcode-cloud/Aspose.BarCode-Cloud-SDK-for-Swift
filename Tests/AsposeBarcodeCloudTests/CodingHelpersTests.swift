@@ -12,7 +12,7 @@ import XCTest
 final class CodingHelpersTests: XCTestCase {
     // MARK: - CodableHelper
 
-    func testCodableHelperCustomCodersAndDateFormatter() throws {
+    func testCodableHelperCustomCodersAndDateFormatter() {
         let helper = CodableHelper()
 
         let customEncoder = JSONEncoder()
@@ -39,7 +39,7 @@ final class CodingHelpersTests: XCTestCase {
 
     // MARK: - Extensions (ParameterConvertible)
 
-    func testParameterConvertibleScalars() {
+    func testParameterConvertibleScalars() throws {
         let helper = CodableHelper()
         XCTAssertEqual(true.asParameter(codableHelper: helper) as? Bool, true)
         XCTAssertEqual(Float(1.5).asParameter(codableHelper: helper) as? Float, 1.5)
@@ -50,7 +50,7 @@ final class CodingHelpersTests: XCTestCase {
         XCTAssertEqual(Decimal(3).asParameter(codableHelper: helper) as? Decimal, Decimal(3))
         XCTAssertEqual("text".asParameter(codableHelper: helper) as? String, "text")
 
-        let url = URL(string: "https://example.com")!
+        let url = try XCTUnwrap(URL(string: "https://example.com"))
         XCTAssertEqual(url.asParameter(codableHelper: helper) as? URL, url)
 
         let uuid = UUID()
@@ -73,7 +73,7 @@ final class CodingHelpersTests: XCTestCase {
         let array = [1, 2, 3].asParameter(codableHelper: helper) as? [any Sendable]
         XCTAssertEqual(array?.count, 3)
 
-        let set: Set<Int> = [1, 2, 3]
+        let set: Set = [1, 2, 3]
         let setParam = set.asParameter(codableHelper: helper) as? [any Sendable]
         XCTAssertEqual(setParam?.count, 3)
 
@@ -90,9 +90,9 @@ final class CodingHelpersTests: XCTestCase {
     }
 
     func testKeyedContainerArrayAndDecimalHelpers() throws {
-        let holder = DecimalHolder(
-            decimalValue: Decimal(string: "12.34")!,
-            optionalDecimal: Decimal(string: "5.6")!,
+        let holder = try DecimalHolder(
+            decimalValue: XCTUnwrap(Decimal(string: "12.34")),
+            optionalDecimal: XCTUnwrap(Decimal(string: "5.6")),
             array: [1, 2, 3],
             optionalArray: [4, 5]
         )
@@ -116,7 +116,7 @@ final class CodingHelpersTests: XCTestCase {
         )
         let roundTripped = try JSONDecoder().decode(
             DecimalHolder.self,
-            from: try encoder.encode(noOptional)
+            from: encoder.encode(noOptional)
         )
         XCTAssertEqual(roundTripped, noOptional)
 
@@ -164,16 +164,16 @@ final class CodingHelpersTests: XCTestCase {
         XCTAssertNil(JSONEncodingHelper.encodingParameters(forEncodableObject: none, codableHelper: helper))
 
         // JSONDataEncoding applies the body and content type.
-        let encoded = JSONDataEncoding().encode(
-            request: URLRequest(url: URL(string: "https://example.com")!),
+        let encoded = try JSONDataEncoding().encode(
+            request: URLRequest(url: XCTUnwrap(URL(string: "https://example.com"))),
             with: params
         )
         XCTAssertEqual(encoded.value(forHTTPHeaderField: "Content-Type"), "application/json")
         XCTAssertEqual(encoded.httpBody, jsonData)
 
         // Empty parameters leave the request unchanged.
-        let unchanged = JSONDataEncoding().encode(
-            request: URLRequest(url: URL(string: "https://example.com")!),
+        let unchanged = try JSONDataEncoding().encode(
+            request: URLRequest(url: XCTUnwrap(URL(string: "https://example.com"))),
             with: nil
         )
         XCTAssertNil(unchanged.httpBody)

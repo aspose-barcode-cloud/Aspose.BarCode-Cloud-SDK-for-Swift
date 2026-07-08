@@ -39,12 +39,12 @@ final class InfrastructureModelsTests: XCTestCase {
     }
 
     func testResponseInitFromHTTPURLResponse() throws {
-        let httpResponse = HTTPURLResponse(
-            url: URL(string: "https://example.com")!,
+        let httpResponse = try XCTUnwrap(try HTTPURLResponse(
+            url: XCTUnwrap(URL(string: "https://example.com")),
             statusCode: 201,
             httpVersion: "HTTP/1.1",
             headerFields: ["Content-Type": "application/json"]
-        )!
+        ))
 
         let response = Response(response: httpResponse, body: "body", bodyData: Data("body".utf8))
         XCTAssertEqual(response.statusCode, 201)
@@ -107,7 +107,9 @@ final class InfrastructureModelsTests: XCTestCase {
         )
 
         struct SampleError: LocalizedError {
-            var errorDescription: String? { "transport boom" }
+            var errorDescription: String? {
+                "transport boom"
+            }
         }
         XCTAssertEqual(
             AsposeBarcodeCloudClientError.transportError(SampleError()).description,

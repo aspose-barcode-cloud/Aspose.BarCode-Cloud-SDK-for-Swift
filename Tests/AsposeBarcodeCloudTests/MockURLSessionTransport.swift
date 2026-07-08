@@ -24,8 +24,8 @@ enum MockTransport {
         }
     }
 
-    nonisolated(unsafe) private static var handler: (@Sendable (URLRequest) -> Reply)?
-    nonisolated(unsafe) private(set) static var lastRequest: URLRequest?
+    private nonisolated(unsafe) static var handler: (@Sendable (URLRequest) -> Reply)?
+    private(set) nonisolated(unsafe) static var lastRequest: URLRequest?
 
     static func reset() {
         handler = nil

@@ -65,7 +65,7 @@ final class InfrastructureUtilityTests: XCTestCase {
 
     func testEncodingParametersReturnsNilForNilObject() {
         let parameters = JSONEncodingHelper.encodingParameters(
-            forEncodableObject: Optional<GenerateParams>.none,
+            forEncodableObject: GenerateParams?.none,
             codableHelper: CodableHelper()
         )
         XCTAssertNil(parameters)
