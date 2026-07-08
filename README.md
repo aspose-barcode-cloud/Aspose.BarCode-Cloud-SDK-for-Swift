@@ -298,11 +298,12 @@ cp Tests/configuration.example.json Tests/configuration.json
 make integration-test
 ```
 
-Alternatively, keep credentials in local environment variables:
+Alternatively, export credentials as environment variables:
 
 ```bash
-cp .env.integration.example .env.integration
-# Fill TEST_CONFIGURATION_CLIENT_ID and TEST_CONFIGURATION_CLIENT_SECRET, or TEST_CONFIGURATION_ACCESS_TOKEN.
+export TEST_CONFIGURATION_CLIENT_ID='<Your-Client-Id>'
+export TEST_CONFIGURATION_CLIENT_SECRET='<Your-Client-Secret>'
+# Or export TEST_CONFIGURATION_ACCESS_TOKEN='<Your-Access-Token>'.
 make integration-test
 ```
 
