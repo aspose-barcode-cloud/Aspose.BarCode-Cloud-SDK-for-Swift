@@ -25,7 +25,7 @@ final class RequestBuilderConfigTests: XCTestCase {
 
         let helper = CodableHelper()
         configuration.codableHelper = helper
-        XCTAssertNotNil(configuration.codableHelper)
+        XCTAssertTrue(configuration.codableHelper === helper)
 
         configuration.successfulStatusCodeRange = 200 ..< 400
         XCTAssertEqual(configuration.successfulStatusCodeRange, 200 ..< 400)
@@ -78,8 +78,11 @@ final class RequestBuilderConfigTests: XCTestCase {
             apiConfiguration: AsposeBarcodeCloudAPIConfiguration()
         )
 
-        // The base stub returns its request task without invoking the completion.
-        let task = builder.execute { _ in }
-        XCTAssertNotNil(task)
+        // The base stub returns its request task (non-optional) without ever
+        // invoking the completion; an inverted expectation fails if it does.
+        let completionCalled = expectation(description: "completion must not be called")
+        completionCalled.isInverted = true
+        builder.execute { _ in completionCalled.fulfill() }
+        wait(for: [completionCalled], timeout: 0.2)
     }
 }

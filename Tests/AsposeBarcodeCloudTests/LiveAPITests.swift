@@ -9,7 +9,7 @@ import XCTest
 /// Scan, and Recognize APIs. These call the real Aspose.BarCode Cloud API and
 /// require credentials: set TEST_CONFIGURATION_ACCESS_TOKEN, create
 /// Tests/configuration.json from Tests/configuration.example.json, or set
-/// ASPOSE_CLIENT_ID and ASPOSE_CLIENT_SECRET.
+/// TEST_CONFIGURATION_CLIENT_ID and TEST_CONFIGURATION_CLIENT_SECRET.
 final class LiveAPITests: XCTestCase {
     private static let publicBarcodeImageURL = "https://products.aspose.app/barcode/scan/img/how-to/scan/step2.png"
     private static let publicBarcodeImageDecodedValue = "http://en.m.wikipedia.org"
@@ -153,7 +153,7 @@ final class LiveAPITests: XCTestCase {
     private func makeIntegrationClient() async throws -> AsposeBarcodeCloudClient {
         let configuration = try XCTUnwrap(
             TestConfiguration.load(),
-            "Integration credentials missing. Set TEST_CONFIGURATION_ACCESS_TOKEN, create Tests/configuration.json from Tests/configuration.example.json, or set ASPOSE_CLIENT_ID and ASPOSE_CLIENT_SECRET."
+            "Integration credentials missing. Set TEST_CONFIGURATION_ACCESS_TOKEN, create Tests/configuration.json from Tests/configuration.example.json, or set TEST_CONFIGURATION_CLIENT_ID and TEST_CONFIGURATION_CLIENT_SECRET."
         )
         let client = AsposeBarcodeCloudClient(configuration: configuration)
         _ = try await client.authorize()

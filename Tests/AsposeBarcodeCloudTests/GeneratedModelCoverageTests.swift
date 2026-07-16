@@ -28,7 +28,6 @@ final class GeneratedModelCoverageTests: XCTestCase {
 
         let other = ApiError(code: "different", message: "boom")
         XCTAssertNotEqual(error, other)
-        XCTAssertEqual(error.hashValue, error.hashValue)
     }
 
     func testApiErrorResponseRoundTrip() throws {

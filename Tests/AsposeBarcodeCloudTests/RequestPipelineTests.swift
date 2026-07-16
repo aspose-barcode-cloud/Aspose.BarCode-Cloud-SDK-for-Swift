@@ -192,7 +192,7 @@ final class RequestPipelineTests: XCTestCase {
             parameters: [:],
             headers: ["Content-Type": "multipart/form-data"]
         )
-        _ = try XCTUnwrap(execute(builder))
+        _ = try successBody(XCTUnwrap(execute(builder)))
     }
 
     // MARK: - Response decoding (decodable builder)

@@ -62,9 +62,11 @@ final class CodingHelpersTests: XCTestCase {
         // Data base64-encodes.
         XCTAssertEqual(Data([1, 2, 3]).asParameter(codableHelper: helper) as? String, Data([1, 2, 3]).base64EncodedString())
 
-        // Date uses the helper's formatter.
+        // Date serializes via the helper's ISO-8601 formatter in UTC. Pin the
+        // deterministic prefix; only the zone suffix (Z/+00:00) varies by platform.
         let date = Date(timeIntervalSince1970: 0)
-        XCTAssertEqual(date.asParameter(codableHelper: helper) as? String, helper.dateFormatter.string(from: date))
+        let dateParam = try XCTUnwrap(date.asParameter(codableHelper: helper) as? String)
+        XCTAssertTrue(dateParam.hasPrefix("1970-01-01T00:00:00.000"), "unexpected date serialization: \(dateParam)")
     }
 
     func testParameterConvertibleCollections() {
