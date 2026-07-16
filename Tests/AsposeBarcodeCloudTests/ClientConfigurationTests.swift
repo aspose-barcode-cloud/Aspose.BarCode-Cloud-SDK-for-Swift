@@ -115,6 +115,31 @@ final class ClientConfigurationTests: XCTestCase {
         }
     }
 
+    func testDefaultTimeoutIntervalIsSixtySeconds() {
+        XCTAssertEqual(AsposeBarcodeCloudConfiguration().timeoutInterval, 60)
+    }
+
+    func testInterceptorAppliesConfiguredTimeoutToRequests() async throws {
+        let client = AsposeBarcodeCloudClient(
+            configuration: AsposeBarcodeCloudConfiguration(
+                accessToken: "test-token",
+                host: "https://example.com/v4.0",
+                timeoutInterval: 123
+            )
+        )
+        let requestBuilder = GenerateAPI.generateWithRequestBuilder(
+            barcodeType: .qr,
+            data: "hello",
+            apiConfiguration: client.apiConfiguration
+        )
+        let intercepted = try await intercept(
+            request: URLRequest(url: XCTUnwrap(URL(string: "https://example.com/v4.0/barcode/generate/QR"))),
+            requestBuilder: XCTUnwrap(requestBuilder as? URLSessionRequestBuilder<Data>),
+            apiConfiguration: client.apiConfiguration
+        )
+        XCTAssertEqual(intercepted.timeoutInterval, 123)
+    }
+
     // MARK: - Helpers
 
     private func intercept(
