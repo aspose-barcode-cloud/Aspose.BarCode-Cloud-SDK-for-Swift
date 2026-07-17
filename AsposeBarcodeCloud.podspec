@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'AsposeBarcodeCloud'
-  s.version = '26.6.0'
+  s.version = '26.7.0'
   s.summary = 'Aspose.BarCode Cloud SDK for Swift'
   s.description = 'Swift SDK for Aspose.BarCode Cloud barcode generation and recognition APIs.'
   s.homepage = 'https://github.com/aspose-barcode-cloud/Aspose.BarCode-Cloud-SDK-for-Swift'
@@ -14,10 +14,10 @@ Pod::Spec.new do |s|
 
   s.module_name = 'AsposeBarcodeCloud'
   s.swift_versions = ['6.0']
-  s.ios.deployment_target = '13.0'
-  s.osx.deployment_target = '10.15'
-  s.tvos.deployment_target = '13.0'
-  s.watchos.deployment_target = '6.0'
+  s.ios.deployment_target = '15.0'
+  s.osx.deployment_target = '12.0'
+  s.tvos.deployment_target = '15.0'
+  s.watchos.deployment_target = '8.0'
   s.source_files = 'Sources/AsposeBarcodeCloud/**/*.swift'
   s.requires_arc = true
 end

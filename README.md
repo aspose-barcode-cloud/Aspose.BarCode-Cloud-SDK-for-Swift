@@ -5,18 +5,18 @@ This repository contains the Swift SDK for Aspose.BarCode Cloud.
 ## Requirements
 
 - Swift Package Manager
-- iOS 13.0 or later
-- macOS 10.15 or later
+- iOS 15.0 or later
+- macOS 12.0 or later
 
 ## Usage
 
 Add the package to your SwiftPM dependencies after the repository is published:
 
 ```swift
-.package(url: "https://github.com/aspose-barcode-cloud/Aspose.BarCode-Cloud-SDK-for-Swift.git", from: "26.6.0")
+.package(url: "https://github.com/aspose-barcode-cloud/Aspose.BarCode-Cloud-SDK-for-Swift.git", from: "26.7.0")
 ```
 
-Releases use the BarCode SDK tag style, for example `v26.6.0`. SwiftPM version requirements still use the semantic version value without the `v` prefix.
+Releases use the BarCode SDK tag style, for example `v26.7.0`. SwiftPM version requirements still use the semantic version value without the `v` prefix.
 
 Then import the module:
 

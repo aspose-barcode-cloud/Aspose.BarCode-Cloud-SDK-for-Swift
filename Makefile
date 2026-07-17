@@ -9,6 +9,10 @@ init:
 build:
 	swift build
 
+.PHONY: build-apple
+build-apple:
+	./Scripts/buildApplePlatforms.sh
+
 .PHONY: format
 format:
 	@command -v swiftformat >/dev/null || { \
@@ -32,9 +36,13 @@ insert-example:
 test:
 	./Scripts/runTests.sh
 
+.PHONY: cover
+cover:
+	./Scripts/coverage.sh
+
 .PHONY: integration-test
 integration-test:
-	./Scripts/runTests.sh
+	./Scripts/runIntegrationTests.sh
 
 .PHONY: snippets-test
 snippets-test:
