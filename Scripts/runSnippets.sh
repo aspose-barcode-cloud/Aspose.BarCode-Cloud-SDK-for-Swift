@@ -18,20 +18,29 @@ for candidate in Tests/configuration.json Tests/Configuration.json; do
 done
 
 if [ -n "$config_file" ]; then
-    IFS="$(printf '\t')" read -r config_access_token config_client_id config_client_secret < <(python3 - "$config_file" <<'PY'
+    mapfile -t config_values < <(python3 - "$config_file" <<'PY'
 import json
 import sys
 
 with open(sys.argv[1], encoding="utf-8") as file:
     payload = json.load(file)
 
-print("\t".join([
-    payload.get("accessToken") or payload.get("AccessToken") or "",
-    payload.get("clientId") or payload.get("ClientId") or "",
-    payload.get("clientSecret") or payload.get("ClientSecret") or "",
-]))
+
+def first_value(names):
+    for name in names:
+        if name in payload and payload[name]:
+            return payload[name]
+    return ""
+
+print(first_value(("accessToken", "AccessToken")))
+print(first_value(("clientId", "ClientId")))
+print(first_value(("clientSecret", "ClientSecret")))
 PY
 )
+
+    config_access_token="${config_values[0]:-}"
+    config_client_id="${config_values[1]:-}"
+    config_client_secret="${config_values[2]:-}"
 
     access_token="${access_token:-$config_access_token}"
     client_id="${client_id:-$config_client_id}"
@@ -159,6 +168,12 @@ with open(target_file, "w", encoding="utf-8") as file:
 PY
 }
 
+prepare_working_files() {
+    cp "$repo_root/testdata/QR_and_Code128.png" "$work_dir/barcode.png"
+    cp "$repo_root/testdata/QR_and_Code128.png" "$work_dir/qr.png"
+    cp "$repo_root/testdata/pdf417Sample.png" "$work_dir/pdf417.png"
+}
+
 typecheck_snippet() {
     local snippet_file="$1"
     local log_file="$2"
@@ -173,6 +188,7 @@ run_snippet() {
     local log_file="$logs_dir/${snippet_path//\//__}.log"
 
     echo "Run snippet: $snippet_path"
+    prepare_working_files
     prepare_snippet "$source_file" "$target_file"
 
     if [ -n "$access_token" ] && [ "$(basename "$source_file")" = "manual_fetch_token.swift" ]; then
