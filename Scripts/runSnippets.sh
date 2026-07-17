@@ -18,7 +18,14 @@ for candidate in Tests/configuration.json Tests/Configuration.json; do
 done
 
 if [ -n "$config_file" ]; then
-    mapfile -t config_values < <(python3 - "$config_file" <<'PY'
+    # Read one value per line into an array. Avoid `mapfile`/`readarray`: it is a
+    # bash 4.0+ builtin, but macOS ships bash 3.2 as /bin/bash, so `mapfile` is
+    # unavailable when this script runs under the system shell (the shebang forces
+    # /bin/bash). A `while read` loop is portable back to bash 3.2.
+    config_values=()
+    while IFS= read -r config_line; do
+        config_values+=("$config_line")
+    done < <(python3 - "$config_file" <<'PY'
 import json
 import sys
 
