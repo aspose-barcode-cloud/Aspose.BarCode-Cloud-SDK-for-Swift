@@ -9,6 +9,10 @@ init:
 build:
 	swift build
 
+.PHONY: build-apple
+build-apple:
+	./Scripts/buildApplePlatforms.sh
+
 .PHONY: format
 format:
 	@command -v swiftformat >/dev/null || { \

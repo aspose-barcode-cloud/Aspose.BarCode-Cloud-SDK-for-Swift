@@ -9,7 +9,6 @@ on:
 env:
   MIN_SWIFT_VERSION: "6.0"
   MIN_XCODE_VERSION: "16.2"
-  IOS_DESTINATION: "platform=iOS Simulator,name=iPhone 16e,OS=26.2"
 
 jobs:
   linux-test:
@@ -33,7 +32,7 @@ jobs:
       - name: Build
         run: make build
       - name: Test with coverage gate (>= 80%)
-        # Runs the full suite (unit + live LiveAPITests integration tests) once,
+        # Runs the full suite (AsposeBarcodeCloudUnitTests + live AsposeBarcodeCloudIntegrationTests targets) once,
         # under coverage instrumentation, and enforces the gate. This is the
         # single Linux test run; other platforms run the offline unit tests via
         # `make test`.
@@ -81,11 +80,16 @@ jobs:
       - name: Run example
         run: make example
 
-  ios-test:
+  apple-platform-build:
     runs-on: macos-latest
     needs: linux-test
-    env:
-      TEST_CONFIGURATION_ACCESS_TOKEN: ${{ secrets.TEST_CONFIGURATION_ACCESS_TOKEN }}
+    strategy:
+      fail-fast: false
+      matrix:
+        destination:
+          - "generic/platform=iOS Simulator"
+          - "generic/platform=tvOS Simulator"
+          - "generic/platform=watchOS Simulator"
     steps:
       - uses: actions/checkout@v6
       - name: Verify Xcode version
@@ -100,13 +104,9 @@ jobs:
             echo "::error::Xcode $actual is below the minimum supported $MIN_XCODE_VERSION"
             exit 1
           fi
-      - name: Build
-        run: xcodebuild build -scheme AsposeBarcodeCloud -destination "$IOS_DESTINATION"
-      # iOS tests are disabled: `xcodebuild test` fails with
-      #   "Scheme AsposeBarcodeCloud is not currently configured for the test action"
-      # because the SwiftPM-generated scheme does not expose the test target for the
-      # iOS Simulator destination. The Build step above still verifies the SDK compiles
-      # for iOS; test coverage runs on linux-test and macos-test.
-      # To re-enable once the scheme is test-configured:
-      #   - name: Test
-      #     run: xcodebuild test -scheme AsposeBarcodeCloud -destination "$IOS_DESTINATION"
+      # Compile the SDK against each Apple platform's SDK so the Swift compiler's
+      # availability checker enforces the deployment-target floor in Package.swift
+      # (iOS 15 / tvOS 15 / watchOS 8). Using an API newer than the floor fails
+      # the build here. macOS is already compiled by `swift build` in macos-test.
+      - name: Build for ${{ matrix.destination }}
+        run: ./Scripts/buildApplePlatforms.sh "${{ matrix.destination }}"
