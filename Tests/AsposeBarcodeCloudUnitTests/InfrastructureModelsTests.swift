@@ -106,8 +106,14 @@ final class InfrastructureModelsTests: XCTestCase {
             "Token request failed with status 500"
         )
 
-        struct SampleError: LocalizedError {
+        // The transport error surfaces a stable, non-localized description
+        // (String(describing:)) — not the locale-dependent localizedDescription.
+        struct SampleError: LocalizedError, CustomStringConvertible {
             var errorDescription: String? {
+                "localized boom"
+            }
+
+            var description: String {
                 "transport boom"
             }
         }
