@@ -11,8 +11,10 @@ import XCTest
 /// Tests/configuration.json from Tests/configuration.example.json, or set
 /// TEST_CONFIGURATION_CLIENT_ID and TEST_CONFIGURATION_CLIENT_SECRET.
 final class LiveAPITests: XCTestCase {
-    private static let publicBarcodeImageURL = "https://products.aspose.app/barcode/scan/img/how-to/scan/step2.png"
-    private static let publicBarcodeImageDecodedValue = "http://en.m.wikipedia.org"
+    private static let publicBarcodeImageURL =
+        ProcessInfo.processInfo.environment["TEST_CONFIGURATION_BARCODE_IMAGE_URL"]
+            ?? "https://raw.githubusercontent.com/aspose-barcode-cloud/Aspose.BarCode-Cloud-SDK-for-Swift/main/testdata/QR_and_Code128.png"
+    private static let publicBarcodeImageDecodedValue = "Hello world!"
 
     // MARK: - Integration: Generate
 
@@ -62,9 +64,11 @@ final class LiveAPITests: XCTestCase {
             apiConfiguration: client.apiConfiguration
         )
         let barcodes = try XCTUnwrap(response.barcodes)
-        XCTAssertEqual(barcodes.count, 1)
+        XCTAssertEqual(barcodes.count, 2)
         XCTAssertEqual(barcodes[0].type, "QR")
         XCTAssertEqual(barcodes[0].barcodeValue, Self.publicBarcodeImageDecodedValue)
+        XCTAssertEqual(barcodes[1].type, "Code128")
+        XCTAssertEqual(barcodes[1].barcodeValue, Self.publicBarcodeImageDecodedValue)
     }
 
     func testScanBase64() async throws {

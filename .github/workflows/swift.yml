@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TEST_CONFIGURATION_ACCESS_TOKEN: ${{ secrets.TEST_CONFIGURATION_ACCESS_TOKEN }}
+      TEST_CONFIGURATION_BARCODE_IMAGE_URL: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/testdata/QR_and_Code128.png
     steps:
       - uses: actions/checkout@v6
       - name: Verify Swift version
