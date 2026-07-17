@@ -8,4 +8,4 @@ cd "$repo_root"
 # require credentials: set TEST_CONFIGURATION_ACCESS_TOKEN, create
 # Tests/configuration.json from Tests/configuration.example.json, or set
 # TEST_CONFIGURATION_CLIENT_ID and TEST_CONFIGURATION_CLIENT_SECRET.
-swift test --filter LiveAPITests
+swift test --filter AsposeBarcodeCloudIntegrationTests

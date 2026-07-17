@@ -34,9 +34,14 @@ let package = Package(
             path: "Examples/GenerateAndScan"
         ),
         .testTarget(
-            name: "AsposeBarcodeCloudTests",
+            name: "AsposeBarcodeCloudUnitTests",
             dependencies: ["AsposeBarcodeCloud"],
-            path: "Tests/AsposeBarcodeCloudTests"
+            path: "Tests/AsposeBarcodeCloudUnitTests"
+        ),
+        .testTarget(
+            name: "AsposeBarcodeCloudIntegrationTests",
+            dependencies: ["AsposeBarcodeCloud"],
+            path: "Tests/AsposeBarcodeCloudIntegrationTests"
         ),
     ],
     swiftLanguageModes: [.v6]
