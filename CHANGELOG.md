@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## v26.8.0
+
+* August 2026 Release
+
+## v26.7.0
+
+* July 2026 Release
+  * Added SDK usage snippets and a snippet runner
+  * Expanded offline tests and Apple/Linux CI coverage
+  * Aligned test and snippet credential handling
+
 ## v26.6.0
 
 * Added barcode-type-specific encoding parameters for QR, PDF417, and Code128 to the generate endpoints, with new `QrParams`, `Pdf417Params`, and `Code128Params` models and supporting enums (`QREncodeMode`, `QRErrorLevel`, `QRVersion`, `ECIEncodings`, `MicroQRVersion`, `RectMicroQRVersion`, `Code128EncodeMode`, `Pdf417EncodeMode`, `Pdf417ErrorLevel`, `MacroCharacter`).
