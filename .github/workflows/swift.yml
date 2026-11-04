@@ -10,6 +10,9 @@ env:
   MIN_SWIFT_VERSION: "6.0"
   MIN_XCODE_VERSION: "16.2"
 
+permissions:
+  contents: read
+
 jobs:
   linux-test:
     # ubuntu-latest is ubuntu-26.04 now, which ships no Swift toolchain
@@ -39,6 +42,14 @@ jobs:
         # single Linux test run; other platforms run the offline unit tests via
         # `make test`.
         run: make cover
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage
+          path: |
+            coverage/coverage-badge.json
+            coverage/coverage-summary.json
+            coverage/lcov.info
       - name: Run example
         run: make example
       - name: Run snippets
@@ -112,3 +123,34 @@ jobs:
       # compiled by `swift build` in macos-test.
       - name: Build for ${{ matrix.destination }}
         run: ./Scripts/buildApplePlatforms.sh "${{ matrix.destination }}"
+
+  publish-coverage:
+    name: Publish coverage
+    needs: linux-test
+    # Only pushes to the default branch publish, and only once the GitHub App for
+    # the test-coverage repository is configured (COVERAGE_APP_ID variable).
+    if: github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && vars.COVERAGE_APP_ID != ''
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v8
+        with:
+          name: coverage
+          path: coverage
+      - name: Get a token for the test-coverage repository
+        id: coverage-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ vars.COVERAGE_APP_ID }}
+          private-key: ${{ secrets.COVERAGE_APP_PRIVATE_KEY }}
+          owner: aspose-barcode-cloud
+          repositories: test-coverage
+          permission-contents: write
+      - name: Publish to test-coverage
+        run: python Scripts/publish-coverage.py swift
+        env:
+          COVERAGE_TOKEN: ${{ steps.coverage-token.outputs.token }}
+          COVERAGE_APP_SLUG: ${{ steps.coverage-token.outputs.app-slug }}

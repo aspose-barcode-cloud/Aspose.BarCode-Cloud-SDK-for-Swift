@@ -36,9 +36,12 @@ insert-example:
 test:
 	./Scripts/runTests.sh
 
+# `python`, or `python3` where only that exists (e.g. a stock Ubuntu 26.04).
+PYTHON ?= $(shell command -v python 2>/dev/null || echo python3)
+
 .PHONY: cover
 cover:
-	./Scripts/coverage.sh
+	$(PYTHON) Scripts/cover.py
 
 .PHONY: integration-test
 integration-test:

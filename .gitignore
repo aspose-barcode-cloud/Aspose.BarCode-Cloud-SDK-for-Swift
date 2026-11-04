@@ -1,4 +1,5 @@
 .build/
+/coverage/
 .swiftpm/
 Package.resolved
 Tests/configuration.json
