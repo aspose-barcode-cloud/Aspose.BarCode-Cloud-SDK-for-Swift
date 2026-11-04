@@ -20,7 +20,8 @@ concurrency:
 jobs:
   linux-test:
     name: Linux test
-    runs-on: ubuntu-latest
+    # ubuntu-latest is ubuntu-26.04 now, which ships no Swift toolchain
+    runs-on: ubuntu-24.04
     env:
       TEST_CONFIGURATION_ACCESS_TOKEN: ${{ secrets.TEST_CONFIGURATION_ACCESS_TOKEN }}
       TEST_CONFIGURATION_BARCODE_IMAGE_URL: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/testdata/QR_and_Code128.png
