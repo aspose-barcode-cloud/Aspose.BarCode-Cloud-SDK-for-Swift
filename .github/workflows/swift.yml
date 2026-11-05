@@ -88,10 +88,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # tvOS and watchOS builds are not run in CI; build them locally with
+        # `make build-apple` when needed.
         destination:
           - "generic/platform=iOS Simulator"
-          - "generic/platform=tvOS Simulator"
-          - "generic/platform=watchOS Simulator"
     steps:
       - uses: actions/checkout@v6
       - name: Verify Xcode version
@@ -106,9 +106,9 @@ jobs:
             echo "::error::Xcode $actual is below the minimum supported $MIN_XCODE_VERSION"
             exit 1
           fi
-      # Compile the SDK against each Apple platform's SDK so the Swift compiler's
-      # availability checker enforces the deployment-target floor in Package.swift
-      # (iOS 15 / tvOS 15 / watchOS 8). Using an API newer than the floor fails
-      # the build here. macOS is already compiled by `swift build` in macos-test.
+      # Compile the SDK against the iOS SDK so the Swift compiler's availability
+      # checker enforces the deployment-target floor in Package.swift (iOS 15).
+      # Using an API newer than the floor fails the build here. macOS is already
+      # compiled by `swift build` in macos-test.
       - name: Build for ${{ matrix.destination }}
         run: ./Scripts/buildApplePlatforms.sh "${{ matrix.destination }}"
