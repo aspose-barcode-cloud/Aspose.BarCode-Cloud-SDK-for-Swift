@@ -1,0 +1,22 @@
+name: Check badges in README.md
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check-badges:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Check badges in README.md
+        run: ./Scripts/check-badges.bash "README.md"
