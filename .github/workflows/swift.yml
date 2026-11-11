@@ -13,8 +13,13 @@ env:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   linux-test:
+    name: Linux test
     # ubuntu-latest is ubuntu-26.04 now, which ships no Swift toolchain
     runs-on: ubuntu-24.04
     env:
@@ -22,6 +27,8 @@ jobs:
       TEST_CONFIGURATION_BARCODE_IMAGE_URL: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/testdata/QR_and_Code128.png
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: Verify Swift version
         run: |
           swift --version
@@ -56,12 +63,15 @@ jobs:
         run: make snippets-test
 
   macos-test:
+    name: macOS test
     runs-on: macos-latest
     needs: linux-test
     env:
       TEST_CONFIGURATION_ACCESS_TOKEN: ${{ secrets.TEST_CONFIGURATION_ACCESS_TOKEN }}
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: Verify Xcode version
         run: |
           xcodebuild -version
@@ -94,6 +104,7 @@ jobs:
         run: make example
 
   apple-platform-build:
+    name: Apple platform build
     runs-on: macos-latest
     needs: linux-test
     strategy:
@@ -105,6 +116,8 @@ jobs:
           - "generic/platform=iOS Simulator"
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: Verify Xcode version
         run: |
           xcodebuild -version
