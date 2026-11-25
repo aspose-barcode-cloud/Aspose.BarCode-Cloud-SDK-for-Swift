@@ -82,5 +82,6 @@ public enum EncodeBarcodeType: String, Sendable, Codable, CaseIterable, CaseIter
     case upcaGs1Code128Coupon = "UpcaGs1Code128Coupon"
     case upcaGs1DatabarCoupon = "UpcaGs1DatabarCoupon"
     case vin = "VIN"
+    case japanPost = "JapanPost"
     case unknownDefaultOpenApi = "unknown_default_open_api"
 }

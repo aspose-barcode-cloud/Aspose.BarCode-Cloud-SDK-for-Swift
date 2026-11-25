@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v26.11.0
+
+* November 2026 Release
+
 ## v26.10.0
 
 * October 2026 Release

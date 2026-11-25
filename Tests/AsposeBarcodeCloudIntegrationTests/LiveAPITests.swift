@@ -55,6 +55,28 @@ final class LiveAPITests: XCTestCase {
         XCTAssertGreaterThan(data.count, 0)
     }
 
+    func testGenerateBatch() async throws {
+        let client = try await makeIntegrationClient()
+        for format in [BatchArchiveFormat.zip, .tar, .tarGzip] {
+            let batch = BatchGenerateRequest(archiveFormat: format, items: [
+                BatchGenerateItem(fileName: "qr.png", generation: GenerateParams(
+                    barcodeType: .qr, encodeData: EncodeData(data: "Batch example")
+                )),
+            ])
+            let data = try await GenerateAPI.generateBatch(
+                batchGenerateRequest: batch, apiConfiguration: client.apiConfiguration
+            )
+            XCTAssertGreaterThan(data.count, 0)
+            switch format {
+            case .zip: XCTAssertEqual(Array(data.prefix(4)), [0x50, 0x4B, 0x03, 0x04])
+            case .tarGzip: XCTAssertEqual(Array(data.prefix(2)), [0x1F, 0x8B])
+            default:
+                XCTAssertGreaterThan(data.count, 262)
+                XCTAssertEqual(String(decoding: data[257 ..< 262], as: UTF8.self), "ustar")
+            }
+        }
+    }
+
     // MARK: - Integration: Scan
 
     func testScan() async throws {

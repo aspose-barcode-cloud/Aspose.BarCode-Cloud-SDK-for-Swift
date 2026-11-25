@@ -119,6 +119,65 @@ open class GenerateAPI {
     }
 
     /**
+     Generate multiple barcodes and return them in a ZIP, TAR, or TAR.GZ archive.
+
+     - parameter batchGenerateRequest: (body) Batch generation request in JSON or XML format.
+     - parameter apiConfiguration: The configuration for the http request.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func generateBatch(batchGenerateRequest: BatchGenerateRequest, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: Data?, _ error: Error?) -> Void) -> RequestTask {
+        generateBatchWithRequestBuilder(batchGenerateRequest: batchGenerateRequest, apiConfiguration: apiConfiguration).execute { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Generate multiple barcodes and return them in a ZIP, TAR, or TAR.GZ archive.
+
+     - parameter batchGenerateRequest: (body) Batch generation request in JSON or XML format.
+     - parameter apiConfiguration: The configuration for the http request.
+     - returns: Data
+     */
+    open class func generateBatch(batchGenerateRequest: BatchGenerateRequest, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> Data {
+        try await generateBatchWithRequestBuilder(batchGenerateRequest: batchGenerateRequest, apiConfiguration: apiConfiguration).execute().body
+    }
+
+    /**
+     Generate multiple barcodes and return them in a ZIP, TAR, or TAR.GZ archive.
+     - POST /barcode/generate-batch
+     - OAuth:
+       - type: oauth2
+       - name: JWT
+
+     - parameter batchGenerateRequest: (body) Batch generation request in JSON or XML format.
+     - parameter apiConfiguration: The configuration for the http request.
+     - returns: RequestBuilder<Data>
+     */
+    open class func generateBatchWithRequestBuilder(batchGenerateRequest: BatchGenerateRequest, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) -> RequestBuilder<Data> {
+        let localVariablePath = "/barcode/generate-batch"
+        let localVariableURLString = apiConfiguration.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: batchGenerateRequest, codableHelper: apiConfiguration.codableHelper)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: (any Sendable)?] = [
+            "Content-Type": "application/json",
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<Data>.Type = apiConfiguration.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true, apiConfiguration: apiConfiguration)
+    }
+
+    /**
      Generate a barcode using a POST request with parameters in the request body in JSON or XML format.
 
      - parameter generateParams: (body) Generation parameters.
