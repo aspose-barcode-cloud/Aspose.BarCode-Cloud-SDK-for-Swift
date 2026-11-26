@@ -3,6 +3,8 @@
 ## v26.11.0
 
 * November 2026 Release
+* Added Batch Generation to generate one to three barcodes in a single request and return a ZIP, TAR, or TAR.GZ archive.
+* Added JapanPost barcode generation and recognition support.
 
 ## v26.10.0
 
