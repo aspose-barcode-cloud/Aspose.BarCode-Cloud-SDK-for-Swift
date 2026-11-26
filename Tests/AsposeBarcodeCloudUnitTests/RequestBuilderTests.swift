@@ -61,6 +61,31 @@ final class RequestBuilderTests: XCTestCase {
         XCTAssertEqual(encodeData?["dataType"] as? String, "StringData")
     }
 
+    func testGenerateBatchRequestShape() throws {
+        let batch = BatchGenerateRequest(archiveFormat: .tarGzip, items: [
+            BatchGenerateItem(fileName: "qr.png", generation: GenerateParams(
+                barcodeType: .qr,
+                encodeData: EncodeData(dataType: .stringData, data: "payload")
+            )),
+        ])
+
+        let builder = GenerateAPI.generateBatchWithRequestBuilder(batchGenerateRequest: batch)
+
+        XCTAssertEqual(builder.method, "POST")
+        XCTAssertTrue(builder.requiresAuthentication)
+        XCTAssertEqual(URLComponents(string: builder.URLString)?.path, "/v4.0/barcode/generate-batch")
+        XCTAssertEqual(builder.headers["Content-Type"], "application/json")
+
+        let body = try jsonObject(from: builder.parameters)
+        XCTAssertEqual(body["archiveFormat"] as? String, "TarGzip")
+
+        let items = body["items"] as? [[String: Any]]
+        XCTAssertEqual(items?.count, 1)
+        XCTAssertEqual(items?.first?["fileName"] as? String, "qr.png")
+        let generation = items?.first?["generation"] as? [String: Any]
+        XCTAssertEqual(generation?["barcodeType"] as? String, "QR")
+    }
+
     func testGenerateMultipartRequestShape() {
         let builder = GenerateAPI.generateMultipartWithRequestBuilder(
             barcodeType: .qr,
