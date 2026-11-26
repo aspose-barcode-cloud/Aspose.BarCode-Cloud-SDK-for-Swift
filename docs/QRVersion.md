@@ -1,8 +1,50 @@
 # QRVersion
 
-## Properties
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
+QR barcode version. Subset of https://reference.aspose.com/barcode/net/aspose.barcode.generation/qrversion/ MicroQR versions (VersionM1–VersionM4) are omitted; use Aspose.BarCode.Cloud.DTO.Enums.MicroQRVersion instead.
+
+## Allowable values
+
+* **QRVersion.auto** (`"Auto"`)
+* QRVersion.version01 (`"Version01"`)
+* QRVersion.version02 (`"Version02"`)
+* QRVersion.version03 (`"Version03"`)
+* QRVersion.version04 (`"Version04"`)
+* QRVersion.version05 (`"Version05"`)
+* QRVersion.version06 (`"Version06"`)
+* QRVersion.version07 (`"Version07"`)
+* QRVersion.version08 (`"Version08"`)
+* QRVersion.version09 (`"Version09"`)
+* QRVersion.version10 (`"Version10"`)
+* QRVersion.version11 (`"Version11"`)
+* QRVersion.version12 (`"Version12"`)
+* QRVersion.version13 (`"Version13"`)
+* QRVersion.version14 (`"Version14"`)
+* QRVersion.version15 (`"Version15"`)
+* QRVersion.version16 (`"Version16"`)
+* QRVersion.version17 (`"Version17"`)
+* QRVersion.version18 (`"Version18"`)
+* QRVersion.version19 (`"Version19"`)
+* QRVersion.version20 (`"Version20"`)
+* QRVersion.version21 (`"Version21"`)
+* QRVersion.version22 (`"Version22"`)
+* QRVersion.version23 (`"Version23"`)
+* QRVersion.version24 (`"Version24"`)
+* QRVersion.version25 (`"Version25"`)
+* QRVersion.version26 (`"Version26"`)
+* QRVersion.version27 (`"Version27"`)
+* QRVersion.version28 (`"Version28"`)
+* QRVersion.version29 (`"Version29"`)
+* QRVersion.version30 (`"Version30"`)
+* QRVersion.version31 (`"Version31"`)
+* QRVersion.version32 (`"Version32"`)
+* QRVersion.version33 (`"Version33"`)
+* QRVersion.version34 (`"Version34"`)
+* QRVersion.version35 (`"Version35"`)
+* QRVersion.version36 (`"Version36"`)
+* QRVersion.version37 (`"Version37"`)
+* QRVersion.version38 (`"Version38"`)
+* QRVersion.version39 (`"Version39"`)
+* QRVersion.version40 (`"Version40"`)
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
