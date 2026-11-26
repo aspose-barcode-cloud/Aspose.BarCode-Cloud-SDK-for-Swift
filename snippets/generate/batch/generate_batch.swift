@@ -2,14 +2,20 @@ import AsposeBarcodeCloud
 import Foundation
 
 let client = AsposeBarcodeCloudClient(
-    accessToken: ProcessInfo.processInfo.environment["TEST_CONFIGURATION_ACCESS_TOKEN"] ?? ""
+    clientId: "Client Id from https://dashboard.aspose.cloud/applications",
+    clientSecret: "Client Secret from https://dashboard.aspose.cloud/applications"
 )
+
 let batch = BatchGenerateRequest(archiveFormat: .zip, items: [
     BatchGenerateItem(fileName: "qr.png", generation: GenerateParams(
         barcodeType: .qr, encodeData: EncodeData(data: "Batch example")
     )),
 ])
-let data = try await GenerateAPI.generateBatch(
-    batchGenerateRequest: batch, apiConfiguration: client.apiConfiguration
+
+let archiveData = try await GenerateAPI.generateBatch(
+    batchGenerateRequest: batch,
+    apiConfiguration: client.apiConfiguration
 )
-try data.write(to: URL(fileURLWithPath: "barcodes.zip"))
+
+try archiveData.write(to: URL(fileURLWithPath: "barcodes.zip"))
+print("File 'barcodes.zip' generated.")
