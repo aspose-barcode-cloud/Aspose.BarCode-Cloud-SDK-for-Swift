@@ -10,7 +10,7 @@ This repository contains the Swift SDK for Aspose.BarCode Cloud.
 ## Batch Generation
 
 Generate one to three barcodes in a single request with the Generate API and
-`BatchGenerateRequest`. Choose `Zip` (the default), `Tar` or `TarGzip`
+`BatchGenerateRequest`. Choose `.zip` (the default), `.tar` or `.tarGzip`
 for the returned binary archive. Each item contains generation parameters and an optional
 file name; the image format is independent of the file extension.
 
