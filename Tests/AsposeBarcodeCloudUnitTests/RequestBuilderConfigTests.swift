@@ -1,9 +1,9 @@
 import Foundation
+import XCTest
+@testable import AsposeBarcodeCloud
 #if canImport(FoundationNetworking)
     import FoundationNetworking
 #endif
-import XCTest
-@testable import AsposeBarcodeCloud
 
 /// Offline tests for the mutable properties of `AsposeBarcodeCloudAPIConfiguration`
 /// and `RequestBuilder`, plus the base `RequestBuilder.execute` stub.

@@ -21,7 +21,7 @@ public struct APIHelper: Sendable {
     }
 
     public static func rejectNilHeaders(_ source: [String: (any Sendable)?]) -> [String: String] {
-        source.reduce(into: [String: String]()) { result, item in
+        return source.reduce(into: [String: String]()) { result, item in
             if let collection = item.value as? [Any?] {
                 result[item.key] = collection
                     .compactMap { value in convertAnyToString(value) }

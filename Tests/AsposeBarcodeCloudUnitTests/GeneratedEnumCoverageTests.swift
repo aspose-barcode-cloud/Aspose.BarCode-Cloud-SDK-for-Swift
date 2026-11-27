@@ -1,9 +1,9 @@
 import Foundation
+import XCTest
+@testable import AsposeBarcodeCloud
 #if canImport(FoundationNetworking)
     import FoundationNetworking
 #endif
-import XCTest
-@testable import AsposeBarcodeCloud
 
 /// Deterministic, offline coverage for the generated enum types: every enum
 /// round-trips through the coding helpers and falls back to its last case

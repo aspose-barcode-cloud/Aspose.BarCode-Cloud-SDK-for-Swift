@@ -93,5 +93,6 @@ public enum DecodeBarcodeType: String, Sendable, Codable, CaseIterable, CaseIter
     case upca = "UPCA"
     case upce = "UPCE"
     case vin = "VIN"
+    case japanPost = "JapanPost"
     case unknownDefaultOpenApi = "unknown_default_open_api"
 }

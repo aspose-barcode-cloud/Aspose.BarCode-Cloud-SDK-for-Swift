@@ -60,10 +60,10 @@ open class CodableHelper: @unchecked Sendable {
     }
 
     open func decode<T: Decodable>(_ type: T.Type, from data: Data) -> Swift.Result<T, Error> {
-        Swift.Result { try jsonDecoder.decode(type, from: data) }
+        return Swift.Result { try jsonDecoder.decode(type, from: data) }
     }
 
     open func encode(_ value: some Encodable) -> Swift.Result<Data, Error> {
-        Swift.Result { try jsonEncoder.encode(value) }
+        return Swift.Result { try jsonEncoder.encode(value) }
     }
 }

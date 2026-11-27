@@ -1,9 +1,9 @@
 import Foundation
+import XCTest
+@testable import AsposeBarcodeCloud
 #if canImport(FoundationNetworking)
     import FoundationNetworking
 #endif
-import XCTest
-@testable import AsposeBarcodeCloud
 
 /// Offline coverage for small infrastructure utilities: `JSONValue` convenience
 /// initializers, numeric validation defaults, `SynchronizedDictionary` reads,

@@ -1,9 +1,9 @@
 import Foundation
+import XCTest
+@testable import AsposeBarcodeCloud
 #if canImport(FoundationNetworking)
     import FoundationNetworking
 #endif
-import XCTest
-@testable import AsposeBarcodeCloud
 
 /// Deterministic, offline coverage for the response and error infrastructure:
 /// `NullEncodable`, `Response`, `RequestTask`, the infrastructure error

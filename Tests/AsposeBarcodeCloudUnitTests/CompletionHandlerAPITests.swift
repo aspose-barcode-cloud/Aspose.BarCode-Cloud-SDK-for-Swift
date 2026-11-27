@@ -1,9 +1,9 @@
 import Foundation
+import XCTest
+@testable import AsposeBarcodeCloud
 #if canImport(FoundationNetworking)
     import FoundationNetworking
 #endif
-import XCTest
-@testable import AsposeBarcodeCloud
 
 /// Offline tests for the completion-handler variants of the generated APIs.
 ///
@@ -69,6 +69,28 @@ final class CompletionHandlerAPITests: XCTestCase {
         )
         GenerateAPI.generateBody(
             generateParams: params,
+            apiConfiguration: client.apiConfiguration
+        ) { data, error in
+            XCTAssertNil(error)
+            XCTAssertEqual(data, MockBarcodeTransport.generatedImageBytes)
+            done.fulfill()
+        }
+
+        wait(for: [done], timeout: 5)
+    }
+
+    func testGenerateBatchCompletionVariant() {
+        let client = makeMockClient()
+        let done = expectation(description: "generateBatch completion")
+
+        let batch = BatchGenerateRequest(archiveFormat: .zip, items: [
+            BatchGenerateItem(fileName: "qr.png", generation: GenerateParams(
+                barcodeType: .qr,
+                encodeData: EncodeData(dataType: .stringData, data: "payload")
+            )),
+        ])
+        GenerateAPI.generateBatch(
+            batchGenerateRequest: batch,
             apiConfiguration: client.apiConfiguration
         ) { data, error in
             XCTAssertNil(error)

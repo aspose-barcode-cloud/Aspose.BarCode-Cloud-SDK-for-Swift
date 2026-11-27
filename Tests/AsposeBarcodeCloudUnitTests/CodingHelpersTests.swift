@@ -1,9 +1,9 @@
 import Foundation
+import XCTest
+@testable import AsposeBarcodeCloud
 #if canImport(FoundationNetworking)
     import FoundationNetworking
 #endif
-import XCTest
-@testable import AsposeBarcodeCloud
 
 /// Deterministic, offline coverage for the shared coding helpers:
 /// `CodableHelper`, the `ParameterConvertible` and keyed-container extensions

@@ -131,7 +131,7 @@ public extension JSONValue {
     }
 
     var isNull: Bool {
-        self == .null
+        return self == .null
     }
 }
 
@@ -139,36 +139,36 @@ public extension JSONValue {
     var stringValue: String? {
         switch self {
         case let .string(value):
-            value
+            return value
         default:
-            nil
+            return nil
         }
     }
 
     var intValue: Int? {
         switch self {
         case let .int(value):
-            value
+            return value
         default:
-            nil
+            return nil
         }
     }
 
     var doubleValue: Double? {
         switch self {
         case let .double(value):
-            value
+            return value
         default:
-            nil
+            return nil
         }
     }
 
     var boolValue: Bool? {
         switch self {
         case let .bool(value):
-            value
+            return value
         default:
-            nil
+            return nil
         }
     }
 
@@ -189,11 +189,11 @@ public extension JSONValue {
 
 public extension JSONValue {
     subscript(key: String) -> JSONValue? {
-        dictionaryValue?[key]
+        return dictionaryValue?[key]
     }
 
     subscript(index: Int) -> JSONValue? {
-        guard case let .array(array) = self, index >= 0, index < array.count else {
+        guard case let .array(array) = self, index >= 0 && index < array.count else {
             return nil
         }
         return array[index]

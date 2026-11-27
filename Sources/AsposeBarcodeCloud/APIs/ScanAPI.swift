@@ -17,7 +17,7 @@ open class ScanAPI {
      */
     @discardableResult
     open class func scan(fileUrl: String, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: BarcodeResponseList?, _ error: Error?) -> Void) -> RequestTask {
-        scanWithRequestBuilder(fileUrl: fileUrl, apiConfiguration: apiConfiguration).execute { result in
+        return scanWithRequestBuilder(fileUrl: fileUrl, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -35,7 +35,7 @@ open class ScanAPI {
      - returns: BarcodeResponseList
      */
     open class func scan(fileUrl: String, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> BarcodeResponseList {
-        try await scanWithRequestBuilder(fileUrl: fileUrl, apiConfiguration: apiConfiguration).execute().body
+        return try await scanWithRequestBuilder(fileUrl: fileUrl, apiConfiguration: apiConfiguration).execute().body
     }
 
     /**
@@ -77,7 +77,7 @@ open class ScanAPI {
      */
     @discardableResult
     open class func scanBase64(scanBase64Request: ScanBase64Request, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: BarcodeResponseList?, _ error: Error?) -> Void) -> RequestTask {
-        scanBase64WithRequestBuilder(scanBase64Request: scanBase64Request, apiConfiguration: apiConfiguration).execute { result in
+        return scanBase64WithRequestBuilder(scanBase64Request: scanBase64Request, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -95,7 +95,7 @@ open class ScanAPI {
      - returns: BarcodeResponseList
      */
     open class func scanBase64(scanBase64Request: ScanBase64Request, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> BarcodeResponseList {
-        try await scanBase64WithRequestBuilder(scanBase64Request: scanBase64Request, apiConfiguration: apiConfiguration).execute().body
+        return try await scanBase64WithRequestBuilder(scanBase64Request: scanBase64Request, apiConfiguration: apiConfiguration).execute().body
     }
 
     /**
@@ -136,7 +136,7 @@ open class ScanAPI {
      */
     @discardableResult
     open class func scanMultipart(file: Data, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: BarcodeResponseList?, _ error: Error?) -> Void) -> RequestTask {
-        scanMultipartWithRequestBuilder(file: file, apiConfiguration: apiConfiguration).execute { result in
+        return scanMultipartWithRequestBuilder(file: file, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -154,7 +154,7 @@ open class ScanAPI {
      - returns: BarcodeResponseList
      */
     open class func scanMultipart(file: Data, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> BarcodeResponseList {
-        try await scanMultipartWithRequestBuilder(file: file, apiConfiguration: apiConfiguration).execute().body
+        return try await scanMultipartWithRequestBuilder(file: file, apiConfiguration: apiConfiguration).execute().body
     }
 
     /**

@@ -77,21 +77,21 @@ extension RawRepresentable where RawValue: ParameterConvertible {
 
 private func encodeIfPossible(_ object: some Sendable, codableHelper: CodableHelper) -> any Sendable {
     if let encodableObject = object as? ParameterConvertible {
-        encodableObject.asParameter(codableHelper: codableHelper)
+        return encodableObject.asParameter(codableHelper: codableHelper)
     } else {
-        object
+        return object
     }
 }
 
 extension Array where Element: Sendable {
     func asParameter(codableHelper: CodableHelper) -> any Sendable {
-        map { encodeIfPossible($0, codableHelper: codableHelper) }
+        return map { encodeIfPossible($0, codableHelper: codableHelper) }
     }
 }
 
 extension Set where Element: Sendable {
     func asParameter(codableHelper: CodableHelper) -> any Sendable {
-        Array(self).asParameter(codableHelper: codableHelper)
+        return Array(self).asParameter(codableHelper: codableHelper)
     }
 }
 
@@ -107,19 +107,19 @@ extension Dictionary where Key: Sendable, Value: Sendable {
 
 extension Data: ParameterConvertible {
     func asParameter(codableHelper _: CodableHelper) -> any Sendable {
-        base64EncodedString(options: Data.Base64EncodingOptions())
+        return base64EncodedString(options: Data.Base64EncodingOptions())
     }
 }
 
 extension Date: ParameterConvertible {
     func asParameter(codableHelper: CodableHelper) -> any Sendable {
-        codableHelper.dateFormatter.string(from: self)
+        return codableHelper.dateFormatter.string(from: self)
     }
 }
 
 extension String: @retroactive CodingKey {
     public var stringValue: String {
-        self
+        return self
     }
 
     public init?(stringValue: String) {
@@ -127,11 +127,11 @@ extension String: @retroactive CodingKey {
     }
 
     public var intValue: Int? {
-        nil
+        return nil
     }
 
     public init?(intValue _: Int) {
-        nil
+        return nil
     }
 }
 

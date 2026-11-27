@@ -1,8 +1,8 @@
 import Foundation
+@testable import AsposeBarcodeCloud
 #if canImport(FoundationNetworking)
     import FoundationNetworking
 #endif
-@testable import AsposeBarcodeCloud
 
 /// Shared, configurable mock transport for offline pipeline tests.
 ///

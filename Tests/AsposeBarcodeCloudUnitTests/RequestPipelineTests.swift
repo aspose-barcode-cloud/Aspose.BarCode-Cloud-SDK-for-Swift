@@ -1,9 +1,9 @@
 import Foundation
+import XCTest
+@testable import AsposeBarcodeCloud
 #if canImport(FoundationNetworking)
     import FoundationNetworking
 #endif
-import XCTest
-@testable import AsposeBarcodeCloud
 
 /// Offline tests that drive the `URLSessionRequestBuilder` pipeline through a
 /// mock `URLSessionProtocol`. They exercise parameter encoding, response
