@@ -23,7 +23,7 @@ open class GenerateAPI {
      */
     @discardableResult
     open class func generate(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, barcodeImageParams: BarcodeImageParams? = nil, qrParams: QrParams? = nil, code128Params: Code128Params? = nil, pdf417Params: Pdf417Params? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: Data?, _ error: Error?) -> Void) -> RequestTask {
-        generateWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, barcodeImageParams: barcodeImageParams, qrParams: qrParams, code128Params: code128Params, pdf417Params: pdf417Params, apiConfiguration: apiConfiguration).execute { result in
+        return generateWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, barcodeImageParams: barcodeImageParams, qrParams: qrParams, code128Params: code128Params, pdf417Params: pdf417Params, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -47,7 +47,7 @@ open class GenerateAPI {
      - returns: Data
      */
     open class func generate(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, barcodeImageParams: BarcodeImageParams? = nil, qrParams: QrParams? = nil, code128Params: Code128Params? = nil, pdf417Params: Pdf417Params? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> Data {
-        try await generateWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, barcodeImageParams: barcodeImageParams, qrParams: qrParams, code128Params: code128Params, pdf417Params: pdf417Params, apiConfiguration: apiConfiguration).execute().body
+        return try await generateWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, barcodeImageParams: barcodeImageParams, qrParams: qrParams, code128Params: code128Params, pdf417Params: pdf417Params, apiConfiguration: apiConfiguration).execute().body
     }
 
     /**
@@ -127,7 +127,7 @@ open class GenerateAPI {
      */
     @discardableResult
     open class func generateBatch(batchGenerateRequest: BatchGenerateRequest, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: Data?, _ error: Error?) -> Void) -> RequestTask {
-        generateBatchWithRequestBuilder(batchGenerateRequest: batchGenerateRequest, apiConfiguration: apiConfiguration).execute { result in
+        return generateBatchWithRequestBuilder(batchGenerateRequest: batchGenerateRequest, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -145,7 +145,7 @@ open class GenerateAPI {
      - returns: Data
      */
     open class func generateBatch(batchGenerateRequest: BatchGenerateRequest, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> Data {
-        try await generateBatchWithRequestBuilder(batchGenerateRequest: batchGenerateRequest, apiConfiguration: apiConfiguration).execute().body
+        return try await generateBatchWithRequestBuilder(batchGenerateRequest: batchGenerateRequest, apiConfiguration: apiConfiguration).execute().body
     }
 
     /**
@@ -186,7 +186,7 @@ open class GenerateAPI {
      */
     @discardableResult
     open class func generateBody(generateParams: GenerateParams, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: Data?, _ error: Error?) -> Void) -> RequestTask {
-        generateBodyWithRequestBuilder(generateParams: generateParams, apiConfiguration: apiConfiguration).execute { result in
+        return generateBodyWithRequestBuilder(generateParams: generateParams, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -204,7 +204,7 @@ open class GenerateAPI {
      - returns: Data
      */
     open class func generateBody(generateParams: GenerateParams, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> Data {
-        try await generateBodyWithRequestBuilder(generateParams: generateParams, apiConfiguration: apiConfiguration).execute().body
+        return try await generateBodyWithRequestBuilder(generateParams: generateParams, apiConfiguration: apiConfiguration).execute().body
     }
 
     /**
@@ -251,7 +251,7 @@ open class GenerateAPI {
      */
     @discardableResult
     open class func generateMultipart(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, barcodeImageParams: BarcodeImageParams? = nil, qrParams: QrParams? = nil, code128Params: Code128Params? = nil, pdf417Params: Pdf417Params? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared, completion: @Sendable @escaping (_ data: Data?, _ error: Error?) -> Void) -> RequestTask {
-        generateMultipartWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, barcodeImageParams: barcodeImageParams, qrParams: qrParams, code128Params: code128Params, pdf417Params: pdf417Params, apiConfiguration: apiConfiguration).execute { result in
+        return generateMultipartWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, barcodeImageParams: barcodeImageParams, qrParams: qrParams, code128Params: code128Params, pdf417Params: pdf417Params, apiConfiguration: apiConfiguration).execute { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -275,7 +275,7 @@ open class GenerateAPI {
      - returns: Data
      */
     open class func generateMultipart(barcodeType: EncodeBarcodeType, data: String, dataType: EncodeDataType? = nil, barcodeImageParams: BarcodeImageParams? = nil, qrParams: QrParams? = nil, code128Params: Code128Params? = nil, pdf417Params: Pdf417Params? = nil, apiConfiguration: AsposeBarcodeCloudAPIConfiguration = AsposeBarcodeCloudAPIConfiguration.shared) async throws(ErrorResponse) -> Data {
-        try await generateMultipartWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, barcodeImageParams: barcodeImageParams, qrParams: qrParams, code128Params: code128Params, pdf417Params: pdf417Params, apiConfiguration: apiConfiguration).execute().body
+        return try await generateMultipartWithRequestBuilder(barcodeType: barcodeType, data: data, dataType: dataType, barcodeImageParams: barcodeImageParams, qrParams: qrParams, code128Params: code128Params, pdf417Params: pdf417Params, apiConfiguration: apiConfiguration).execute().body
     }
 
     /**

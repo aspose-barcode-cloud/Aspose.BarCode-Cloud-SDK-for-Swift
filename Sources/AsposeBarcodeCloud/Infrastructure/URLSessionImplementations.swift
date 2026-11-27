@@ -34,7 +34,7 @@ public protocol URLSessionProtocol: Sendable {
 extension URLSession: URLSessionProtocol {
     /// Passthrough to URLSession.dataTask(with:completionHandler) since URLSessionDataTask conforms to URLSessionDataTaskProtocol and fetches the network data.
     public func dataTaskFromProtocol(with request: URLRequest, completionHandler: @escaping @Sendable (Data?, URLResponse?, (any Error)?) -> Void) -> URLSessionDataTaskProtocol {
-        dataTask(with: request, completionHandler: completionHandler)
+        return dataTask(with: request, completionHandler: completionHandler)
     }
 }
 
@@ -50,15 +50,15 @@ public enum URLSessionRequestBuilderError: Error, CustomStringConvertible, Senda
     public var description: String {
         switch self {
         case let .unsupportedHTTPMethod(method):
-            "Unsupported HTTP method: \(method)"
+            return "Unsupported HTTP method: \(method)"
         case let .unsupportedMediaType(contentType):
-            "Unsupported media type: \(contentType)"
+            return "Unsupported media type: \(contentType)"
         case let .unsupportedResponseBodyType(typeName):
-            "Unsupported response body type: \(typeName)"
+            return "Unsupported response body type: \(typeName)"
         case let .unprocessableMultipartValue(key, valueDescription):
-            "Unprocessable multipart value for key \(key): \(valueDescription)"
+            return "Unprocessable multipart value for key \(key): \(valueDescription)"
         case let .unprocessableBody(description):
-            "Unprocessable request body: \(description)"
+            return "Unprocessable request body: \(description)"
         }
     }
 }
@@ -67,11 +67,11 @@ public final class URLSessionRequestBuilderFactory: RequestBuilderFactory, Senda
     public init() {}
 
     public func getNonDecodableBuilder<T>() -> RequestBuilder<T>.Type {
-        URLSessionRequestBuilder<T>.self
+        return URLSessionRequestBuilder<T>.self
     }
 
     public func getBuilder<T: Decodable>() -> RequestBuilder<T>.Type {
-        URLSessionDecodableRequestBuilder<T>.self
+        return URLSessionDecodableRequestBuilder<T>.self
     }
 }
 
@@ -102,7 +102,7 @@ open class URLSessionRequestBuilder<T: Sendable>: RequestBuilder<T>, @unchecked 
      configuration.
      */
     open func createURLSession() -> URLSessionProtocol {
-        URLSessionRequestBuilderConfiguration.shared.defaultURLSession
+        return URLSessionRequestBuilderConfiguration.shared.defaultURLSession
     }
 
     /**
@@ -113,7 +113,7 @@ open class URLSessionRequestBuilder<T: Sendable>: RequestBuilder<T>, @unchecked 
      the file extension).  Return the desired Content-Type otherwise.
      */
     open func contentTypeForFormPart(fileURL _: URL) -> String? {
-        nil
+        return nil
     }
 
     /**
@@ -687,7 +687,7 @@ private class FormURLEncoding: ParameterEncoding {
         // -> https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST
         // "application/x-www-form-urlencoded: [...] Non-alphanumeric characters in both keys and values are percent-encoded"
         let percentEncodedQueryItems = queryItems?.compactMap { queryItem in
-            URLQueryItem(
+            return URLQueryItem(
                 name: queryItem.name.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? queryItem.name,
                 value: queryItem.value?.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? queryItem.value
             )
