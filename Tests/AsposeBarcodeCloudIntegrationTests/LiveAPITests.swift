@@ -1,9 +1,9 @@
 import Foundation
+import XCTest
+@testable import AsposeBarcodeCloud
 #if canImport(FoundationNetworking)
     import FoundationNetworking
 #endif
-import XCTest
-@testable import AsposeBarcodeCloud
 
 /// Live integration tests for the async/await variants of the Generate,
 /// Scan, and Recognize APIs. These call the real Aspose.BarCode Cloud API and

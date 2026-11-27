@@ -1,9 +1,9 @@
 import Foundation
+import XCTest
+@testable import AsposeBarcodeCloud
 #if canImport(FoundationNetworking)
     import FoundationNetworking
 #endif
-import XCTest
-@testable import AsposeBarcodeCloud
 
 /// Deterministic, offline coverage for `JSONValue` in
 /// `Infrastructure/JSONValue.swift`: convenience initializers, typed

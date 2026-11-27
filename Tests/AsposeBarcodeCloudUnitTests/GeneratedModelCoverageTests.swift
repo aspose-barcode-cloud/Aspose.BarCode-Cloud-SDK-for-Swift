@@ -1,9 +1,9 @@
 import Foundation
+import XCTest
+@testable import AsposeBarcodeCloud
 #if canImport(FoundationNetworking)
     import FoundationNetworking
 #endif
-import XCTest
-@testable import AsposeBarcodeCloud
 
 /// Deterministic, offline coverage for the generated model types: every model
 /// in `Models/` survives an encode/decode round trip with equality, hashing,
